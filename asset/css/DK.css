@@ -1,0 +1,52 @@
+﻿#wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#form-login {
+    max-width: 400px;
+    background-color: white;
+    flex-grow: 1;
+    padding: 30px 30px 40px;
+}
+
+.form-heading {
+    font-size: 25px;
+    color: black;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    border-bottom: 1px solid #fff;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border: 1px solid black;
+}
+
+.form-input {
+    background: transparent;
+    border: 12px;
+    outline: 0;
+
+}
+
+.form-submit {
+    background: transparent;
+    border: 1px solid black;
+    width: 100%;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    transition: 0.25s ease-in-out;
+}
+
+    .form-submit:hover {
+        border: 1px solid #54a0ff;
+    }
+
+.checkbox {
+    color: white;
+    padding-bottom: 12px;
+}

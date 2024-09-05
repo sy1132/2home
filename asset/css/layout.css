@@ -1,0 +1,33 @@
+﻿
+* {
+    
+    margin: 0 auto;
+}
+
+body {
+    width: 100%;
+    background: url('../images/website-background-templates.jpg');
+    background-size:cover;
+}
+
+.menu {
+    background-color: black;
+}
+
+    .menu li {
+        display: inline-block;
+        padding: 10px;
+        background-color: black;
+        color: white;
+    }
+
+.navbar-brand {
+    color: white;
+    text-decoration: none;
+}
+
+.rightmenu {
+    float: right;
+}
+
+
