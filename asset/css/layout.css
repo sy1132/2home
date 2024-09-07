@@ -31,11 +31,19 @@ body {
     
 }
 
-.form-search {
-    display: flex;
+.form-search {    
     justify-content: center;
+    padding: 10px;
+    width: 60%;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    background-color: #febb02;
+    border-radius: 8px;
+    display: flex;
     align-items: center;
-}
+    justify-content: space-around;
+    gap: 8px;
+    }
 
     .form-search form {
         margin: 10px 0;
@@ -49,8 +57,16 @@ body {
         padding: 5px;
         font-size: 16px;
     }
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 32px;
+    font-size: 16px;
+    border: none; 
+    border-radius: 15px;
+    cursor: pointer; 
+}
 
-    .form-search select {
-        padding: 5px;
-        font-size: 16px;
+    input[type="submit"]:hover {
+        background-color: #45a049;
     }
