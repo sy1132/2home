@@ -22,7 +22,24 @@ namespace _2home.Controllers
 
         }
 
+        public ActionResult Selectlocation()
+        {
 
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            items.Add(new SelectListItem { Text = "Tất cả", Value = "0", Selected = true });
+
+            items.Add(new SelectListItem { Text = "Bình chuẩn", Value = "1" });
+
+            items.Add(new SelectListItem { Text = "Thành phố mới", Value = "2" });
+
+            items.Add(new SelectListItem { Text = "Thủ dầu một", Value = "3" });
+
+            ViewBag.location = items;
+
+            return View();
+
+        }
         public ActionResult Login()
 
         {
@@ -59,6 +76,16 @@ namespace _2home.Controllers
 
 
             ViewBag.message = "Quản lý đăng ký cho thuê";
+
+            return View();
+
+        }
+        public ActionResult togher()
+
+        {
+
+
+            ViewBag.message = "Ghép phòng";
 
             return View();
 

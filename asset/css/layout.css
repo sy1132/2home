@@ -28,7 +28,29 @@ body {
 
 .rightmenu {
     float: right;
+    
 }
+
 .form-search {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+    .form-search form {
+        margin: 10px 0;
+    }
+
+    .form-search fieldset {
+        border: none; 
+    }
+
+    .form-search select {
+        padding: 5px;
+        font-size: 16px;
+    }
+
+    .form-search select {
+        padding: 5px;
+        font-size: 16px;
+    }

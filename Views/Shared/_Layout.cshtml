@@ -15,17 +15,50 @@
 
 <body>
     <ul class="menu">
-        <li>
-            @Html.ActionLink("Trang chủ", "Index", "Home", null, new { @class = "navbar-brand" })
-        <li class="rightmenu">@Html.ActionLink("DK thue", "DKthue", "Home", null, new { @class = "navbar-brand" })</li>
-        </li>
+        <li > @Html.ActionLink("Trang chủ", "Index", "Home", null, new { @class = "navbar-brand" })</li>
+        <li>@Html.ActionLink("Cho thuê phòng trọ", "DKthue", "Home", null, new { @class = "navbar-brand" })</li>
+        <li >@Html.ActionLink("Tìm người ở ghép", "togher", "Home", null, new { @class = "navbar-brand" })</li>
         <li class="rightmenu">@Html.ActionLink("Đăng ký", "DK", "Home", null, new { @class = "navbar-brand" })</li>
         <li class="rightmenu">@Html.ActionLink("Đăng nhập", "Login", "Home", null, new { @class = "navbar-brand" })</li>
 
     </ul>
+    <ul class="form-search">
+        <form action="/Home/LocationChosen" method="get">
 
+            <fieldset>
+                Vị trí <select id="location" name="Vị trí">
+                    <option selected="selected" value="0">Tất cả</option>
+                    <option value="1">Bình chuẩn</option>
+                    <option value="2">Thành phố mới</option>
+                    <option value="3">Thủ dầu một</option>
+                </select>
+            </fieldset>
+        </form>
+        <form action="/Home/LocationChosen" method="get">
 
+            <fieldset>
+                Vị trí <select id="location" name="Vị trí">
+                    <option selected="selected" value="0">Tất cả</option>
+                    <option value="1">Bình chuẩn</option>
+                    <option value="2">Thành phố mới</option>
+                    <option value="3">Thủ dầu một</option>
+                </select>
+            </fieldset>
+        </form>
+        <form action="/Home/LocationChosen" method="get">
 
+            <fieldset>
+                Vị trí <select id="location" name="Vị trí">
+                    <option selected="selected" value="0">Tất cả</option>
+                    <option value="1">Bình chuẩn</option>
+                    <option value="2">Thành phố mới</option>
+                    <option value="3">Thủ dầu một</option>
+                </select>
+            </fieldset>
+
+        </form>
+        <p><input type="submit" value="Submit" /> </p>
+    </ul>
     <div>
 
         @RenderBody()

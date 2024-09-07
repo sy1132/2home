@@ -232,6 +232,7 @@
     <Content Include="Views\Home\DK.cshtml" />
     <Content Include="Views\Home\DKthue.cshtml" />
     <Content Include="Views\Home\Manager_DK.cshtml" />
+    <Content Include="Views\Home\togher.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
