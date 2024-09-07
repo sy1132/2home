@@ -29,5 +29,6 @@ body {
 .rightmenu {
     float: right;
 }
-
-
+.form-search {
+    display: flex;
+}
