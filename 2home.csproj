@@ -162,6 +162,7 @@
     <Content Include="asset\css\DK.css" />
     <Content Include="asset\css\layout.css" />
     <Content Include="asset\css\login.css" />
+    <Content Include="Content\AnyConv.com__licensed-image.jpg" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -178,6 +179,13 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\logo 2 home ngang.png" />
+    <Content Include="Content\logo 2 home tròn trắng.png" />
+    <Content Include="Content\logo 2 home tròn đen.png" />
+    <Content Include="Content\logo 2 home vuông trắng.png" />
+    <Content Include="Content\logo 2 home vuông đen.png" />
+    <Content Include="Content\pngtree-outline-user-icon-png-image_1727916.jpg" />
+    <Content Include="Content\website-background-templates.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />

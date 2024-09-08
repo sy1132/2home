@@ -20,7 +20,10 @@ body {
         background-color: black;
         color: white;
     }
-
+.logo_ngang {
+    width: 200px;
+    height: auto;
+}
 .navbar-brand {
     color: white;
     text-decoration: none;
