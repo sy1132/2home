@@ -2,48 +2,86 @@ CREATE DATABASE secondhome;
 
 USE secondhome;
 
-CREATE TABLE Users (
-    user_id INT IDENTITY(1,1) PRIMARY KEY,
-    username NVARCHAR(255) NOT NULL,
+CREATE TABLE [user] (
+    ID_user INT PRIMARY KEY ,
+    username NVARCHAR(50) NOT NULL,
     password NVARCHAR(255) NOT NULL,
-    full_name NVARCHAR(255),
-    email NVARCHAR(255) NOT NULL UNIQUE,
-    phone_number NVARCHAR(20),
-    user_role NVARCHAR(255) NOT NULL,
+    fullname NVARCHAR(100),
+    MotelID INT,
+    PhoneNumber NVARCHAR(15),
+    Email NVARCHAR(100),
+    userrole NVARCHAR(50)
 );
 
 CREATE TABLE Motel (
-    motel_id INT IDENTITY(1,1) PRIMARY KEY,
-    user_id INT NOT NULL,
-	motel_name NVARCHAR(255),
-	number int,
-	location NVARCHAR(255),
-	price decimal(18, 0),
-    is_available NVARCHAR(25),
-
+    Motel_ID INT PRIMARY KEY ,
+    ID_user INT,
+    Name_motel NVARCHAR(100),
+    Postal_Code NVARCHAR(20),
+    location NVARCHAR(255),
+    price DECIMAL(10, 2),
+    is_available NVARCHAR(50),
+    FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
 );
 
-CREATE TABLE Rooms (
-    room_id INT IDENTITY(1,1) PRIMARY KEY,
-    room_type NVARCHAR(25) NOT NULL,
-    rent INT NOT NULL,
-	is_rent_pay int,
-    is_available NVARCHAR(25),
-	motel_id int,
-	FOREIGN KEY (motel_id) REFERENCES Motel(motel_id) ON DELETE CASCADE,
+CREATE TABLE rooms (
+    room_ID INT PRIMARY KEY ,
+    Motel_ID INT,
+    Electricity_Meter DECIMAL(10, 2),
+    Water_Meter DECIMAL(10, 2),
+    Electricity_Usage DECIMAL(10, 2),
+    Water_Usage DECIMAL(10, 2),
+    Room_Status NVARCHAR(50),
+    Room_Rent DECIMAL(10, 2),
+    FOREIGN KEY (Motel_ID) REFERENCES Motel(Motel_ID)
 );
-INSERT INTO Users (username, password, full_name, email, phone_number, user_role)
-VALUES 
-('john_doe', 'password123', 'John Doe', 'john.doe@example.com', '123-456-7890', 'admin'),
-('jane_smith', 'password456', 'Jane Smith', 'jane.smith@example.com', '098-765-4321', 'user');
 
-INSERT INTO Motel (user_id, motel_name, number, location, price, is_available)
-VALUES 
-(1, 'Sunny Hotel', 101, '123 Main St', 100.00, 'Yes'),
-(2, 'Cozy Inn', 102, '456 Elm St', 75.00, 'No');
-INSERT INTO Rooms (room_type, rent, is_rent_pay, is_available, motel_id)
-VALUES 
-('Single', 50, 0, 'Yes', 1),
-('Double', 80, 1, 'No', 1),
-('Suite', 120, 0, 'Yes', 2);
+CREATE TABLE Room_Invoice (
+    room_ID INT,
+    Date_of_Issue DATE,
+    Electricity_Meter DECIMAL(10, 2),
+    Water_Meter DECIMAL(10, 2),
+    Electricity_Usage DECIMAL(10, 2),
+    Water_Usage DECIMAL(10, 2),
+    Electricity_Bill DECIMAL(10, 2),
+    Water_Bill DECIMAL(10, 2),
+    Room_Status NVARCHAR(50),
+    Room_Rent DECIMAL(10, 2),
+    Additional_Charges DECIMAL(10, 2),
+    Total_Amount_Due DECIMAL(15, 2),
+    FOREIGN KEY (room_ID) REFERENCES rooms(room_ID)
+);
 
+CREATE TABLE Video (
+    video_ID INT PRIMARY KEY,
+    ID_user INT,
+    updatedAt DATETIME,
+    createdAt DATETIME,
+    Link NVARCHAR(255),
+    FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
+);
+
+CREATE TABLE img (
+    img_ID INT PRIMARY KEY ,
+    ID_user INT,
+    updatedAt DATETIME,
+    createdAt DATETIME,
+    Link NVARCHAR(255),
+    FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
+);
+INSERT INTO [user] (ID_user, username, password, fullname, MotelID, PhoneNumber, Email, userrole)
+VALUES 
+(101, N'john_doe', N'password123', N'John Doe', NULL, N'1234567890', N'john@example.com', N'Admin'),
+(102, N'jane_smith', N'password123', N'Jane Smith', NULL, N'0987654321', N'jane@example.com', N'User'),
+(103, N'admin_user', N'password123', N'Admin User', NULL, N'1122334455', N'admin@example.com', N'Admin');
+
+	INSERT INTO img (img_ID, ID_user, updatedAt, createdAt, Link)
+	VALUES 
+	(1, 101, '2024-09-08 12:00:00', '2024-09-08 12:00:00', N'~/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg'),
+	(2, 102, '2024-09-08 13:00:00', '2024-09-08 13:00:00', N'~/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg'),
+	(3, 103, '2024-09-08 14:00:00', '2024-09-08 14:00:00', N'~/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg');
+	INSERT INTO img (img_ID, ID_user, updatedAt, createdAt, Link)
+VALUES 
+(4, 101, '2024-09-08 12:00:00', '2024-09-08 12:00:00', N'/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg'),
+(5, 102, '2024-09-08 13:00:00', '2024-09-08 13:00:00', N'/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg'),
+(6, 103, '2024-09-08 14:00:00', '2024-09-08 14:00:00', N'/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg');

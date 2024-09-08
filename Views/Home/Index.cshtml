@@ -4,9 +4,15 @@
     ViewBag.Title = "Trang chủ";
 
 }
-<div>
-    <img src="~/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg" />
-    <div>
+<head>
+    <link href="~/asset/css/index.css" rel="stylesheet" />
+</head>
 
-    </div>
-</div>
+    
+        @foreach (var id_img in Model)
+        {
+            <div class="row">
+                <img class="img-trang" src="@id_img.Link" alt="Image" />
+                <div>tên</div>
+            </div>
+        }

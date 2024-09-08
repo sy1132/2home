@@ -4,21 +4,24 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using _2home.Models;
+
+
 
 namespace _2home.Controllers
 {
     public class HomeController : Controller
     {
         
+            DataClasses1DataContext db= new DataClasses1DataContext();
+        
 
         public ActionResult Index()
 
         {
+            var id_img= from tt in db.imgs select tt;
 
-
-            ViewBag.message = "Chào mừng bạn đến với ASP.NET MVC 5";
-
-            return View();
+            return View(id_img);
 
         }
 
