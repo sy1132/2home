@@ -1,18 +1,14 @@
-﻿
-@{
-
+﻿@{
     ViewBag.Title = "Trang chủ";
-
 }
 <head>
     <link href="~/asset/css/index.css" rel="stylesheet" />
 </head>
 
-    
-        @foreach (var id_img in Model)
-        {
-            <div class="row">
-                <img class="img-trang" src="@id_img.Link" alt="Image" />
-                <div>tên</div>
-            </div>
-        }
+@foreach (var item in Model.MotelItems)
+{
+    <div class="row">
+        <img class="img-trang" src="@item.Image.Link" alt="Image" />
+        <div>@item.Motel.SomeProperty</div>
+    </div>
+}
