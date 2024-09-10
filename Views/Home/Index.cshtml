@@ -1,14 +1,17 @@
-﻿@{
+﻿@model IEnumerable<_2home.ViewModels.index_Viewmodel>
+@{
+
     ViewBag.Title = "Trang chủ";
+
 }
 <head>
     <link href="~/asset/css/index.css" rel="stylesheet" />
 </head>
 
-@foreach (var item in Model.MotelItems)
+@foreach (var item in Model)
 {
     <div class="row">
-        <img class="img-trang" src="@item.Image.Link" alt="Image" />
-        <div>@item.Motel.SomeProperty</div>
+        <img class="img-trang" src="@item.ImgLink" alt="Image" />
+        <div>@item.MotelName</div>
     </div>
 }
