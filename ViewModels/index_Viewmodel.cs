@@ -9,5 +9,9 @@ namespace _2home.ViewModels
     {
         public string ImgLink { get; set; }
         public string MotelName { get; set; }
+
+        public string Location { get; set; }
+        public Nullable<decimal> Price { get; set; }
+        public string is_available { get; set; }
     }
 }

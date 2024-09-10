@@ -24,11 +24,13 @@ namespace _2home.Controllers
                         select new index_Viewmodel
                         {
                             ImgLink = img.Link,
-                            MotelName = motel.Name_motel
+                            MotelName = motel.Name_motel,
+                            Location = motel.location, 
+                            Price = motel.price,
+                            is_available = motel.is_available
                         };
 
             var model = query.ToList();
-
             return View(model);
         }
         public ActionResult Selectlocation()
