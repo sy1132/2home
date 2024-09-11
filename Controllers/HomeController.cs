@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using _2home.Models;
+using System.Data.Linq;
+using _2home.ViewModels;
 
 
 
@@ -13,18 +15,24 @@ namespace _2home.Controllers
     public class HomeController : Controller
     {
         
-            DataClasses1DataContext db= new DataClasses1DataContext();
-        
+        DataClasses1DataContext db= new DataClasses1DataContext();
 
         public ActionResult Index()
-
         {
-            var id_img= from tt in db.imgs select tt;
+            var query = from img in db.imgs
+                        join motel in db.Motels on img.ID_user equals motel.ID_user
+                        select new index_Viewmodel
+                        {
+                            ImgLink = img.Link,
+                            MotelName = motel.Name_motel,
+                            Location = motel.location, 
+                            Price = motel.price,
+                            is_available = motel.is_available
+                        };
 
-            return View(id_img);
-
+            var model = query.ToList();
+            return View(model);
         }
-
         public ActionResult Selectlocation()
         {
 

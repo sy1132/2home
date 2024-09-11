@@ -1,18 +1,37 @@
-﻿
+﻿@model IEnumerable<_2home.ViewModels.index_Viewmodel>
 @{
-
     ViewBag.Title = "Trang chủ";
-
+    var itemsList = Model.ToList();
 }
+
 <head>
     <link href="~/asset/css/index.css" rel="stylesheet" />
 </head>
 
-    
-        @foreach (var id_img in Model)
+@for (int i = 0; i < itemsList.Count; i += 2)
+{
+    <div class="row">
+        <div class="item">
+            <img class="img-trang" src="@itemsList[i].ImgLink" alt="Image" />
+            <div>
+                <strong>Tên:</strong> @itemsList[i].MotelName<br />
+                <strong>Vị trí:</strong> @itemsList[i].Location<br />
+                <strong>Giá:</strong> @itemsList[i].Price<br />
+                <strong>Tình trạng:</strong> @itemsList[i].is_available
+            </div>
+        </div>
+
+        @if (i + 1 < itemsList.Count)
         {
-            <div class="row">
-                <img class="img-trang" src="@id_img.Link" alt="Image" />
-                <div>tên</div>
+            <div class="item">
+                <img class="img-trang" src="@itemsList[i + 1].ImgLink" alt="Image" />
+                <div>
+                    <strong>Tên:</strong> @itemsList[i + 1].MotelName<br />
+                    <strong>Vị trí:</strong> @itemsList[i + 1].Location<br />
+                    <strong>Giá:</strong> @itemsList[i + 1].Price<br />
+                    <strong>Tình trạng:</strong> @itemsList[i + 1].is_available
+                </div>
             </div>
         }
+    </div>
+}

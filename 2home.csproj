@@ -139,6 +139,7 @@
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\index_Viewmodel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="asset\css\index.css" />
