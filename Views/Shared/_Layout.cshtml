@@ -8,33 +8,33 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>Second Home</title>
     <link href="~/asset/css/layout.css" rel="stylesheet" />
-   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <ul class="menu">
-        <li>
-            <img src="~/Content/logo 2 home ngang.png" alt="Alternate Text" class="logo_ngang">
-            <style>
-                .logo_ngang {
-                    width:50px;
-                    height: auto;
-                    display: block;
-                }
-            </style>
-        </li>
-        <li>
-            @Html.ActionLink("Trang chủ", "Index", "Home", null, new { @class = "navbar-brand" })
-        </li>
-        <li class="rightmenu">@Html.ActionLink("DK thue", "DKthue", "Home", null, new { @class = "navbar-brand" })</li>
-        <li>@Html.ActionLink("Cho thuê phòng trọ", "DKthue", "Home", null, new { @class = "navbar-brand" })</li>
-        <li >@Html.ActionLink("Tìm người ở ghép", "togher", "Home", null, new { @class = "navbar-brand" })</li>
-        <li class="rightmenu">@Html.ActionLink("Đăng ký", "DK", "Home", null, new { @class = "navbar-brand" })</li>
-        <li class="rightmenu">@Html.ActionLink("Đăng nhập", "Login", "Home", null, new { @class = "navbar-brand" })</li>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a href="@Url.Action("Index", "Home")" class="navbar-brand logo_ngang">
+                <img src="~/Content/logo 2 home ngang.png" alt="Alternate Text" width="100px" class="border-10">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">@Html.ActionLink("DK thue", "DKthue", "Home", null, new { @class = "buton_header nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Cho thuê phòng trọ", "DKthue", "Home", null, new { @class = "buton_header nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Tìm người ở ghép", "togher", "Home", null, new { @class = "navbar-brand nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Đăng ký", "DK", "Home", null, new { @class = "navbar-brand nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Đăng nhập", "Login", "Home", null, new { @class = "navbar-brand nav-link" })</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    </ul>
     <div class="form-search">
         <form action="/Home/LocationChosen" method="get">
             <fieldset>

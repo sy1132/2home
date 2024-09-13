@@ -44,7 +44,7 @@ namespace _2home.Models
     partial void Deleteuser(user instance);
         #endregion
         public DataClasses1DataContext() :
-        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString"].ConnectionString, mappingSource)
+        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString1"].ConnectionString, mappingSource)
         {
 
         }
