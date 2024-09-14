@@ -1,4 +1,5 @@
-﻿@model IEnumerable<_2home.ViewModels.index_Viewmodel>
+﻿@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
+@using PagedList.Mvc;
 @{
     var itemsList = Model.ToList();
 }
@@ -17,6 +18,13 @@
                 <strong>Vị trí:</strong> @itemsList[i].Location<br />
                 <strong>Giá:</strong> @itemsList[i].Price<br />
                 <strong>Tình trạng:</strong> @itemsList[i].is_available
+                @using (Html.BeginForm("index", "Home", FormMethod.Get))
+                {
+                    @Html.Hidden("id", itemsList[i].ID_user)
+                    <p class="class-submit">
+                        <input type="submit" value="Xem chi tiết" />
+                    </p>
+                }
             </div>
         </div>
 
@@ -29,8 +37,31 @@
                     <strong>Vị trí:</strong> @itemsList[i + 1].Location<br />
                     <strong>Giá:</strong> @itemsList[i + 1].Price<br />
                     <strong>Tình trạng:</strong> @itemsList[i + 1].is_available
+                    @using (Html.BeginForm("index", "Home", FormMethod.Get))
+                    {
+                        @Html.Hidden("id", itemsList[i+1].ID_user) 
+                        <p class="class-submit">
+                            <input type="submit" value="Xem chi tiết" />
+                        </p>
+                    }
                 </div>
             </div>
         }
     </div>
 }
+
+<div class="row">
+    <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+        {
+            <p>
+                Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
+            </p>
+            @Html.Hidden("page", (object)ViewBag.Page)
+        }
+    </div>
+    <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+        Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+    </div>
+</div>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, size = ViewBag.CurrentSize }))

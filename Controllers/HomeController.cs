@@ -7,8 +7,11 @@ using System.Data.Entity;
 using _2home.Models;
 using System.Data.Linq;
 using _2home.ViewModels;
-
-
+using System.Drawing;
+using System.Web.UI;
+using System.Linq.Dynamic;
+using PagedList;
+using System.Drawing.Printing;
 
 namespace _2home.Controllers
 {
@@ -17,7 +20,7 @@ namespace _2home.Controllers
         
         DataClasses1DataContext db= new DataClasses1DataContext();
 
-        public ActionResult Index()
+        public ActionResult Index(int? size, int? page)
         {
             var query = from img in db.imgs
                         join motel in db.Motels on img.ID_user equals motel.ID_user
@@ -25,14 +28,43 @@ namespace _2home.Controllers
                         {
                             ImgLink = img.Link,
                             MotelName = motel.Name_motel,
-                            Location = motel.location, 
+                            Location = motel.location,
                             Price = motel.price,
-                            is_available = motel.is_available
+                            is_available = motel.is_available,
+                            ID_user=motel.ID_user,
                         };
+            ViewBag.Page = page;
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "10", Value = "10" });
+            items.Add(new SelectListItem { Text = "20", Value = "20" });
+            items.Add(new SelectListItem { Text = "25", Value = "25" });
+            items.Add(new SelectListItem { Text = "50", Value = "50" });
+            items.Add(new SelectListItem { Text = "100", Value = "100" });
+            items.Add(new SelectListItem { Text = "200", Value = "200" });
+            foreach (var item in items)
+            {
+                if (item.Value == size.ToString()) item.Selected = true;
+            }
+            ViewBag.size = items;
+            ViewBag.currentSize = size; 
 
+            page = page ?? 1;
+            int pageSize = (size ?? 10);
+
+            int pageNumber = (page ?? 1);
             var model = query.ToList();
-            return View(model);
+            return View(model.ToPagedList(pageNumber, pageSize));
         }
+
+       // public ActionResult Details()
+       // {
+        //var query = _context.index_Viewmodel.find(ID_user);
+
+            //var viewModel = query.ToList(); 
+
+            //return View(viewModel); 
+        //}
+
         public ActionResult Selectlocation()
         {
 

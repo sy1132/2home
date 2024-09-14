@@ -85,3 +85,21 @@ VALUES
 (4, 101, '2024-09-08 12:00:00', '2024-09-08 12:00:00', N'/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg'),
 (5, 102, '2024-09-08 13:00:00', '2024-09-08 13:00:00', N'/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg'),
 (6, 103, '2024-09-08 14:00:00', '2024-09-08 14:00:00', N'/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg');
+INSERT INTO Video (video_ID, ID_user, updatedAt, createdAt, Link)
+VALUES 
+(1, 101, '2024-09-08 15:00:00', '2024-09-08 15:00:00', N'/asset/videos/video.mp4'),
+(2, 102, '2024-09-08 16:00:00', '2024-09-08 16:00:00', N'/asset/videos/video.mp4')
+SELECT
+    img.Link AS ImgLink,
+    motel.Name_motel AS MotelName,
+    motel.location AS Location,
+    motel.price AS Price,
+    motel.is_available AS is_available,
+    motel.ID_user AS ID_user
+FROM
+    img AS img
+JOIN
+    Motel AS motel
+ON
+    img.ID_user = motel.ID_user;
+	SELECT * FROM Motel WHERE ID_user = 103;
