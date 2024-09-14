@@ -42,6 +42,9 @@ namespace _2home.Models
     partial void Insertuser(user instance);
     partial void Updateuser(user instance);
     partial void Deleteuser(user instance);
+    partial void InsertVideo(Video instance);
+    partial void UpdateVideo(Video instance);
+    partial void DeleteVideo(Video instance);
         #endregion
         public DataClasses1DataContext() :
         base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString"].ConnectionString, mappingSource)
@@ -109,6 +112,14 @@ namespace _2home.Models
 			get
 			{
 				return this.GetTable<user>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Video> Videos
+		{
+			get
+			{
+				return this.GetTable<Video>();
 			}
 		}
 	}
@@ -1109,6 +1120,8 @@ namespace _2home.Models
 		
 		private EntitySet<Motel> _Motels;
 		
+		private EntitySet<Video> _Videos;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1135,6 +1148,7 @@ namespace _2home.Models
 		{
 			this._imgs = new EntitySet<img>(new Action<img>(this.attach_imgs), new Action<img>(this.detach_imgs));
 			this._Motels = new EntitySet<Motel>(new Action<Motel>(this.attach_Motels), new Action<Motel>(this.detach_Motels));
+			this._Videos = new EntitySet<Video>(new Action<Video>(this.attach_Videos), new Action<Video>(this.detach_Videos));
 			OnCreated();
 		}
 		
@@ -1324,6 +1338,19 @@ namespace _2home.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Video", Storage="_Videos", ThisKey="ID_user", OtherKey="ID_user")]
+		public EntitySet<Video> Videos
+		{
+			get
+			{
+				return this._Videos;
+			}
+			set
+			{
+				this._Videos.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1366,6 +1393,217 @@ namespace _2home.Models
 		{
 			this.SendPropertyChanging();
 			entity.user = null;
+		}
+		
+		private void attach_Videos(Video entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = this;
+		}
+		
+		private void detach_Videos(Video entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Video")]
+	public partial class Video : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _video_ID;
+		
+		private System.Nullable<int> _ID_user;
+		
+		private System.Nullable<System.DateTime> _updatedAt;
+		
+		private System.Nullable<System.DateTime> _createdAt;
+		
+		private string _Link;
+		
+		private EntityRef<user> _user;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onvideo_IDChanging(int value);
+    partial void Onvideo_IDChanged();
+    partial void OnID_userChanging(System.Nullable<int> value);
+    partial void OnID_userChanged();
+    partial void OnupdatedAtChanging(System.Nullable<System.DateTime> value);
+    partial void OnupdatedAtChanged();
+    partial void OncreatedAtChanging(System.Nullable<System.DateTime> value);
+    partial void OncreatedAtChanged();
+    partial void OnLinkChanging(string value);
+    partial void OnLinkChanged();
+    #endregion
+		
+		public Video()
+		{
+			this._user = default(EntityRef<user>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_video_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int video_ID
+		{
+			get
+			{
+				return this._video_ID;
+			}
+			set
+			{
+				if ((this._video_ID != value))
+				{
+					this.Onvideo_IDChanging(value);
+					this.SendPropertyChanging();
+					this._video_ID = value;
+					this.SendPropertyChanged("video_ID");
+					this.Onvideo_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int")]
+		public System.Nullable<int> ID_user
+		{
+			get
+			{
+				return this._ID_user;
+			}
+			set
+			{
+				if ((this._ID_user != value))
+				{
+					if (this._user.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnID_userChanging(value);
+					this.SendPropertyChanging();
+					this._ID_user = value;
+					this.SendPropertyChanged("ID_user");
+					this.OnID_userChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_updatedAt", DbType="DateTime")]
+		public System.Nullable<System.DateTime> updatedAt
+		{
+			get
+			{
+				return this._updatedAt;
+			}
+			set
+			{
+				if ((this._updatedAt != value))
+				{
+					this.OnupdatedAtChanging(value);
+					this.SendPropertyChanging();
+					this._updatedAt = value;
+					this.SendPropertyChanged("updatedAt");
+					this.OnupdatedAtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_createdAt", DbType="DateTime")]
+		public System.Nullable<System.DateTime> createdAt
+		{
+			get
+			{
+				return this._createdAt;
+			}
+			set
+			{
+				if ((this._createdAt != value))
+				{
+					this.OncreatedAtChanging(value);
+					this.SendPropertyChanging();
+					this._createdAt = value;
+					this.SendPropertyChanged("createdAt");
+					this.OncreatedAtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(255)")]
+		public string Link
+		{
+			get
+			{
+				return this._Link;
+			}
+			set
+			{
+				if ((this._Link != value))
+				{
+					this.OnLinkChanging(value);
+					this.SendPropertyChanging();
+					this._Link = value;
+					this.SendPropertyChanged("Link");
+					this.OnLinkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Video", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
+		public user user
+		{
+			get
+			{
+				return this._user.Entity;
+			}
+			set
+			{
+				user previousValue = this._user.Entity;
+				if (((previousValue != value) 
+							|| (this._user.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._user.Entity = null;
+						previousValue.Videos.Remove(this);
+					}
+					this._user.Entity = value;
+					if ((value != null))
+					{
+						value.Videos.Add(this);
+						this._ID_user = value.ID_user;
+					}
+					else
+					{
+						this._ID_user = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("user");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
