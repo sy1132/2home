@@ -2,25 +2,33 @@
 @{
     ViewBag.Title = "Login";
 }
-<head>
-    <link href="~/asset/css/login.css" rel="stylesheet" />
-</head>
+<body>
+    <div class="" style="width:25rem">
+        <form>
+            <div class="row mb-3">
+                <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="inputEmail3">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="inputPassword3">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-10 offset-sm-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="gridCheck1">
+                        <label class="form-check-label" for="gridCheck1">
+                            Example checkbox
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
+    </div>
 
-<div id="wrapper">
-    <form action="" id="form-login">
-        <h1 class="form-heading">
-            Form đăng nhập
-        </h1>
-        <div class="form-group">
-            <input type="text" class="form-input" placeholder="Tên đăng nhập" />
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-input" placeholder="Mật khẩu" />
-        </div>
-        <div class="checkbox">
-            <input type="checkbox" name="checkbox1" value="off" />
-            Hiện mật khẩu
-        </div>
-        <input type="submit" value="Đăng nhập" class="form-submit"/>
-    </form>
-</div>
+</body>
