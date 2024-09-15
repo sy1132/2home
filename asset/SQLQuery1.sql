@@ -102,6 +102,7 @@ JOIN
     Motel AS motel
 ON
     img.ID_user = motel.ID_user;
-	SELECT * FROM Motel WHERE ID_user = 103;
-	ALTER TABLE Motel
-ADD link_location varchar(255);
+	SELECT * FROM Motel
+ALTER TABLE Motel
+DROP COLUMN link_location;
+

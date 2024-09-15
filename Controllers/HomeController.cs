@@ -70,7 +70,8 @@ namespace _2home.Controllers
                             Price = motel.price,
                             is_available = motel.is_available,
                             ID_user = motel.ID_user,
-                            Link = vid.Link
+                            Link = vid.Link,
+
                         };
 
             var viewModel = query.FirstOrDefault();
