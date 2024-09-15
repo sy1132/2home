@@ -1,8 +1,19 @@
-﻿
+﻿@model _2home.ViewModels.index_Viewmodel
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Chi tiết nhà trọ</h2>
+<p>Video link: @Model.Link</p>
+<video width="600" height="400" controls>
+    <source src="@Model.Link" type="video/mp4">
+    Trình duyệt của bạn không hỗ trợ thẻ video.
+</video>
+<img src="@Model.ImgLink" alt="Image" />
+<p><strong>Tên nhà trọ:</strong> @Model.MotelName</p>
+<p><strong>Vị trí:</strong> @Model.Location</p>
+<p><strong>Giá:</strong> @Model.Price</p>
+<p><strong>Tình trạng:</strong> @Model.is_available</p>
 
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.7886273827903!2d106.65231863918797!3d10.979321089227094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d139c8991667%3A0xc613d69b5667e7a2!2zSVAgQsOsbmggRMawxqFuZw!5e0!3m2!1svi!2s!4v1726406600741!5m2!1svi!2s" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
