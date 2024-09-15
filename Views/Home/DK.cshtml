@@ -1,54 +1,67 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "DK";
 }
 
 <head>
     <link href="~/asset/css/login.css" rel="stylesheet" />
+    <style>
+        #wrapper {
+            max-width: 50rem;
+            margin: auto;
+            padding: 2rem;
+            background-color: white; 
+            border-radius: 0.5rem; 
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
-    <div class="align-items-center m-1 " style="width:30rem;">
-        <form class="row g-3">
-            <div class="col-md-6">
-                <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" class="form-control" id="inputEmail4">
-            </div>
-            <div class="col-md-6">
-                <label for="inputPassword4" class="form-label">Password</label>
-                <input type="password" class="form-control" id="inputPassword4">
-            </div>
-            <div class="col-12">
-                <label for="inputAddress" class="form-label">Address</label>
-                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-            </div>
-            <div class="col-12">
-                <label for="inputAddress2" class="form-label">Address 2</label>
-                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-            </div>
-            <div class="col-md-6">
-                <label for="inputCity" class="form-label">City</label>
-                <input type="text" class="form-control" id="inputCity">
-            </div>
-            <div class="col-md-4">
-                <label for="inputState" class="form-label">State</label>
-                <select id="inputState" class="form-select">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label for="inputZip" class="form-label">Zip</label>
-                <input type="text" class="form-control" id="inputZip">
-            </div>
-            <div class="col-12">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck">
-                    <label class="form-check-label" for="gridCheck">
-                        Check me out
-                    </label>
-                </div>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Sign in</button>
-            </div>
-        </form>
-    </div>
+
+<div id="wrapper">
+    <form class="row g-3">
+        <h2 class="card-title text-center mb-4">Chào mừng bạn đến tới website Second Home</h2>
+        <h2 class="card-title text-center mb-4">Đăng kí tài khoản</h2>
+        <div class="col-md-6">
+            <label for="inputUsername" class="form-label">Tên đăng nhập</label>
+            <input type="text" class="form-control" id="inputUsername">
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputFullName" class="form-label">Họ và tên</label>
+            <input type="text" class="form-control" id="inputFullName">
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Email</label>
+            <input type="email" class="form-control" id="inputEmail4">
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Mật khẩu</label>
+            <input type="password" class="form-control" id="inputPassword4">
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputPhone" class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" id="inputPhone">
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputGender" class="form-label">Giới tính</label>
+            <select id="inputGender" class="form-select">
+                <option selected>Chọn giới tính...</option>
+                <option>Nam</option>
+                <option>Nữ</option>
+            </select>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
+        </div>
+
+        <div class="col-12 text-center">
+            <p>
+                Bạn đã có tài khoản? <a href="https://localhost:44305/Home/Login" class="btn btn-link">Đăng nhập</a>
+            </p>
+        </div>
+    </form>
+</div>

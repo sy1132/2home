@@ -1,34 +1,30 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Login";
 }
-<body>
-    <div class="" style="width:25rem">
-        <form>
-            <div class="row mb-3">
-                <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" id="inputPassword3">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-sm-10 offset-sm-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck1">
-                        <label class="form-check-label" for="gridCheck1">
-                            Example checkbox
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-        </form>
-    </div>
 
+
+<body>
+    <div class="card mx-auto shadow-lg p-3 mb-5 bg-white rounded" style="width: 25rem ;">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Đăng nhập</h3>
+            <form>
+    
+                <div class="mb-3">
+                    <label for="inputEmail3" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="inputEmail3" placeholder="Nhập email">
+                </div>
+
+                <div class="mb-3">
+                    <label for="inputPassword3" class="form-label">Mật khẩu</label>
+                    <input type="password" class="form-control" id="inputPassword3" placeholder="Nhập mật khẩu">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+
+                <div class="text-center mt-3">
+                    <a href="#" class="btn btn-link">Quên mật khẩu?</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
