@@ -18,9 +18,9 @@
                 <strong>Vị trí:</strong> @itemsList[i].Location<br />
                 <strong>Giá:</strong> @itemsList[i].Price<br />
                 <strong>Tình trạng:</strong> @itemsList[i].is_available
-                @using (Html.BeginForm("index", "Home", FormMethod.Get))
+                @using (Html.BeginForm("Details", "Home", FormMethod.Get))
                 {
-                    @Html.Hidden("id", itemsList[i].ID_user)
+                    @Html.Hidden("ID_user", itemsList[i].ID_user)
                     <p class="class-submit">
                         <input type="submit" value="Xem chi tiết" />
                     </p>
@@ -37,9 +37,9 @@
                     <strong>Vị trí:</strong> @itemsList[i + 1].Location<br />
                     <strong>Giá:</strong> @itemsList[i + 1].Price<br />
                     <strong>Tình trạng:</strong> @itemsList[i + 1].is_available
-                    @using (Html.BeginForm("index", "Home", FormMethod.Get))
+                    @using (Html.BeginForm("Details", "Home", FormMethod.Get))
                     {
-                        @Html.Hidden("id", itemsList[i+1].ID_user) 
+                        @Html.Hidden("ID_user", itemsList[i+1].ID_user) 
                         <p class="class-submit">
                             <input type="submit" value="Xem chi tiết" />
                         </p>

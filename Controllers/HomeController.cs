@@ -56,14 +56,27 @@ namespace _2home.Controllers
             return View(model.ToPagedList(pageNumber, pageSize));
         }
 
-       // public ActionResult Details()
-       // {
-        //var query = _context.index_Viewmodel.find(ID_user);
+        public ActionResult Details(int? ID_user)
+        {
+            var query = from img in db.imgs
+                        join motel in db.Motels on img.ID_user equals motel.ID_user
+                        join vid in db.Videos on motel.ID_user equals vid.ID_user
+                        where motel.ID_user == ID_user.Value
+                        select new index_Viewmodel
+                        {
+                            ImgLink = img.Link,
+                            MotelName = motel.Name_motel,
+                            Location = motel.location,
+                            Price = motel.price,
+                            is_available = motel.is_available,
+                            ID_user = motel.ID_user,
+                            Link = vid.Link,
 
-            //var viewModel = query.ToList(); 
+                        };
 
-            //return View(viewModel); 
-        //}
+            var viewModel = query.FirstOrDefault();
+            return View(viewModel);
+        }
 
         public ActionResult Selectlocation()
         {

@@ -15,5 +15,7 @@ namespace _2home.ViewModels
         public string is_available { get; set; }
         public int? ID_user{ get; set; }
         public int? video_ID { get; set; }
+        public string Link { get; set; }
+        public string link_location { get;set; }
     }
 }

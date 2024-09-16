@@ -9,19 +9,6 @@
       <Association Name="user_img" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Motel" Member="Motels">
-    <Type Name="Motel">
-      <Column Name="Motel_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Name_motel" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="Postal_Code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="location" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="price" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="is_available" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="Motel_room" Member="rooms" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="room" />
-      <Association Name="user_Motel" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Room_Invoice" Member="Room_Invoices">
     <Type Name="Room_Invoice">
       <Column Name="room_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -64,8 +51,8 @@
       <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="userrole" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="user_img" Member="imgs" ThisKey="ID_user" OtherKey="ID_user" Type="img" />
-      <Association Name="user_Motel" Member="Motels" ThisKey="ID_user" OtherKey="ID_user" Type="Motel" />
       <Association Name="user_Video" Member="Videos" ThisKey="ID_user" OtherKey="ID_user" Type="Video" />
+      <Association Name="user_Motel" Member="Motels" ThisKey="ID_user" OtherKey="ID_user" Type="Motel" />
     </Type>
   </Table>
   <Table Name="dbo.Video" Member="Videos">
@@ -76,6 +63,19 @@
       <Column Name="createdAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Link" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Association Name="user_Video" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Motel" Member="Motels">
+    <Type Name="Motel">
+      <Column Name="Motel_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Name_motel" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Postal_Code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="is_available" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Motel_room" Member="rooms" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="room" />
+      <Association Name="user_Motel" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

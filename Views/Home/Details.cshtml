@@ -1,8 +1,17 @@
-﻿
+﻿@model _2home.ViewModels.index_Viewmodel
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>Chi tiết nhà trọ</h2>
+<video width="600" height="400" controls>
+    <source src="@Model.Link" type="video/mp4">
+    Trình duyệt của bạn không hỗ trợ thẻ video.
+</video>
+<img src="@Model.ImgLink" alt="Image" />
+<p><strong>Tên nhà trọ:</strong> @Model.MotelName</p>
+<p><strong>Vị trí:</strong> @Model.Location</p>
+<p><strong>Giá:</strong> @Model.Price</p>
+<p><strong>Tình trạng:</strong> @Model.is_available</p>
 
