@@ -152,6 +152,7 @@
     <Compile Include="ViewModels\index_Viewmodel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="asset\css\Details.css" />
     <Content Include="asset\css\index.css" />
     <Content Include="asset\css\DK.css" />
     <Content Include="asset\css\layout.css" />
