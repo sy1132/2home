@@ -22,8 +22,17 @@
                     <li class="nav-item">@Html.ActionLink("DK thuê", "DKthue", "Home", null, new { @class = "buton_header nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Cho thuê phòng trọ", "DKthue", "Home", null, new { @class = "buton_header nav-link" })</li>
                     <li class="nav-item">@Html.ActionLink("Tìm người ở ghép", "togher", "Home", null, new { @class = "navbar-brand nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Đăng ký", "DK", "Home", null, new { @class = "navbar-brand nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Đăng nhập", "Login", "Home", null, new { @class = "navbar-brand nav-link" })</li>
+                    @if (Session["User"] != null)
+                    {
+                        var user = Session["User"] as _2home.ViewModels.User;
+                        <p class="navbar-brand nav-link" style="color: white;">Xin chào, @user.fullname</p>
+                        <a href="/Home/Logout" class="navbar-brand nav-link">Đăng xuất</a>
+                    }
+                    else
+                    {
+                        <li class="nav-item">@Html.ActionLink("Đăng ký", "DK", "Home", null, new { @class = "navbar-brand nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Đăng nhập", "Login", "Home", null, new { @class = "navbar-brand nav-link" })</li>
+                    }
                 </ul>
             </div>
         </div>
