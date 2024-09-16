@@ -1,8 +1,8 @@
 ﻿
 body {
-    background: url('../images/website-background-templates.jpg') fixed;
+    background: url('../images/website-background-templates.jpg');
     background-repeat:no-repeat;
-    width:100%;
+    background-size:cover;
 }
 
 
@@ -46,3 +46,5 @@ input[type="submit"] {
     input[type="submit"]:hover {
         background-color: #45a049;
     }
+
+
