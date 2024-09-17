@@ -12,6 +12,7 @@ using System.Web.UI;
 using System.Linq.Dynamic;
 using PagedList;
 using System.Drawing.Printing;
+using System.Web.Helpers;
 
 namespace _2home.Controllers
 {
@@ -97,14 +98,43 @@ namespace _2home.Controllers
 
         }
         public ActionResult Login()
-
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Login(string account, string password)
         {
 
+            using (var db = new DataClasses1DataContext())
+            {
+              
+                var user = db.users.FirstOrDefault(u =>
+                    (u.Email == account || u.ID_user.ToString() == account) && u.password == password);
 
-            ViewBag.message = "trang đăng nhập";
-
-            return View();
-
+                if (user != null)
+                {
+                    Session["User"] = new _2home.ViewModels.User
+                    {
+                        ID_user = user.ID_user,
+                        Email = user.Email,
+                        password = user.password,
+                        fullname= user.fullname,
+                    };
+                    ViewBag.Message = "Đăng nhập thành công!";
+                    return RedirectToAction("Index", "Home");
+                }else
+                    {
+                        ViewBag.Message = "Tên tài khoản hoặc mật khẩu không đúng!";
+                        return View();
+                    }
+                
+            }
+        }
+        public ActionResult Logout()
+        {
+            Session["User"] = null;
+            TempData["Message"] = "Bạn đã đăng xuất!";
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult DK()
 

@@ -18,4 +18,11 @@ namespace _2home.ViewModels
         public string Link { get; set; }
         public string link_location { get;set; }
     }
+    public class User
+    {
+        public int ID_user  { get; set; }
+        public string Email { get; set; }
+        public string password { get; set; }
+        public string fullname { get; set; }
+    }
 }

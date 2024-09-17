@@ -5,66 +5,64 @@
 }
 
 <head>
-    <link href="~/asset/css/index.css" rel="stylesheet" />
+    <link href="~/asset/css/index.css" rel="stylesheet" />  
 </head>
-
-<body>
-
-</body>
-@for (int i = 0; i < itemsList.Count; i += 2)
-{
-    <div class="row">
-        <div class="item">
-            <img class="img-trang" src="@itemsList[i].ImgLink" alt="Image" />
-            <div>
-                <strong>Tên:</strong> @itemsList[i].MotelName<br />
-                <strong>Vị trí:</strong> @itemsList[i].Location<br />
-                <strong>Giá:</strong> @itemsList[i].Price<br />
-                <strong>Tình trạng:</strong> @itemsList[i].is_available
-                @using (Html.BeginForm("Details", "Home", FormMethod.Get))
-                {
-                    @Html.Hidden("ID_user", itemsList[i].ID_user)
-                    <p class="class-submit">
-                        <input type="submit" value="Xem chi tiết" />
-                    </p>
-                }
-            </div>
-        </div>
-
-        @if (i + 1 < itemsList.Count)
-        {
+<body >
+    @for (int i = 0; i < itemsList.Count; i += 2)
+    {
+        <div class="row">
             <div class="item">
-                <img class="img-trang" src="@itemsList[i + 1].ImgLink" alt="Image" />
+                <img class="img-trang" src="@itemsList[i].ImgLink" alt="Image" />
                 <div>
-                    <strong>Tên:</strong> @itemsList[i + 1].MotelName<br />
-                    <strong>Vị trí:</strong> @itemsList[i + 1].Location<br />
-                    <strong>Giá:</strong> @itemsList[i + 1].Price<br />
-                    <strong>Tình trạng:</strong> @itemsList[i + 1].is_available
+                    <strong>Tên:</strong> @itemsList[i].MotelName<br />
+                    <strong>Vị trí:</strong> @itemsList[i].Location<br />
+                    <strong>Giá:</strong> @itemsList[i].Price<br />
+                    <strong>Tình trạng:</strong> @itemsList[i].is_available
                     @using (Html.BeginForm("Details", "Home", FormMethod.Get))
                     {
-                        @Html.Hidden("ID_user", itemsList[i+1].ID_user) 
+                        @Html.Hidden("ID_user", itemsList[i].ID_user)
                         <p class="class-submit">
                             <input type="submit" value="Xem chi tiết" />
                         </p>
                     }
                 </div>
             </div>
-        }
-    </div>
-}
 
-<div class="row">
-    <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
-        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
-        {
-            <p>
-                Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
-            </p>
-            @Html.Hidden("page", (object)ViewBag.Page)
-        }
+            @if (i + 1 < itemsList.Count)
+            {
+                <div class="item">
+                    <img class="img-trang" src="@itemsList[i + 1].ImgLink" alt="Image" />
+                    <div>
+                        <strong>Tên:</strong> @itemsList[i + 1].MotelName<br />
+                        <strong>Vị trí:</strong> @itemsList[i + 1].Location<br />
+                        <strong>Giá:</strong> @itemsList[i + 1].Price<br />
+                        <strong>Tình trạng:</strong> @itemsList[i + 1].is_available
+                        @using (Html.BeginForm("Details", "Home", FormMethod.Get))
+                        {
+                            @Html.Hidden("ID_user", itemsList[i + 1].ID_user)
+                            <p class="class-submit">
+                                <input type="submit" value="Xem chi tiết" />
+                            </p>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+            @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+            {
+                <p>
+                    Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
+                </p>
+                @Html.Hidden("page", (object)ViewBag.Page)
+            }
+        </div>
+        <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+            Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+        </div>
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, size = ViewBag.CurrentSize }))
     </div>
-    <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
-        Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
-    </div>
-</div>
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, size = ViewBag.CurrentSize }))
+</body>

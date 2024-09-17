@@ -7,16 +7,16 @@
     <div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 25rem ;">
         <div class="card-body">
             <h3 class="card-title text-center mb-4">Đăng nhập</h3>
-            <form>
+            <form method="post" action="/Home/Login">
 
                 <div class="mb-3">
-                    <label for="inputEmail3" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="Nhập email">
+                    <label for="Account" class="form-label">Tên đăng nhập hoặc Email</label>
+                    <input type="text" class="form-control" id="Account" name="account" placeholder="Nhập tên đăng nhập hoặc emaill">
                 </div>
 
                 <div class="mb-3">
                     <label for="inputPassword3" class="form-label">Mật khẩu</label>
-                    <input type="password" class="form-control" id="inputPassword3" placeholder="Nhập mật khẩu">
+                    <input type="password" class="form-control" name="password" id="inputPassword3" placeholder="Nhập mật khẩu">
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
@@ -25,6 +25,10 @@
                     <a href="#" class="btn btn-link">Quên mật khẩu?</a>
                 </div>
             </form>
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-warning">@ViewBag.Message</div>
+            }
         </div>
     </div>
 </body>
