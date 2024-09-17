@@ -40,38 +40,40 @@
             </div>
         </div>
     </nav>
-    <div class="form-search gap-2 m-2 p-2 rounded-3 d-flex align-items-center navbar p-3 m-3 navbarposition-absolute top-0 start-50 translate-middle-x">
-        <form action="/Home/LocationChosen" method="get" class="">
-            <fieldset>
-                Vị trí <select id="location" name="Vị trí">
-                    <option selected="selected" value="0">Tất cả</option>
-                    <option value="1">Bình chuẩn</option>
-                    <option value="2">Thành phố mới</option>
-                    <option value="3">Thủ dầu một</option>
-                </select>
-            </fieldset>
-        </form>
-        <form action="/Home/LocationChosen" method="get">
-            <fieldset>
-                Vị trí <select id="location" name="Vị trí">
-                    <option selected="selected" value="0">Tất cả</option>
-                    <option value="1">Bình chuẩn</option>
-                    <option value="2">Thành phố mới</option>
-                    <option value="3">Thủ dầu một</option>
-                </select>
-            </fieldset>
-        </form>
-        <form action="/Home/LocationChosen" method="get">
-            <fieldset>
-                Vị trí <select id="location" name="Vị trí">
-                    <option selected="selected" value="0">Tất cả</option>
-                    <option value="1">Bình chuẩn</option>
-                    <option value="2">Thành phố mới</option>
-                    <option value="3">Thủ dầu một</option>
-                </select>
-            </fieldset>
-        </form>
-        <p><input type="submit" value="tìm kiếm" /> </p>
+    <div class="d-flex justify-content-center">
+        <div class="card-header bg-warning gap-2 m-5 p-3 rounded-3 d-flex w-50" style="">
+            <form action="/Home/LocationChosen" method="get" class="m-auto">
+                <fieldset class="rounded-2">
+                    <select class="rounded-2 p-2" style="font-weight: bold;" id="location" name="Thành Phố">
+                        <option selected="selected" value="0">Thành Phố</option>
+                        <option value="1">Bình chuẩn</option>
+                        <option value="2">Thành phố mới</option>
+                        <option value="3">Thủ dầu một</option>
+                    </select>
+                </fieldset>
+            </form>
+            <form action="/Home/LocationChosen" method="get" class="m-auto">
+                <fieldset class="rounded-2">
+                    <select class="rounded-2 p-2" style="font-weight: bold;"  id="location" name="Vị trí">
+                        <option selected="selected" value="0">phường</option>
+                        <option value="1">Phú Lợi</option>
+                        <option value="2">Thành phố mới</option>
+                        <option value="3">Thủ dầu một</option>
+                    </select>
+                </fieldset>
+            </form>
+            <form action="/Home/LocationChosen" method="get" class="m-auto">
+                <fieldset class="rounded-2">
+                    <select class="rounded-2 p-2" style="font-weight: bold;"  id="location" name="Vị trí">
+                        <option selected="selected" value="0">Khu</option>
+                        <option value="1">Bình chuẩn</option>
+                        <option value="2">Thành phố mới</option>
+                        <option value="3">Thủ dầu một</option>
+                    </select>
+                </fieldset>
+            </form>
+            <input type="submit" value="tìm kiếm" class="btn btn-outline-success border-2" style="font-weight: bold;"  />
+        </div>
     </div>
     <div class="mt-auto">
         @RenderBody()

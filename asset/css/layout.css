@@ -5,7 +5,7 @@ body {
     background-size:cover;
 }
 
-.nav-link-custom {
+/*.nav-link-custom {
     font-weight: bold;
     display: inline-block;
 }
@@ -48,3 +48,4 @@ input[type="submit"] {
     input[type="submit"]:hover {
         background-color: #45a049;
     }
+*/
