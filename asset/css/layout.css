@@ -2,22 +2,24 @@
 body {
     background: url('../images/website-background-templates.jpg') fixed;
     background-repeat:no-repeat;
-    width:100%;
+    background-size:cover;
+}
+
+.nav-link-custom {
+    font-weight: bold;
+    display: inline-block;
+}
+
+.navbar-nav {
+    align-items: center;
 }
 
 
 .form-search {
     justify-content: center;
-    padding: 10px;
     width: 60%;
-    margin-top: 12px;
-    margin-bottom: 12px;
     background-color: #febb02;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
     justify-content: space-around;
-    gap: 8px;
 }
 
     .form-search form {
