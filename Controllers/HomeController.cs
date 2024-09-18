@@ -13,6 +13,9 @@ using System.Linq.Dynamic;
 using PagedList;
 using System.Drawing.Printing;
 using System.Web.Helpers;
+using System.Security.Principal;
+using Microsoft.Ajax.Utilities;
+using System.Security.Policy;
 
 namespace _2home.Controllers
 {
@@ -101,6 +104,7 @@ namespace _2home.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult Login(string account, string password)
         {
@@ -109,13 +113,13 @@ namespace _2home.Controllers
             {
               
                 var user = db.users.FirstOrDefault(u =>
-                    (u.Email == account || u.ID_user.ToString() == account) && u.password == password);
+                    (u.Email == account || u.username.ToString() == account) && u.password == password);
 
                 if (user != null)
                 {
                     Session["User"] = new _2home.ViewModels.User
                     {
-                        ID_user = user.ID_user,
+                        username = user.username,
                         Email = user.Email,
                         password = user.password,
                         fullname= user.fullname,
@@ -137,15 +141,40 @@ namespace _2home.Controllers
             return RedirectToAction("Index", "Home");
         }
         public ActionResult DK()
-
         {
-
-
-            ViewBag.message = "trang đăng ký";
-
             return View();
-
         }
+
+        [HttpPost]
+        public ActionResult DK(string username, string fullname, string email, string password, string phone, string gender)
+        {
+            using (var db = new DataClasses1DataContext())
+            {
+                var existingUser = db.users.FirstOrDefault(u => u.username == username || u.Email == email);
+
+                if (existingUser != null)
+                {
+                    ViewBag.Error = "Tên đăng nhập hoặc email đã tồn tại.";
+                    return View();
+                }
+
+                var newUser = new user
+                {
+                    username = username,       
+                    fullname = fullname,       
+                    Email = email,             
+                    password = password,      
+                    PhoneNumber = phone,       
+                    gender = gender
+                };
+
+                db.users.InsertOnSubmit(newUser);
+                db.SubmitChanges();
+
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
         public ActionResult DKthue()
 
         {

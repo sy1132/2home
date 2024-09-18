@@ -27,32 +27,12 @@
         <classShapeMoniker Id="c25e879e-e615-4b3c-81e8-08677efe5be6" />
       </nodes>
     </associationConnector>
-    <classShape Id="a4463db6-d52a-4672-9665-c63de2c9f816" absoluteBounds="3.125, 3, 2, 2.3478011067708335">
-      <DataClassMoniker Name="/DataClasses1DataContext/user" />
-      <nestedChildShapes>
-        <elementListCompartment Id="299d85f3-955c-49b9-86e6-e81fe4af9175" absoluteBounds="3.14, 3.46, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(4.09375 : 5.34780110677083); (4.09375 : 7.51044840494792); (3 : 7.51044840494792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/DataClasses1DataContext/user/user_img" />
-      <nodes>
-        <classShapeMoniker Id="a4463db6-d52a-4672-9665-c63de2c9f816" />
-        <classShapeMoniker Id="dad1e937-7710-44f9-91b0-35397162a157" />
-      </nodes>
-    </associationConnector>
     <classShape Id="de4fcaae-589b-4f44-b3e4-41a6de72341c" absoluteBounds="8.625, 4.5, 2, 1.7708968098958331">
       <DataClassMoniker Name="/DataClasses1DataContext/Video" />
       <nestedChildShapes>
         <elementListCompartment Id="4d7815f9-d753-412c-a346-0fba203de461" absoluteBounds="8.64, 4.96, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.125 : 4.92390055338542); (6.35416666666667 : 4.92390055338542 : JumpStart); (6.52083333333333 : 4.92390055338542 : JumpEnd); (8.625 : 4.92390055338542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/DataClasses1DataContext/user/user_Video" />
-      <nodes>
-        <classShapeMoniker Id="a4463db6-d52a-4672-9665-c63de2c9f816" />
-        <classShapeMoniker Id="de4fcaae-589b-4f44-b3e4-41a6de72341c" />
-      </nodes>
-    </associationConnector>
     <classShape Id="2972f56c-da50-4945-844b-c504c4f63797" absoluteBounds="1.25, 0.625, 2, 2.1554996744791666">
       <DataClassMoniker Name="/DataClasses1DataContext/Motel" />
       <nestedChildShapes>
@@ -66,10 +46,30 @@
         <classShapeMoniker Id="d273625e-34cd-425c-9194-21200a4c3939" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.218752 : 3); (4.218752 : 2.27287675585937); (3.25 : 2.27287675585937)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <classShape Id="9665955b-9902-4e17-a949-5209bc199b26" absoluteBounds="1.625, 3.625, 2, 2.5401025390625">
+      <DataClassMoniker Name="/DataClasses1DataContext/user" />
+      <nestedChildShapes>
+        <elementListCompartment Id="54772303-d926-43d9-bbea-62d911ab05b7" absoluteBounds="1.6400000000000001, 4.085, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.3125 : 6.1651025390625); (2.3125 : 6.625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/user/user_img" />
+      <nodes>
+        <classShapeMoniker Id="9665955b-9902-4e17-a949-5209bc199b26" />
+        <classShapeMoniker Id="dad1e937-7710-44f9-91b0-35397162a157" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(3.625 : 4.96875); (6.35416666666667 : 4.96875 : JumpStart); (6.52083333333333 : 4.96875 : JumpEnd); (8.625 : 4.96875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/user/user_Video" />
+      <nodes>
+        <classShapeMoniker Id="9665955b-9902-4e17-a949-5209bc199b26" />
+        <classShapeMoniker Id="de4fcaae-589b-4f44-b3e4-41a6de72341c" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.4375 : 3.625); (2.4375 : 2.78049967447917)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/DataClasses1DataContext/user/user_Motel" />
       <nodes>
-        <classShapeMoniker Id="a4463db6-d52a-4672-9665-c63de2c9f816" />
+        <classShapeMoniker Id="9665955b-9902-4e17-a949-5209bc199b26" />
         <classShapeMoniker Id="2972f56c-da50-4945-844b-c504c4f63797" />
       </nodes>
     </associationConnector>

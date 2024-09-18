@@ -40,21 +40,6 @@
       <Association Name="Motel_room" Member="Motel" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Motel" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.[user]" Member="users">
-    <Type Name="user">
-      <Column Name="ID_user" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="username" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="password" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="fullname" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="MotelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
-      <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="userrole" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="user_img" Member="imgs" ThisKey="ID_user" OtherKey="ID_user" Type="img" />
-      <Association Name="user_Video" Member="Videos" ThisKey="ID_user" OtherKey="ID_user" Type="Video" />
-      <Association Name="user_Motel" Member="Motels" ThisKey="ID_user" OtherKey="ID_user" Type="Motel" />
-    </Type>
-  </Table>
   <Table Name="dbo.Video" Member="Videos">
     <Type Name="Video">
       <Column Name="video_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -76,6 +61,22 @@
       <Column Name="is_available" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="Motel_room" Member="rooms" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="room" />
       <Association Name="user_Motel" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[user]" Member="users">
+    <Type Name="user">
+      <Column Name="ID_user" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="fullname" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="MotelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="userrole" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="gender" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Association Name="user_img" Member="imgs" ThisKey="ID_user" OtherKey="ID_user" Type="img" />
+      <Association Name="user_Video" Member="Videos" ThisKey="ID_user" OtherKey="ID_user" Type="Video" />
+      <Association Name="user_Motel" Member="Motels" ThisKey="ID_user" OtherKey="ID_user" Type="Motel" />
     </Type>
   </Table>
 </Database>
