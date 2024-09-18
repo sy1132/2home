@@ -39,7 +39,7 @@
         <elementListCompartment Id="eba1845c-d5e2-4743-a782-1c65aa3c559b" absoluteBounds="1.2650000000000001, 1.085, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(3.25 : 1.70274983723958); (5.75 : 1.70274983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(3.25 : 1.70274983723958); (5.75 : 1.70274983723958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/Motel/Motel_room" />
       <nodes>
         <classShapeMoniker Id="2972f56c-da50-4945-844b-c504c4f63797" />
@@ -52,21 +52,21 @@
         <elementListCompartment Id="54772303-d926-43d9-bbea-62d911ab05b7" absoluteBounds="1.6400000000000001, 4.085, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.3125 : 6.1651025390625); (2.3125 : 6.625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.3125 : 6.1651025390625); (2.3125 : 6.625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/user/user_img" />
       <nodes>
         <classShapeMoniker Id="9665955b-9902-4e17-a949-5209bc199b26" />
         <classShapeMoniker Id="dad1e937-7710-44f9-91b0-35397162a157" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(3.625 : 4.96875); (6.35416666666667 : 4.96875 : JumpStart); (6.52083333333333 : 4.96875 : JumpEnd); (8.625 : 4.96875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(3.625 : 4.96875); (6.35416666666667 : 4.96875 : JumpStart); (6.52083333333333 : 4.96875 : JumpEnd); (8.625 : 4.96875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/user/user_Video" />
       <nodes>
         <classShapeMoniker Id="9665955b-9902-4e17-a949-5209bc199b26" />
         <classShapeMoniker Id="de4fcaae-589b-4f44-b3e4-41a6de72341c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.4375 : 3.625); (2.4375 : 2.78049967447917)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.4375 : 3.625); (2.4375 : 2.78049967447917)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/DataClasses1DataContext/user/user_Motel" />
       <nodes>
         <classShapeMoniker Id="9665955b-9902-4e17-a949-5209bc199b26" />

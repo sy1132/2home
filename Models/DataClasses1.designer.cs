@@ -164,7 +164,7 @@ namespace _2home.Models
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_img_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_img_ID", DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int img_ID
 		{
 			get
@@ -600,7 +600,7 @@ namespace _2home.Models
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_room_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_room_ID", DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int room_ID
 		{
 			get
@@ -859,7 +859,7 @@ namespace _2home.Models
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_video_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_video_ID", DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int video_ID
 		{
 			get
@@ -1069,7 +1069,7 @@ namespace _2home.Models
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int Motel_ID
 		{
 			get
@@ -1355,7 +1355,7 @@ namespace _2home.Models
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int ID_user
 		{
 			get
