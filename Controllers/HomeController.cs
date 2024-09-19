@@ -12,6 +12,10 @@ using System.Web.UI;
 using System.Linq.Dynamic;
 using PagedList;
 using System.Drawing.Printing;
+using System.Web.Helpers;
+using System.Security.Principal;
+using Microsoft.Ajax.Utilities;
+using System.Security.Policy;
 
 namespace _2home.Controllers
 {
@@ -97,25 +101,81 @@ namespace _2home.Controllers
 
         }
         public ActionResult Login()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public ActionResult Login(string account, string password)
         {
 
+            using (var db = new DataClasses1DataContext())
+            {
+              
+                var user = db.users.FirstOrDefault(u =>
+                    (u.Email == account || u.username.ToString() == account) && u.password == password);
 
-            ViewBag.message = "trang đăng nhập";
-
-            return View();
-
+                if (user != null)
+                {
+                    Session["User"] = new _2home.ViewModels.User
+                    {
+                        username = user.username,
+                        Email = user.Email,
+                        password = user.password,
+                        fullname= user.fullname,
+                    };
+                    ViewBag.Message = "Đăng nhập thành công!";
+                    return RedirectToAction("Index", "Home");
+                }else
+                    {
+                        ViewBag.Message = "Tên tài khoản hoặc mật khẩu không đúng!";
+                        return View();
+                    }
+                
+            }
+        }
+        public ActionResult Logout()
+        {
+            Session["User"] = null;
+            TempData["Message"] = "Bạn đã đăng xuất!";
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult DK()
-
         {
-
-
-            ViewBag.message = "trang đăng ký";
-
             return View();
-
         }
+
+        [HttpPost]
+        public ActionResult DK(string username, string fullname, string email, string password, string phone, string gender)
+        {
+            using (var db = new DataClasses1DataContext())
+            {
+                var existingUser = db.users.FirstOrDefault(u => u.username == username || u.Email == email);
+
+                if (existingUser != null)
+                {
+                    ViewBag.Error = "Tên đăng nhập hoặc email đã tồn tại.";
+                    return View();
+                }
+
+                var newUser = new user
+                {
+                    username = username,
+                    fullname = fullname,
+                    Email = email,
+                    password = password,
+                    PhoneNumber = phone,
+                    gender = gender,
+                    userrole = "user"
+                };
+
+                db.users.InsertOnSubmit(newUser);
+                db.SubmitChanges();
+
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
         public ActionResult DKthue()
 
         {

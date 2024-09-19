@@ -7,37 +7,37 @@
 </head>
 
 <div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem ;">
-    <form class="row g-3">
+    <form asp-action="Register" method="post" class="row g-3">
         <h2 class="card-title text-center mb-4">Chào mừng bạn đến tới website Second Home</h2>
         <h2 class="card-title text-center mb-4">Đăng kí tài khoản</h2>
         <div class="col-md-6">
             <label for="inputUsername" class="form-label">Tên đăng nhập</label>
-            <input type="text" class="form-control" id="inputUsername">
+            <input type="text" class="form-control" id="inputUsername" name="username">
         </div>
 
         <div class="col-md-6">
             <label for="inputFullName" class="form-label">Họ và tên</label>
-            <input type="text" class="form-control" id="inputFullName">
+            <input type="text" class="form-control" id="inputFullName" name="fullname">
         </div>
 
         <div class="col-md-6">
             <label for="inputEmail4" class="form-label">Email</label>
-            <input type="email" class="form-control" id="inputEmail4">
+            <input type="email" class="form-control" id="inputEmail4" name="email">
         </div>
 
         <div class="col-md-6">
             <label for="inputPassword4" class="form-label">Mật khẩu</label>
-            <input type="password" class="form-control" id="inputPassword4">
+            <input type="password" class="form-control" id="inputPassword4" name="password">
         </div>
 
         <div class="col-md-6">
             <label for="inputPhone" class="form-label">Số điện thoại</label>
-            <input type="text" class="form-control" id="inputPhone">
+            <input type="text" class="form-control" id="inputPhone" name="phone">
         </div>
 
         <div class="col-md-6">
             <label for="inputGender" class="form-label">Giới tính</label>
-            <select id="inputGender" class="form-select">
+            <select id="inputGender" class="form-select" name="gender">
                 <option selected>Chọn giới tính...</option>
                 <option>Nam</option>
                 <option>Nữ</option>

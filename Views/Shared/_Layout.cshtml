@@ -7,6 +7,11 @@
     <link href="~/asset/css/layout.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <style>
+        .nav-link-custom {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-black w-100">
@@ -14,62 +19,75 @@
             <a href="@Url.Action("Index", "Home")" class="navbar-brand">
                 <img src="~/Content/logo 2 home ngang.png" alt="Alternate Text" class="rounded-2 float-start" style="width:100px;">
             </a>
+            <div class="container m-auto align-content-center w-50">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-1 w-50" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success border-2" type="submit" style="font-weight: bold;">Search</button>
+                </form>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav ms-auto nav-underline">
-                    <li class="nav-item">@Html.ActionLink("DK thuê", "DKthue", "Home", null, new { @class = "buton_header nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Cho thuê phòng trọ", "DKthue", "Home", null, new { @class = "buton_header nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Tìm người ở ghép", "togher", "Home", null, new { @class = "navbar-brand nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Đăng ký", "DK", "Home", null, new { @class = "navbar-brand nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Đăng nhập", "Login", "Home", null, new { @class = "navbar-brand nav-link" })</li>
+            <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
+                <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    @if (Session["User"] != null)
+                    {
+                        var user = Session["User"] as _2home.ViewModels.User;
+                        <p class="navbar-brand nav-link" style="color: white;">Xin chào, @user.fullname</p>
+                        <a href="/Home/Logout" class="navbar-brand nav-link">Đăng xuất</a>
+
+                    }
+                    else
+                    {
+                        <li class="nav-item">@Html.ActionLink("Đăng ký", "DK", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })</li>
+                        <li class="nav-item">@Html.ActionLink("Đăng nhập", "Login", "Home", null, new { @class = "btn btn-outline-primary mx-2 nav-link-custom" })</li>
+                    }
+
                 </ul>
             </div>
         </div>
     </nav>
-        <div class="form-search navbar p-3 m-3 navbarposition-absolute top-0 start-50 translate-middle-x">
-            <form action="/Home/LocationChosen" method="get">
-                <fieldset>
-                    Vị trí <select id="location" name="Vị trí">
-                        <option selected="selected" value="0">Tất cả</option>
+    <div class="d-flex justify-content-center">
+        <div class="card-header bg-warning gap-2 m-5 p-3 rounded-3 d-flex w-50" style="">
+            <form action="/Home/LocationChosen" method="get" class="m-auto">
+                <fieldset class="rounded-2">
+                    <select class="rounded-2 p-2" style="font-weight: bold;" id="location" name="Thành Phố">
+                        <option selected="selected" value="0">Thành Phố</option>
                         <option value="1">Bình chuẩn</option>
                         <option value="2">Thành phố mới</option>
                         <option value="3">Thủ dầu một</option>
                     </select>
                 </fieldset>
             </form>
-            <form action="/Home/LocationChosen" method="get">
-
-                <fieldset>
-                    Vị trí <select id="location" name="Vị trí">
-                        <option selected="selected" value="0">Tất cả</option>
+            <form action="/Home/LocationChosen" method="get" class="m-auto">
+                <fieldset class="rounded-2">
+                    <select class="rounded-2 p-2" style="font-weight: bold;"  id="location" name="Vị trí">
+                        <option selected="selected" value="0">phường</option>
+                        <option value="1">Phú Lợi</option>
+                        <option value="2">Thành phố mới</option>
+                        <option value="3">Thủ dầu một</option>
+                    </select>
+                </fieldset>
+            </form>
+            <form action="/Home/LocationChosen" method="get" class="m-auto">
+                <fieldset class="rounded-2">
+                    <select class="rounded-2 p-2" style="font-weight: bold;"  id="location" name="Vị trí">
+                        <option selected="selected" value="0">Khu</option>
                         <option value="1">Bình chuẩn</option>
                         <option value="2">Thành phố mới</option>
                         <option value="3">Thủ dầu một</option>
                     </select>
                 </fieldset>
             </form>
-            <form action="/Home/LocationChosen" method="get">
-
-                <fieldset>
-                    Vị trí <select id="location" name="Vị trí">
-                        <option selected="selected" value="0">Tất cả</option>
-                        <option value="1">Bình chuẩn</option>
-                        <option value="2">Thành phố mới</option>
-                        <option value="3">Thủ dầu một</option>
-                    </select>
-                </fieldset>
-
-            </form>
-            <p><input type="submit" value="tìm kiếm" /> </p>
+            <input type="submit" value="tìm kiếm" class="btn btn-outline-success border-2" style="font-weight: bold;"  />
         </div>
-<div class="mt-auto">
-    @RenderBody()
-    <hr />
-    <footer class="text-center">
-        <p>&copy; @DateTime.Now.Year - Phòng chuyên môn Devmaster</p>
-    </footer>
-</div>
+    </div>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        @RenderBody()
+        <hr />
+        <footer class="text-center">
+            <p>&copy; @DateTime.Now.Year - Phòng chuyên môn Devmaster</p>
+        </footer>
+    </div>
 </body>
 </html>
