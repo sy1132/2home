@@ -30,12 +30,18 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
                 <ul class="navbar-nav ms-auto d-flex align-items-center">
-                    <li class="nav-item">
-                        @Html.ActionLink("Đăng ký", "DK", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Đăng nhập", "Login", "Home", null, new { @class = "btn btn-outline-primary mx-2 nav-link-custom" })
-                    </li>
+                    @if (Session["User"] != null)
+                    {
+                        var user = Session["User"] as _2home.ViewModels.User;
+                        <p class="navbar-brand nav-link" style="color: white;">Xin chào, @user.fullname</p>
+                        <a href="/Home/Logout" class="navbar-brand nav-link">Đăng xuất</a>
+                    }
+                    else
+                    {
+                        <li class="nav-item">@Html.ActionLink("Đăng ký", "DK", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })</li>
+                        <li class="nav-item">@Html.ActionLink("Đăng nhập", "Login", "Home", null, new { @class = "btn btn-outline-primary mx-2 nav-link-custom" })</li>
+                    }
+
                 </ul>
             </div>
         </div>
@@ -75,7 +81,7 @@
             <input type="submit" value="tìm kiếm" class="btn btn-outline-success border-2" style="font-weight: bold;"  />
         </div>
     </div>
-    <div class="mt-auto">
+    <div class="d-flex flex-column justify-content-center align-items-center">
         @RenderBody()
         <hr />
         <footer class="text-center">
