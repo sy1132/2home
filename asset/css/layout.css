@@ -2,7 +2,7 @@
 body {
     background: url('../images/website-background-templates.jpg') fixed;
     background-repeat:no-repeat;
-    width:100%;
+    background-size : cover;
 }
 
 
