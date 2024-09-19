@@ -14,6 +14,7 @@ namespace _2home.ViewModels
             public string username { get; set; }
             public string PhoneNumber { get; set; }
             public string gender { get; set; }
+            public string userrole { get; set; }
         }
     }
 

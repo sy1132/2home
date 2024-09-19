@@ -160,12 +160,13 @@ namespace _2home.Controllers
 
                 var newUser = new user
                 {
-                    username = username,       
-                    fullname = fullname,       
-                    Email = email,             
-                    password = password,      
-                    PhoneNumber = phone,       
-                    gender = gender
+                    username = username,
+                    fullname = fullname,
+                    Email = email,
+                    password = password,
+                    PhoneNumber = phone,
+                    gender = gender,
+                    userrole = "user"
                 };
 
                 db.users.InsertOnSubmit(newUser);
