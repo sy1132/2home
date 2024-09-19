@@ -24,8 +24,10 @@ namespace _2home.Controllers
         
         DataClasses1DataContext db= new DataClasses1DataContext();
 
-        public ActionResult Index(int? size, int? page)
+        public ActionResult Index(int? size, int? page, string searchString)
         {
+            ViewBag.Keyword = searchString;
+            
             var query = from img in db.imgs
                         join motel in db.Motels on img.ID_user equals motel.ID_user
                         select new index_Viewmodel
@@ -37,6 +39,8 @@ namespace _2home.Controllers
                             is_available = motel.is_available,
                             ID_user=motel.ID_user,
                         };
+            if (!String.IsNullOrEmpty(searchString))
+                query = query.Where(b => b.MotelName.Contains(searchString));
             ViewBag.Page = page;
             List<SelectListItem> items = new List<SelectListItem>();
             items.Add(new SelectListItem { Text = "10", Value = "10" });
