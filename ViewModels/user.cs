@@ -15,6 +15,8 @@ namespace _2home.ViewModels
             public string PhoneNumber { get; set; }
             public string gender { get; set; }
             public string userrole { get; set; }
-        }
+            public int? MotelID { get; set; }
+
+    }
     }
 
