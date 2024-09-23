@@ -66,6 +66,12 @@ namespace _2home.Controllers
 
         public ActionResult Details(int? ID_user)
         {
+            if (!ID_user.HasValue)
+            {
+                // Xử lý trường hợp ID_user là null, ví dụ: trả về một view lỗi hoặc một giá trị mặc định
+                return View("Error"); // Ví dụ view lỗi
+            }
+
             var query = from img in db.imgs
                         join motel in db.Motels on img.ID_user equals motel.ID_user
                         join vid in db.Videos on motel.ID_user equals vid.ID_user
@@ -79,7 +85,6 @@ namespace _2home.Controllers
                             is_available = motel.is_available,
                             ID_user = motel.ID_user,
                             Link = vid.Link,
-
                         };
 
             var viewModel = query.FirstOrDefault();
