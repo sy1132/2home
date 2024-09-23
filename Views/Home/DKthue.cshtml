@@ -1,33 +1,166 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "DKthue";
 }
 
 <head>
-
-    <link href="~/asset/css/DK.css" rel="stylesheet" />
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
 </head>
 
-<div id="wrapper">
-    <form action="" id="form-login">
-        <h1 class="form-heading">
-            Form đăng ký cho thuê
-        </h1>
-        <div class="form-group">
-            <input type="text" class="form-input" placeholder="Tên phòng trọ" />
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-input" placeholder="Địa chỉ" />
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-input" placeholder="Giá" />
-        </div>
-            <div >
-                <label for="ImageFile" class="color">Select Image</label>
-                <input type="file" name="ImageFile" id="ImageFile" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-            </div>
+<div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem;">
+    <form id="registerForm" enctype="multipart/form-data" class="row g-3">
+        <h2 class="card-title text-center mb-4">Đăng ký cho thuê phòng trọ</h2>
 
-            <input type="submit" value="Đăng ký" class="form-submit" />
-        </form>
+        <div class="col-md-6">
+            <label for="inputRoomName" class="form-label">Tên phòng trọ</label>
+            <input type="text" class="form-control" id="inputRoomName" name="roomName">
+            <span class="error-message" id="roomNameError"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputCity" class="form-label">Thành phố</label>
+            <select id="inputCity" class="form-select" name="city">
+                <option selected value="">Chọn thành phố...</option>
+                <option value="Dĩ An">Dĩ An</option>
+                <option value="Thuận An">Thuận An</option>
+                <option value="Thủ dầu một">Thủ dầu một</option>
+                <option value="Tân Uyên">Tân Uyên</option>
+                <option value="Bến Cát">Bến Cát</option>
+            </select>
+            <span class="error-message" id="cityError"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputWard" class="form-label">Phường</label>
+            <select id="inputWard" class="form-select" name="ward">
+                <option selected value="">Chọn phường...</option>
+                <option value="Phú Lợi">Phú Lợi</option>
+                <option value="Thành phố mới">Thành phố mới</option>
+                <option value="Thủ dầu một">Thủ dầu một</option>
+            </select>
+            <span class="error-message" id="wardError"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputDistrict" class="form-label">Khu</label>
+            <select id="inputDistrict" class="form-select" name="district">
+                <option selected value="">Chọn khu...</option>
+                <option value="Bình chuẩn">Bình chuẩn</option>
+                <option value="Thành phố mới">Thành phố mới</option>
+                <option value="Thủ dầu một">Thủ dầu một</option>
+            </select>
+            <span class="error-message" id="districtError"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputPrice" class="form-label">Giá (VNĐ)</label>
+            <input type="number" class="form-control" id="inputPrice" name="price">
+            <span class="error-message" id="priceError"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputImage" class="form-label">Hình ảnh</label>
+            <input type="file" class="form-control" id="inputImage" name="images" accept="image/*" multiple>
+            <span class="error-message" id="imageError"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputVideo" class="form-label">Video</label>
+            <input type="file" class="form-control" id="inputVideo" name="video" accept="video/*">
+            <span class="error-message" id="videoError"></span>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-outline-success w-100">Đăng</button>
+        </div>
+
+        <div class="col-12 text-center">
+            <p id="message"></p>
+        </div>
+    </form>
 </div>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Ngăn trang reload
+
+        // Reset thông báo lỗi
+        document.querySelectorAll('.error-message').forEach(function(el) {
+            el.innerText = '';
+        });
+
+        // Kiểm tra các trường bắt buộc
+        let isValid = true;
+
+        const roomName = document.getElementById('inputRoomName').value.trim();
+        const city = document.getElementById('inputCity').value.trim();
+        const ward = document.getElementById('inputWard').value.trim();
+        const district = document.getElementById('inputDistrict').value.trim();
+        const price = document.getElementById('inputPrice').value.trim();
+        const image = document.getElementById('inputImage').value.trim();
+
+        if (!roomName) {
+            document.getElementById('roomNameError').innerText = 'Vui lòng nhập tên phòng trọ';
+            isValid = false;
+        }
+
+        if (!city) {
+            document.getElementById('cityError').innerText = 'Vui lòng chọn thành phố';
+            isValid = false;
+        }
+
+        if (!ward) {
+            document.getElementById('wardError').innerText = 'Vui lòng chọn phường';
+            isValid = false;
+        }
+
+        if (!district) {
+            document.getElementById('districtError').innerText = 'Vui lòng chọn khu';
+            isValid = false;
+        }
+
+        if (!price) {
+            document.getElementById('priceError').innerText = 'Vui lòng nhập giá';
+            isValid = false;
+        }
+
+        const images = document.getElementById('inputImage').files;
+        if (images.length === 0) {
+            document.getElementById('imageError').innerText = 'Vui lòng chọn ít nhất một hình ảnh';
+            isValid = false;
+        }
+        if (!price || parseFloat(price) <= 0) {
+            document.getElementById('priceError').innerText = 'Giá phải là số dương';
+            isValid = false;
+        }
+        if (!price || parseFloat(price) <= 0) {
+            document.getElementById('videoError').innerText = 'Vui lòng thêm video';
+            isValid = false;
+        }
+        // Nếu tất cả các trường hợp lệ, tiến hành gửi form qua AJAX
+        if (isValid) {
+            var formData = new FormData(this);
+
+            fetch('@Url.Action("RegisterForRent", "Home")', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('message').innerText = 'Thông tin đã được gửi lên admin, đang chờ được duyệt!';
+            })
+            .catch(error => {
+                document.getElementById('message').innerText = 'Có lỗi xảy ra, vui lòng thử lại.';
+                console.error('Error:', error);
+            });
+        }
+
+
+
+    });
+</script>

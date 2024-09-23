@@ -53,7 +53,11 @@ namespace _2home.Models
 			OnCreated();
 		}
         public DataClasses1DataContext() :
+<<<<<<< HEAD
         base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString1"].ConnectionString, mappingSource)
+=======
+        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString2"].ConnectionString, mappingSource)
+>>>>>>> origin/hai
         {
 
         }
