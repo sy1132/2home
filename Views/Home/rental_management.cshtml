@@ -4,12 +4,43 @@
     ViewBag.Title = "rental_management";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<form method="get" action="@Url.Action("rental_management")" class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="fullname" class="mr-2">Tên nhà trọ:</label>
+        <input type="text" class="form-control" id="MotelName" name="MotelName" value="@ViewBag.MotelName" placeholder="Nhập tên người dùng">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="motelID" class="mr-2">Vị trí:</label>
+        <input type="text" class="form-control" id="Location" name="Location" value="@ViewBag.Location" placeholder="Nhập vị trí">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="motelID" class="mr-2">Giá: từ:</label>
+        <input type="text" class="form-control" id="Price1" name="Price1" value="@ViewBag.Price1" placeholder="Nhập giá tối thiểu">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="motelID" class="mr-2">đến:</label>
+        <input type="text" class="form-control" id="Price2" name="Price2" value="@ViewBag.Price2" placeholder="Nhập giá tối đa">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="is_available" class="mr-2">Tình trạng:</label>
+        @Html.DropDownList("is_available", new SelectList(new[] {
+    new { Value = "Còn trống", Text = "Còn trống" },
+    new { Value = "Hết phòng", Text = "Hết phòng" },
+    new { Value = "Đang chờ duyệt", Text = "Đang chờ duyệt" }
+}, "Value", "Text"), "Chọn tình trạng", new { @class = "form-control" })
 
+    </div>
+
+    <button type="submit" class="btn btn-danger mb-2 mx-sm-3">Tìm kiếm</button>
+</form>
 <table class="table table-bordered">
     <thead>
         <tr>
             <th>Ảnh</th>
-            <th>Tên Khách Sạn</th>
+            <th>Tên nhà trọ</th>
             <th>Vị Trí</th>
             <th>Giá</th>
             <th>Tình Trạng</th>

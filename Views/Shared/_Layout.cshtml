@@ -24,11 +24,6 @@
                 <form class="d-flex" role="search" method="get" action="@Url.Action("Index")">
                     <input class="form-control me-1 w-50" type="search" placeholder="Search" aria-label="Search" name="searchString" value="@ViewBag.Keyword">
                     <button class="btn btn-outline-success border-2" type="submit" style="font-weight: bold;">Search</button>
-                    @if (Session["User"] != null)
-                    {
-                        var user = Session["User"] as _2home.ViewModels.User;
-                        <a href="https://localhost:44305/Home/DKthue" class="navbar-brand nav-link btn btn-outline-success border-2 mx-2" style="font-weight: bold;">Đăng ký cho thuê</a>
-                    }
                 </form>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +53,7 @@
                         }
                         <p class="navbar-brand nav-link" style="color: white;">Xin chào, @user.fullname</p>
                         <a href="/Home/Logout" class="navbar-brand nav-link">Đăng xuất</a>
-                        
+
                     }
                     else
                     {
