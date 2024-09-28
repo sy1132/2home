@@ -24,17 +24,9 @@
                 <form class="d-flex" role="search" method="get" action="@Url.Action("Index")">
                     <input class="form-control me-1 w-50" type="search" placeholder="Search" aria-label="Search" name="searchString" value="@ViewBag.Keyword">
                     <button class="btn btn-outline-success border-2" type="submit" style="font-weight: bold;">Search</button>
-                    @if (Session["User"] != null)
-                    {
-                        var user = Session["User"] as _2home.ViewModels.User;
-                        <a href="https://localhost:44305/Home/DKthue" class="navbar-brand nav-link btn btn-outline-success border-2 mx-2" style="font-weight: bold;">Đăng ký cho thuê</a>
-                    }
                 </form>
             </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
+            <div class="collapse navbar-collapse justify-content-end d-flex">
                 <ul class="navbar-nav ms-auto d-flex align-items-center">
                     @if (Session["User"] != null)
                     {
@@ -51,14 +43,22 @@
                         }
                         else
                         {
-                            <li class="nav-item">@Html.ActionLink("Đăng ký thuê", "DKthue", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })</li>
-
-                            <li class="nav-item">@Html.ActionLink("togher", "togher", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })</li>
-
+                            <li class="nav-item dropdown text-dark" style="color:white;">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Xin chào, @user.fullname
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Đăng ký thuê", "DKthue", "Home", null, new { @class ="dropdown-item"  })</li>
+                                    <li>@Html.ActionLink("togher", "togher", "Home", null, new { @class = "dropdown-item" })</li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a href="/Home/Logout" class="dropdown-item" >Đăng xuất</a>
+                                    </li>
+                                </ul>
+                            </li>
+  
                         }
-                        <p class="navbar-brand nav-link" style="color: white;">Xin chào, @user.fullname</p>
-                        <a href="/Home/Logout" class="navbar-brand nav-link">Đăng xuất</a>
-                        
+
                     }
                     else
                     {
