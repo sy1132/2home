@@ -1,93 +1,95 @@
 ﻿@{
-    ViewBag.Title = "DKthue";
+    ViewBag.Title = "Đăng ký cho thuê phòng trọ";
 }
 
-<head>
-    <style>
-        .error-message {
-            color: red;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-    </style>
-</head>
+@{
+    ViewBag.Title = "DK";
+}
 
-<div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem;">
-    <form id="registerForm" enctype="multipart/form-data" class="row g-3">
+
+    <head>
+        <style>
+            .error-message {
+                color: red;
+                font-size: 0.875rem;
+                margin-top: 0.25rem;
+            }
+        </style>
+    </head>
+
+<div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem ;">
+    <form asp-action="RegisterDK" enctype="multipart/form-data" method="post" class="row g-3">
         <h2 class="card-title text-center mb-4">Đăng ký cho thuê phòng trọ</h2>
-
         <div class="col-md-6">
             <label for="inputRoomName" class="form-label">Tên phòng trọ</label>
-            <input type="text" class="form-control" id="inputRoomName" name="roomName">
+            <input type="text" class="form-control" id="inputRoomName" name="RoomName" >
             <span class="error-message" id="roomNameError"></span>
         </div>
         <div class="col-md-6">
             <label for="inputRooms" class="form-label">Số phòng</label>
-            <input type="text" class="form-control" id="inputRooms" name="Rooms">
+            <input type="number" class="form-control" id="inputRooms" name="Rooms" >
             <span class="error-message" id="roomError"></span>
         </div>
-        <div>
+
+
+        <div class="col-12">
             <label for="inputLocation" class="form-label">Địa chỉ</label>
             <input type="text" class="form-control" id="inputLocation" name="LocationName">
-            <span class="error-message" id="LoactionNameError"></span>
+            <span class="error-message" id="LoactionNameError">
         </div>
         <div class="col-md-6">
             <label for="inputCity" class="form-label">Thành phố</label>
-            <select id="inputCity" class="form-select" name="city">
+            <select id="inputCity" class="form-select" name="City">
                 <option selected value="">Chọn thành phố...</option>
                 <option value="Dĩ An">Dĩ An</option>
                 <option value="Thuận An">Thuận An</option>
-                <option value="Thủ dầu một">Thủ dầu một</option>
+                <option value="Thủ Dầu Một">Thủ Dầu Một</option>
                 <option value="Tân Uyên">Tân Uyên</option>
                 <option value="Bến Cát">Bến Cát</option>
             </select>
             <span class="error-message" id="cityError"></span>
         </div>
-
         <div class="col-md-6">
             <label for="inputWard" class="form-label">Phường</label>
-            <select id="inputWard" class="form-select" name="ward">
+            <select id="inputWard" class="form-select" name="Ward">
                 <option selected value="">Chọn phường...</option>
                 <option value="Phú Lợi">Phú Lợi</option>
                 <option value="Thành phố mới">Thành phố mới</option>
-                <option value="Thủ dầu một">Thủ dầu một</option>
+                <option value="Thủ Dầu Một">Thủ Dầu Một</option>
             </select>
             <span class="error-message" id="wardError"></span>
         </div>
 
         <div class="col-md-6">
             <label for="inputDistrict" class="form-label">Khu</label>
-            <select id="inputDistrict" class="form-select" name="district">
+            <select id="inputDistrict" class="form-select" name="District">
                 <option selected value="">Chọn khu...</option>
-                <option value="Bình chuẩn">Bình chuẩn</option>
+                <option value="Bình Chuẩn">Bình Chuẩn</option>
                 <option value="Thành phố mới">Thành phố mới</option>
-                <option value="Thủ dầu một">Thủ dầu một</option>
+                <option value="Thủ Dầu Một">Thủ Dầu Một</option>
             </select>
             <span class="error-message" id="districtError"></span>
         </div>
-
         <div class="col-md-6">
             <label for="inputPrice" class="form-label">Giá (VNĐ)</label>
-            <input type="number" class="form-control" id="inputPrice" name="price">
+            <input type="number" class="form-control" id="inputPrice" name="Price">
             <span class="error-message" id="priceError"></span>
         </div>
-
         <div class="col-md-6">
             <label for="inputImage" class="form-label">Hình ảnh</label>
-            <input type="file" class="form-control" id="inputImage" name="images" accept="image/*" multiple>
+            <input type="file" class="form-control" id="inputImage" name="Images" accept="image/* " multiple>
             <span class="error-message" id="imageError"></span>
         </div>
 
+
         <div class="col-md-6">
             <label for="inputVideo" class="form-label">Video</label>
-            <input type="file" class="form-control" id="inputVideo" name="video" accept="video/*">
+            <input type="file" class="form-control" id="inputVideo" name="Video" accept="video/*">
             <span class="error-message" id="videoError"></span>
         </div>
-
         <div class="col-12">
-            <button type="submit" class="btn btn-outline-success w-100">Đăng</button>
+            <button type="submit" class="btn btn-primary w-100">Đăng </button>
         </div>
-
         <div class="col-12 text-center">
             <p id="message"></p>
         </div>
@@ -151,6 +153,9 @@
 
     if (images.length === 0) {
         document.getElementById('imageError').innerText = 'Vui lòng chọn ít nhất một hình ảnh';
+        isValid = false;
+    } else if (images.length > 5) {
+        document.getElementById('imageError').innerText = 'Chỉ được phép tải lên tối đa 5 hình ảnh';
         isValid = false;
     }
 

@@ -18,6 +18,9 @@ using Microsoft.Ajax.Utilities;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Diagnostics;
+using System.Web.Security;
+using System.IO;
 
 namespace _2home.Controllers
 {
@@ -77,25 +80,27 @@ namespace _2home.Controllers
 
         public ActionResult Details(int? ID_user)
         {
-            var query = from img in db.imgs
-                        join motel in db.Motels on img.ID_user equals motel.ID_user
-                        join vid in db.Videos on motel.ID_user equals vid.ID_user
-                        where motel.ID_user == ID_user.Value
-                        select new index_Viewmodel
-                        {
-                            ImgLink = img.Link,
-                            MotelName = motel.Name_motel,
-                            Location = motel.location,
-                            Price = motel.price,
-                            is_available = motel.is_available,
-                            ID_user = motel.ID_user,
-                            Link = vid.Link,
+            var motelDetails = (from img in db.imgs
+                                join motel in db.Motels on img.ID_user equals motel.ID_user
+                                join vid in db.Videos on motel.ID_user equals vid.ID_user
+                                where motel.ID_user == ID_user.Value
+                                select new pic
+                                {
 
-                        };
+                                    MotelName = motel.Name_motel,
+                                    Location = motel.location,
+                                    Price = motel.price,
+                                    is_available = motel.is_available,
+                                    ID_user = motel.ID_user,
+                                    Link = vid.Link,
+                                    ImgLinks = (from img in db.imgs
+                                                where img.ID_user == motel.ID_user
+                                                select img.Link).ToList()
+                                }).FirstOrDefault();
 
-            var viewModel = query.FirstOrDefault();
-            return View(viewModel);
+            return View(motelDetails);
         }
+
 
         public ActionResult Selectlocation()
         {
@@ -191,17 +196,75 @@ namespace _2home.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
-
+        [HttpGet]
         public ActionResult DKthue()
-
         {
-
-
-            ViewBag.message = "trang đăng ký cho thuê";
-
             return View();
-
         }
+        [HttpPost]
+        public ActionResult DKthue(string roomName, int? Rooms, string LocationName, string city, string ward, string district, decimal Price, IEnumerable<HttpPostedFileBase> Images, HttpPostedFileBase Video)
+        {
+            
+                using (var db = new DataClasses1DataContext())
+                {
+                    
+
+                    var motel = new _2home.Models.Motel
+                    {
+                        Name_motel = roomName,
+                        location = $"{LocationName} ({city}, {ward}, {district})",
+                        price = Price,
+                        is_available = "Đang chờ duyệt"
+                    };
+                    db.Motels.InsertOnSubmit(motel);
+                    db.SubmitChanges(); 
+
+                    if (Images != null && Images.Any())
+                    {
+                        foreach (var image in Images)
+                        {
+                            if (image != null && image.ContentLength > 0)
+                            {
+                                var imagePath = Path.Combine(Server.MapPath("~/asset/images"), Path.GetFileName(image.FileName));
+                                image.SaveAs(imagePath);
+
+                                var motelImage = new _2home.Models.img
+                                {
+                                    Link = $"/asset/images/{Path.GetFileName(image.FileName)}",
+                                    createdAt = DateTime.Now,
+                                    updatedAt = DateTime.Now
+                                };
+
+                                db.imgs.InsertOnSubmit(motelImage);
+                            }
+                        }
+                    }
+
+                    if (Video != null && Video.ContentLength > 0)
+                    {
+                        var videoPath = Path.Combine(Server.MapPath("/asset/videos/"), Path.GetFileName(Video.FileName));
+                        Video.SaveAs(videoPath);
+
+                        var motelVideo = new _2home.Models.Video
+                        {
+                            Link = $"/asset/videos/{Path.GetFileName(Video.FileName)}",
+                            createdAt = DateTime.Now,
+                            updatedAt = DateTime.Now
+                        };
+
+                        db.Videos.InsertOnSubmit(motelVideo);
+                    }
+
+                    db.SubmitChanges(); 
+
+                    return RedirectToAction("index");
+                }
+            
+          
+        }
+
+
+
         public ActionResult Manager_DK(int? size, int? page, string fullname, string motelID, string userrole)
 
         {
