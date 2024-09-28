@@ -16,6 +16,11 @@ using System.Web.Helpers;
 using System.Security.Principal;
 using Microsoft.Ajax.Utilities;
 using System.Security.Policy;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Diagnostics;
+using System.Web.Security;
+using System.IO;
 
 namespace _2home.Controllers
 {
@@ -31,16 +36,23 @@ namespace _2home.Controllers
             var query = from img in db.imgs
                         join motel in db.Motels on img.ID_user equals motel.ID_user
                         where motel.is_available == "Còn trống"
-                        select new index_Viewmodel
+                        group img by new
                         {
-                            ImgLink = img.Link,
-                            MotelName = motel.Name_motel,
-                            Location = motel.location,
-                            Price = motel.price,
-                            is_available = motel.is_available,
-                            ID_user=motel.ID_user,
-
-                        };
+                            motel.Name_motel,
+                            motel.location,
+                            motel.price,
+                            motel.is_available,
+                            motel.ID_user
+                        } into grouped
+                select new index_Viewmodel
+                {
+                    ImgLink = grouped.Select(g => g.Link).FirstOrDefault(),
+                    MotelName = grouped.Key.Name_motel,
+                    Location = grouped.Key.location,
+                    Price = grouped.Key.price,
+                    is_available = grouped.Key.is_available,
+                    ID_user = grouped.Key.ID_user
+                };
             if (!String.IsNullOrEmpty(searchString))
                 query = query.Where(b => b.MotelName.Contains(searchString));
             ViewBag.Page = page;
@@ -68,30 +80,27 @@ namespace _2home.Controllers
 
         public ActionResult Details(int? ID_user)
         {
-            if (!ID_user.HasValue)
-            {
-                // Xử lý trường hợp ID_user là null, ví dụ: trả về một view lỗi hoặc một giá trị mặc định
-                return View("Error"); // Ví dụ view lỗi
-            }
+            var motelDetails = (from img in db.imgs
+                                join motel in db.Motels on img.ID_user equals motel.ID_user
+                                join vid in db.Videos on motel.ID_user equals vid.ID_user
+                                where motel.ID_user == ID_user.Value
+                                select new pic
+                                {
 
-            var query = from img in db.imgs
-                        join motel in db.Motels on img.ID_user equals motel.ID_user
-                        join vid in db.Videos on motel.ID_user equals vid.ID_user
-                        where motel.ID_user == ID_user.Value
-                        select new index_Viewmodel
-                        {
-                            ImgLink = img.Link,
-                            MotelName = motel.Name_motel,
-                            Location = motel.location,
-                            Price = motel.price,
-                            is_available = motel.is_available,
-                            ID_user = motel.ID_user,
-                            Link = vid.Link,
-                        };
+                                    MotelName = motel.Name_motel,
+                                    Location = motel.location,
+                                    Price = motel.price,
+                                    is_available = motel.is_available,
+                                    ID_user = motel.ID_user,
+                                    Link = vid.Link,
+                                    ImgLinks = (from img in db.imgs
+                                                where img.ID_user == motel.ID_user
+                                                select img.Link).ToList()
+                                }).FirstOrDefault();
 
-            var viewModel = query.FirstOrDefault();
-            return View(viewModel);
+            return View(motelDetails);
         }
+
 
         public ActionResult Selectlocation()
         {
@@ -187,18 +196,76 @@ namespace _2home.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
-
+        [HttpGet]
         public ActionResult DKthue()
-
         {
-
-
-            ViewBag.message = "trang đăng ký cho thuê";
-
             return View();
-
         }
-        public ActionResult Manager_DK(int? size, int? page)
+        [HttpPost]
+        public ActionResult DKthue(string roomName, int? Rooms, string LocationName, string city, string ward, string district, decimal Price, IEnumerable<HttpPostedFileBase> Images, HttpPostedFileBase Video)
+        {
+            
+                using (var db = new DataClasses1DataContext())
+                {
+                    
+
+                    var motel = new _2home.Models.Motel
+                    {
+                        Name_motel = roomName,
+                        location = $"{LocationName} ({city}, {ward}, {district})",
+                        price = Price,
+                        is_available = "Đang chờ duyệt"
+                    };
+                    db.Motels.InsertOnSubmit(motel);
+                    db.SubmitChanges(); 
+
+                    if (Images != null && Images.Any())
+                    {
+                        foreach (var image in Images)
+                        {
+                            if (image != null && image.ContentLength > 0)
+                            {
+                                var imagePath = Path.Combine(Server.MapPath("~/asset/images"), Path.GetFileName(image.FileName));
+                                image.SaveAs(imagePath);
+
+                                var motelImage = new _2home.Models.img
+                                {
+                                    Link = $"/asset/images/{Path.GetFileName(image.FileName)}",
+                                    createdAt = DateTime.Now,
+                                    updatedAt = DateTime.Now
+                                };
+
+                                db.imgs.InsertOnSubmit(motelImage);
+                            }
+                        }
+                    }
+
+                    if (Video != null && Video.ContentLength > 0)
+                    {
+                        var videoPath = Path.Combine(Server.MapPath("/asset/videos/"), Path.GetFileName(Video.FileName));
+                        Video.SaveAs(videoPath);
+
+                        var motelVideo = new _2home.Models.Video
+                        {
+                            Link = $"/asset/videos/{Path.GetFileName(Video.FileName)}",
+                            createdAt = DateTime.Now,
+                            updatedAt = DateTime.Now
+                        };
+
+                        db.Videos.InsertOnSubmit(motelVideo);
+                    }
+
+                    db.SubmitChanges(); 
+
+                    return RedirectToAction("index");
+                }
+            
+          
+        }
+
+
+
+        public ActionResult Manager_DK(int? size, int? page, string fullname, string motelID, string userrole)
 
         {
             var query = db.users.Select(u => new User
@@ -213,6 +280,20 @@ namespace _2home.Controllers
                 userrole=u.userrole,
                 gender = u.gender
             });
+            if (!String.IsNullOrEmpty(fullname))
+            {
+                query = query.Where(u => u.fullname.Contains(fullname));
+            }
+
+            if (!String.IsNullOrEmpty(motelID))
+            {
+                query = query.Where(u => u.MotelID.ToString() == motelID);
+            }
+
+            if (!String.IsNullOrEmpty(userrole))
+            {
+                query = query.Where(u => u.userrole == userrole);
+            }
 
             ViewBag.Page = page;
             List<SelectListItem> items = new List<SelectListItem>();
@@ -237,23 +318,66 @@ namespace _2home.Controllers
             return View(model.ToPagedList(pageNumber, pageSize));
 
         }
-        public ActionResult rental_management(int? size, int? page)
+        [HttpPost]
+        public ActionResult UpdateUserRole(int ID_user, string userrole)
+        {
+            
+                using (var context = new DataClasses1DataContext())
+                {
+                    var role = context.users.FirstOrDefault(m => m.ID_user == ID_user);
+                    if (role != null)
+                    {
+                        role.userrole = userrole;
+                        context.SubmitChanges();
+                    }
+                }
+                return RedirectToAction("Manager_DK");
+        }
+
+        public ActionResult rental_management(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
 
         {
-
-
             ViewBag.message = "Quản lý đăng ký cho thuê";
             var query = from img in db.imgs
                         join motel in db.Motels on img.ID_user equals motel.ID_user
+                        group img by new
+                        {
+                            motel.Name_motel,
+                            motel.location,
+                            motel.price,
+                            motel.is_available,
+                            motel.ID_user
+                        } into grouped
                         select new index_Viewmodel
-                        { 
-                            ImgLink = img.Link,
-                            MotelName = motel.Name_motel,
-                            Location = motel.location,
-                            Price = motel.price,
-                            is_available = motel.is_available,
-                            ID_user=motel.ID_user,
+                        {
+                            ImgLink = grouped.Select(g => g.Link).FirstOrDefault(),
+                            MotelName = grouped.Key.Name_motel,
+                            Location = grouped.Key.location,
+                            Price = grouped.Key.price,
+                            is_available = grouped.Key.is_available,
+                            ID_user = grouped.Key.ID_user
                         };
+            if (!string.IsNullOrEmpty(MotelName))
+            {
+                query = query.Where(m => m.MotelName.Contains(MotelName));
+            }
+
+            if (!string.IsNullOrEmpty(Location))
+            {
+                query = query.Where(m => m.Location.Contains(Location));
+            }
+            if (Price1.HasValue)
+            {
+                query = query.Where(m => m.Price >= Price1.Value);
+            }
+            if (Price2.HasValue)
+            {
+                query = query.Where(m => m.Price <= Price2.Value);
+            }
+            if (!String.IsNullOrEmpty(is_available))
+            {
+                query = query.Where(u => u.is_available == is_available);
+            }
             ViewBag.Page = page;
             List<SelectListItem> items = new List<SelectListItem>();
             items.Add(new SelectListItem { Text = "10", Value = "10" });
