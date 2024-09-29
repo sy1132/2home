@@ -49,3 +49,43 @@ input[type="submit"] {
         background-color: #45a049;
     }
 }
+
+.search-container {
+    transition: width 0.5s ease;
+    width: 0;
+    overflow: hidden;
+}
+
+.search-container.active {
+    width: 100%;
+}
+
+.Logout {
+    position: relative; /* Để sử dụng position: absolute trên ::before */
+    padding: 10px 20px; /* Khoảng cách trong nút */
+    color: white; /* Màu chữ */
+    background-color: #007bff; /* Màu nền của nút */
+    border: none; /* Không có viền */
+    border-radius: 5px; /* Góc bo tròn cho nút */
+    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua nút */
+    text-decoration: none; /* Xóa gạch chân */
+}
+
+    .Logout::before {
+        background-color: #1e2235;
+        border-radius: 5px;
+        content: "";
+        display: block;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transform: scale(0); /* Bắt đầu không nhìn thấy */
+        transition: transform 200ms ease; /* Thay đổi tốc độ và kiểu chuyển tiếp */
+        width: 100%;
+        z-index: 2;
+    }
+
+    .Logout:hover::before {
+        transform: scale(1); /* Phóng to khi di chuột */
+    }

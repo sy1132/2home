@@ -29,7 +29,7 @@ namespace _2home.Controllers
         
         DataClasses1DataContext db= new DataClasses1DataContext();
 
-        public ActionResult Index(int? size, int? page, string searchString)
+        public ActionResult Index(int? size, int? page, string searchString, string City, string Ward, string District)
         {
             ViewBag.Keyword = searchString;
             
@@ -55,6 +55,15 @@ namespace _2home.Controllers
                 };
             if (!String.IsNullOrEmpty(searchString))
                 query = query.Where(b => b.MotelName.Contains(searchString));
+
+            if (!String.IsNullOrEmpty(City))
+                query = query.Where(b => b.Location.Contains(City));
+
+            if (!String.IsNullOrEmpty(Ward))
+                query = query.Where(b => b.Location.Contains(Ward));
+
+            if (!String.IsNullOrEmpty(District))
+                query = query.Where(b => b.Location.Contains(District));
             ViewBag.Page = page;
             List<SelectListItem> items = new List<SelectListItem>();
             items.Add(new SelectListItem { Text = "10", Value = "10" });
@@ -139,6 +148,7 @@ namespace _2home.Controllers
                 {
                     Session["User"] = new _2home.ViewModels.User
                     {
+                        ID_user=user.ID_user,
                         username = user.username,
                         Email = user.Email,
                         password = user.password,
@@ -207,14 +217,18 @@ namespace _2home.Controllers
             
                 using (var db = new DataClasses1DataContext())
                 {
-                    
-
-                    var motel = new _2home.Models.Motel
+                    var user= Session["User"] as _2home.ViewModels.User;
+                if (user == null)
+                {
+                    return RedirectToAction("Login");
+                }
+                var motel = new _2home.Models.Motel
                     {
                         Name_motel = roomName,
                         location = $"{LocationName} ({city}, {ward}, {district})",
                         price = Price,
-                        is_available = "Đang chờ duyệt"
+                        is_available = "Đang chờ duyệt",
+                        ID_user=user.ID_user,
                     };
                     db.Motels.InsertOnSubmit(motel);
                     db.SubmitChanges(); 
@@ -232,7 +246,10 @@ namespace _2home.Controllers
                                 {
                                     Link = $"/asset/images/{Path.GetFileName(image.FileName)}",
                                     createdAt = DateTime.Now,
-                                    updatedAt = DateTime.Now
+                                    updatedAt = DateTime.Now,
+                                    ID_user = user.ID_user,
+
+
                                 };
 
                                 db.imgs.InsertOnSubmit(motelImage);
@@ -249,7 +266,9 @@ namespace _2home.Controllers
                         {
                             Link = $"/asset/videos/{Path.GetFileName(Video.FileName)}",
                             createdAt = DateTime.Now,
-                            updatedAt = DateTime.Now
+                            updatedAt = DateTime.Now,
+                            ID_user = user.ID_user,
+
                         };
 
                         db.Videos.InsertOnSubmit(motelVideo);
