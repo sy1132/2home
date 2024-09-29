@@ -7,39 +7,71 @@
 
 <h2>Chi tiết nhà trọ</h2>
 
-<video width="600" height="400" controls>
-    <source src="@Model.Link" type="video/mp4">
-    Trình duyệt của bạn không hỗ trợ thẻ video.
-</video>
-
-@if (Model.ImgLinks != null && Model.ImgLinks.Any())
-{
-    <div id="motelImagesCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            @for (var i = 0; i < Model.ImgLinks.Count; i++)
-            {
-                <div class="carousel-item @(i == 0 ? "active" : "")">
-                    <img src="@Model.ImgLinks[i]" class="d-block w-100" alt="Motel Image" style="max-width:600px; height:auto;" />
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div id="mainDisplay" style="height: 412px; margin: 0 auto;">
+                    <video id="mainVideo" width="100%" height="100%" controls>
+                        <source src="@Model.Link" type="video/mp4">
+                        Trình duyệt của bạn không hỗ trợ thẻ video.
+                    </video>
+                    <img id="mainImage" src="" style="display:none; width: 100%; height: 100%;" />
                 </div>
-            }
+
+                @if (Model.ImgLinks != null && Model.ImgLinks.Any())
+                {
+                    <div class="mt-4 d-flex justify-content-center">
+                        @foreach (var imgLink in Model.ImgLinks)
+                        {
+                            <img src="@imgLink" class="img-thumbnail mx-1" style="width: 104.8px; height: 104.8px; cursor: pointer;" onclick="showImage('@imgLink')" />
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center">Không có ảnh nào để hiển thị.</p>
+                }
+            </div>
         </div>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#motelImagesCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#motelImagesCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4>Thông tin nhà trọ</h4>
+                <p><strong>Tên nhà trọ:</strong> @Model.MotelName</p>
+                <p><strong>Vị trí:</strong> @Model.Location</p>
+                <p><strong>Giá:</strong> @Model.Price</p>
+                <p><strong>Tình trạng:</strong> @Model.is_available </p>
+            </div>
+        </div>
     </div>
-}
-else
-{
-    <p>Không có ảnh nào để hiển thị.</p>
-}
 
-<p><strong>Tên nhà trọ:</strong> @Model.MotelName</p>
-<p><strong>Vị trí:</strong> @Model.Location</p>
-<p><strong>Giá:</strong> @Model.Price</p>
-<p><strong>Tình trạng:</strong> @Model.is_available </p>
+    <div class="col-md-4">
+        <div class="card sticky-top">
+            <div class="card-body text-center">
+                <img src="path_to_profile_image" class="rounded-circle mb-3" alt="Profile Image" style="width: 100px; height: 100px;">
+                <h5>Thông tin chủ nhà</h5>
+                <p>Tên chủ nhà</p>
+                <p>Số điện thoại: 0123456789</p>
+                <button class="btn btn-primary">Liên hệ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showImage(imgLink) {
+        document.getElementById('mainVideo').style.display = 'none';
+        document.getElementById('mainImage').style.display = 'block';
+        document.getElementById('mainImage').src = imgLink;
+    }
+
+    function showVideo(videoLink) {
+        document.getElementById('mainImage').style.display = 'none';
+        document.getElementById('mainVideo').style.display = 'block';
+        document.getElementById('mainVideo').src = videoLink;
+    }
+
+    // Initially show the video
+    showVideo('@Model.Link');
+</script>
