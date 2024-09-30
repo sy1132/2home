@@ -258,6 +258,7 @@
     <Content Include="Scripts\jquery-3.7.1.min.map" />
     <Content Include="Views\Home\rental_management.cshtml" />
     <Content Include="Views\Home\Profile_user.cshtml" />
+    <Content Include="Views\Home\ForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

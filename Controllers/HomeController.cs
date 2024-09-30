@@ -447,6 +447,36 @@ namespace _2home.Controllers
 
         }
 
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(string identifier)
+        {
+            using (var db = new DataClasses1DataContext())
+            {
+                var user = db.users.FirstOrDefault(u => u.Email == identifier || u.PhoneNumber == identifier);
+                if (user != null)
+                {
+                    // Generate a reset token (for simplicity, using a GUID here)
+                    var resetToken = Guid.NewGuid().ToString();
+                    // Save the reset token and its expiration time in the database (not shown here)
+                    // Send the reset token to the user's email or phone (not shown here)
+                    ViewBag.Message = "A password reset link has been sent to your email or phone.";
+                    ViewBag.Username = user.username;
+                    ViewBag.Fullname = user.fullname;
+                }
+                else
+                {
+                    ViewBag.Message = "Email or phone number not found.";
+                }
+            }
+            return View();
+        }
+
+
         public ActionResult Profile_user(int ID_user)
         {
             return View();
