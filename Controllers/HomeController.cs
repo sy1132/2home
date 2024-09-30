@@ -448,5 +448,54 @@ namespace _2home.Controllers
 
         }
 
+        public ActionResult QL_room(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
+
+        {
+            var query = from r in db.Rooms
+                        join m in db.Motels on r.Motel_ID equals m.Motel_ID
+                        join u in db.users on r.ID_user equals u.ID_user
+                        select new room
+                        {
+                            Room_ID = r.room_ID,
+                            Motel_ID = r.Motel_ID,
+                            ID_User = r.ID_user,
+                            fullname=u.fullname,
+                            Date_of_Issue = r.Date_of_Issue,
+                            Electricity_Meter = r.Electricity_Meter,
+                            Water_Meter = r.Water_Meter,
+                            Electricity_Usage = r.Electricity_Usage,
+                            Water_Usage = r.Water_Usage,
+                            Electricity_Bill = r.Electricity_Bill,
+                            Water_Bill = r.Water_Bill,
+                            Room_Status = r.Room_Status,
+                            Room_Rent = r.Room_Rent,
+                            Additional_Charges = r.Additional_Charges,
+                            Total_Amount_Due = r.Total_Amount_Due
+                        };
+            
+            ViewBag.Page = page;
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "10", Value = "10" });
+            items.Add(new SelectListItem { Text = "20", Value = "20" });
+            items.Add(new SelectListItem { Text = "25", Value = "25" });
+            items.Add(new SelectListItem { Text = "50", Value = "50" });
+            items.Add(new SelectListItem { Text = "100", Value = "100" });
+            items.Add(new SelectListItem { Text = "200", Value = "200" });
+            foreach (var item in items)
+            {
+                if (item.Value == size.ToString()) item.Selected = true;
+            }
+            ViewBag.size = items;
+            ViewBag.currentSize = size;
+
+            page = page ?? 1;
+            int pageSize = (size ?? 10);
+
+            int pageNumber = (page ?? 1);
+            var model = query.ToList();
+            return View(model.ToPagedList(pageNumber, pageSize));
+
+
+        }
     }
 }

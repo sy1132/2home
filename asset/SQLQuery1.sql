@@ -25,20 +25,12 @@ CREATE TABLE Motel (
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
 );
 
-CREATE TABLE rooms (
-    room_ID INT IDENTITY(1,1) PRIMARY KEY ,
-    Motel_ID INT,
-    Electricity_Meter DECIMAL(10, 2),
-    Water_Meter DECIMAL(10, 2),
-    Electricity_Usage DECIMAL(10, 2),
-    Water_Usage DECIMAL(10, 2),
-    Room_Status NVARCHAR(50),
-    Room_Rent DECIMAL(10, 2),
-    FOREIGN KEY (Motel_ID) REFERENCES Motel(Motel_ID)
-);
 
-CREATE TABLE Room_Invoice (
-    room_ID INT,
+
+CREATE TABLE Rooms(
+    room_ID INT IDENTITY(1,1) PRIMARY KEY ,
+	Motel_ID INT,
+    ID_user INT ,
     Date_of_Issue DATE,
     Electricity_Meter DECIMAL(10, 2),
     Water_Meter DECIMAL(10, 2),
@@ -50,7 +42,9 @@ CREATE TABLE Room_Invoice (
     Room_Rent DECIMAL(10, 2),
     Additional_Charges DECIMAL(10, 2),
     Total_Amount_Due DECIMAL(15, 2),
-    FOREIGN KEY (room_ID) REFERENCES rooms(room_ID)
+	FOREIGN KEY (Motel_ID) REFERENCES Motel(Motel_ID),
+	FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
+
 );
 
 CREATE TABLE Video (

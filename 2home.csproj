@@ -152,6 +152,7 @@
     <Compile Include="ViewModels\index_Viewmodel.cs" />
     <Compile Include="ViewModels\Motel.cs" />
     <Compile Include="ViewModels\pic.cs" />
+    <Compile Include="ViewModels\room.cs" />
     <Compile Include="ViewModels\user.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -257,6 +258,7 @@
     <Content Include="Scripts\jquery-3.7.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.1.min.map" />
     <Content Include="Views\Home\rental_management.cshtml" />
+    <Content Include="Views\Home\QL_room.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
