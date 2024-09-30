@@ -1629,6 +1629,7 @@ namespace _2home.Models
 			this.SendPropertyChanging();
 			entity.user = null;
 		}
+
 	}
 }
 #pragma warning restore 1591

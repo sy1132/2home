@@ -26,13 +26,13 @@ namespace _2home.Controllers
 {
     public class HomeController : Controller
     {
-        
-        DataClasses1DataContext db= new DataClasses1DataContext();
+
+        DataClasses1DataContext db = new DataClasses1DataContext();
 
         public ActionResult Index(int? size, int? page, string searchString, string City, string Ward, string District)
         {
             ViewBag.Keyword = searchString;
-            
+
             var query = from img in db.imgs
                         join motel in db.Motels on img.ID_user equals motel.ID_user
                         where motel.is_available == "Còn trống"
@@ -44,15 +44,15 @@ namespace _2home.Controllers
                             motel.is_available,
                             motel.ID_user
                         } into grouped
-                select new index_Viewmodel
-                {
-                    ImgLink = grouped.Select(g => g.Link).FirstOrDefault(),
-                    MotelName = grouped.Key.Name_motel,
-                    Location = grouped.Key.location,
-                    Price = grouped.Key.price,
-                    is_available = grouped.Key.is_available,
-                    ID_user = grouped.Key.ID_user
-                };
+                        select new index_Viewmodel
+                        {
+                            ImgLink = grouped.Select(g => g.Link).FirstOrDefault(),
+                            MotelName = grouped.Key.Name_motel,
+                            Location = grouped.Key.location,
+                            Price = grouped.Key.price,
+                            is_available = grouped.Key.is_available,
+                            ID_user = grouped.Key.ID_user
+                        };
             if (!String.IsNullOrEmpty(searchString))
                 query = query.Where(b => b.MotelName.Contains(searchString));
 
@@ -77,7 +77,7 @@ namespace _2home.Controllers
                 if (item.Value == size.ToString()) item.Selected = true;
             }
             ViewBag.size = items;
-            ViewBag.currentSize = size; 
+            ViewBag.currentSize = size;
 
             page = page ?? 1;
             int pageSize = (size ?? 10);
@@ -140,7 +140,7 @@ namespace _2home.Controllers
 
             using (var db = new DataClasses1DataContext())
             {
-              
+
                 var user = db.users.FirstOrDefault(u =>
                     (u.Email == account || u.username.ToString() == account) && u.password == password);
 
@@ -148,21 +148,22 @@ namespace _2home.Controllers
                 {
                     Session["User"] = new _2home.ViewModels.User
                     {
-                        ID_user=user.ID_user,
+                        ID_user = user.ID_user,
                         username = user.username,
                         Email = user.Email,
                         password = user.password,
-                        fullname= user.fullname,
-                        userrole=user.userrole,
+                        fullname = user.fullname,
+                        userrole = user.userrole,
                     };
                     ViewBag.Message = "Đăng nhập thành công!";
                     return RedirectToAction("Index", "Home");
-                }else
-                    {
-                        ViewBag.Message = "Tên tài khoản hoặc mật khẩu không đúng!";
-                        return View();
-                    }
-                
+                }
+                else
+                {
+                    ViewBag.Message = "Tên tài khoản hoặc mật khẩu không đúng!";
+                    return View();
+                }
+
             }
         }
         public ActionResult Logout()
@@ -214,72 +215,72 @@ namespace _2home.Controllers
         [HttpPost]
         public ActionResult DKthue(string roomName, int? Rooms, string LocationName, string city, string ward, string district, decimal Price, IEnumerable<HttpPostedFileBase> Images, HttpPostedFileBase Video)
         {
-            
-                using (var db = new DataClasses1DataContext())
-                {
-                    var user= Session["User"] as _2home.ViewModels.User;
+
+            using (var db = new DataClasses1DataContext())
+            {
+                var user = Session["User"] as _2home.ViewModels.User;
                 if (user == null)
                 {
                     return RedirectToAction("Login");
                 }
                 var motel = new _2home.Models.Motel
-                    {
-                        Name_motel = roomName,
-                        location = $"{LocationName} ({city}, {ward}, {district})",
-                        price = Price,
-                        is_available = "Đang chờ duyệt",
-                        ID_user=user.ID_user,
-                    };
-                    db.Motels.InsertOnSubmit(motel);
-                    db.SubmitChanges(); 
+                {
+                    Name_motel = roomName,
+                    location = $"{LocationName} ({city}, {ward}, {district})",
+                    price = Price,
+                    is_available = "Đang chờ duyệt",
+                    ID_user = user.ID_user,
+                };
+                db.Motels.InsertOnSubmit(motel);
+                db.SubmitChanges();
 
-                    if (Images != null && Images.Any())
+                if (Images != null && Images.Any())
+                {
+                    foreach (var image in Images)
                     {
-                        foreach (var image in Images)
+                        if (image != null && image.ContentLength > 0)
                         {
-                            if (image != null && image.ContentLength > 0)
+                            var imagePath = Path.Combine(Server.MapPath("~/asset/images"), Path.GetFileName(image.FileName));
+                            image.SaveAs(imagePath);
+
+                            var motelImage = new _2home.Models.img
                             {
-                                var imagePath = Path.Combine(Server.MapPath("~/asset/images"), Path.GetFileName(image.FileName));
-                                image.SaveAs(imagePath);
-
-                                var motelImage = new _2home.Models.img
-                                {
-                                    Link = $"/asset/images/{Path.GetFileName(image.FileName)}",
-                                    createdAt = DateTime.Now,
-                                    updatedAt = DateTime.Now,
-                                    ID_user = user.ID_user,
+                                Link = $"/asset/images/{Path.GetFileName(image.FileName)}",
+                                createdAt = DateTime.Now,
+                                updatedAt = DateTime.Now,
+                                ID_user = user.ID_user,
 
 
-                                };
+                            };
 
-                                db.imgs.InsertOnSubmit(motelImage);
-                            }
+                            db.imgs.InsertOnSubmit(motelImage);
                         }
                     }
-
-                    if (Video != null && Video.ContentLength > 0)
-                    {
-                        var videoPath = Path.Combine(Server.MapPath("/asset/videos/"), Path.GetFileName(Video.FileName));
-                        Video.SaveAs(videoPath);
-
-                        var motelVideo = new _2home.Models.Video
-                        {
-                            Link = $"/asset/videos/{Path.GetFileName(Video.FileName)}",
-                            createdAt = DateTime.Now,
-                            updatedAt = DateTime.Now,
-                            ID_user = user.ID_user,
-
-                        };
-
-                        db.Videos.InsertOnSubmit(motelVideo);
-                    }
-
-                    db.SubmitChanges(); 
-
-                    return RedirectToAction("index");
                 }
-            
-          
+
+                if (Video != null && Video.ContentLength > 0)
+                {
+                    var videoPath = Path.Combine(Server.MapPath("/asset/videos/"), Path.GetFileName(Video.FileName));
+                    Video.SaveAs(videoPath);
+
+                    var motelVideo = new _2home.Models.Video
+                    {
+                        Link = $"/asset/videos/{Path.GetFileName(Video.FileName)}",
+                        createdAt = DateTime.Now,
+                        updatedAt = DateTime.Now,
+                        ID_user = user.ID_user,
+
+                    };
+
+                    db.Videos.InsertOnSubmit(motelVideo);
+                }
+
+                db.SubmitChanges();
+
+                return RedirectToAction("index");
+            }
+
+
         }
 
 
@@ -292,11 +293,11 @@ namespace _2home.Controllers
                 ID_user = u.ID_user,
                 username = u.username,
                 fullname = u.fullname,
-                password=u.password,
+                password = u.password,
                 MotelID = u.MotelID,
                 Email = u.Email,
                 PhoneNumber = u.PhoneNumber,
-                userrole=u.userrole,
+                userrole = u.userrole,
                 gender = u.gender
             });
             if (!String.IsNullOrEmpty(fullname))
@@ -340,17 +341,17 @@ namespace _2home.Controllers
         [HttpPost]
         public ActionResult UpdateUserRole(int ID_user, string userrole)
         {
-            
-                using (var context = new DataClasses1DataContext())
+
+            using (var context = new DataClasses1DataContext())
+            {
+                var role = context.users.FirstOrDefault(m => m.ID_user == ID_user);
+                if (role != null)
                 {
-                    var role = context.users.FirstOrDefault(m => m.ID_user == ID_user);
-                    if (role != null)
-                    {
-                        role.userrole = userrole;
-                        context.SubmitChanges();
-                    }
+                    role.userrole = userrole;
+                    context.SubmitChanges();
                 }
-                return RedirectToAction("Manager_DK");
+            }
+            return RedirectToAction("Manager_DK");
         }
 
         public ActionResult rental_management(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
@@ -425,28 +426,30 @@ namespace _2home.Controllers
         public ActionResult UpdateAvailability(int ID_user, string is_available)
         {
 
-            using (var context =new DataClasses1DataContext()) 
-  {
+            using (var context = new DataClasses1DataContext())
+            {
                 var motel = context.Motels.FirstOrDefault(m => m.ID_user == ID_user);
                 if (motel != null)
                 {
-                  motel.is_available = is_available;
+                    motel.is_available = is_available;
                     context.SubmitChanges();
                 }
-           }
+            }
             return RedirectToAction("rental_management");
         }
 
         public ActionResult togher()
 
         {
-
-
             ViewBag.message = "Ghép phòng";
 
             return View();
 
         }
 
+        public ActionResult Profile_user(int ID_user)
+        {
+            return View();
+        }
     }
 }
