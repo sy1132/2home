@@ -214,72 +214,66 @@ namespace _2home.Controllers
         [HttpPost]
         public ActionResult DKthue(string roomName, int? Rooms, string LocationName, string city, string ward, string district, decimal Price, IEnumerable<HttpPostedFileBase> Images, HttpPostedFileBase Video)
         {
-            
-                using (var db = new DataClasses1DataContext())
-                {
-                    var user= Session["User"] as _2home.ViewModels.User;
+            using (var db = new DataClasses1DataContext())
+            {
+                var user = Session["User"] as _2home.ViewModels.User;
                 if (user == null)
                 {
                     return RedirectToAction("Login");
                 }
+
                 var motel = new _2home.Models.Motel
-                    {
-                        Name_motel = roomName,
-                        location = $"{LocationName} ({city}, {ward}, {district})",
-                        price = Price,
-                        is_available = "Đang chờ duyệt",
-                        ID_user=user.ID_user,
-                    };
-                    db.Motels.InsertOnSubmit(motel);
-                    db.SubmitChanges(); 
+                {
+                    Name_motel = roomName,
+                    location = $"{LocationName} ({city}, {ward}, {district})",
+                    price = Price,
+                    is_available = "Đang chờ duyệt",
+                    ID_user = user.ID_user,
+                };
 
-                    if (Images != null && Images.Any())
+                db.Motels.InsertOnSubmit(motel);
+                db.SubmitChanges();
+
+                if (Images != null && Images.Any())
+                {
+                    foreach (var image in Images)
                     {
-                        foreach (var image in Images)
+                        if (image != null && image.ContentLength > 0)
                         {
-                            if (image != null && image.ContentLength > 0)
+                            var imagePath = Path.Combine(Server.MapPath("/asset/images"), Path.GetFileName(image.FileName));
+                            image.SaveAs(imagePath);
+
+                            var motelImage = new _2home.Models.img
                             {
-                                var imagePath = Path.Combine(Server.MapPath("~/asset/images"), Path.GetFileName(image.FileName));
-                                image.SaveAs(imagePath);
+                                Link = $"/asset/images/{Path.GetFileName(image.FileName)}",
+                                createdAt = DateTime.Now,
+                                updatedAt = DateTime.Now,
+                                ID_user = user.ID_user,
+                            };
 
-                                var motelImage = new _2home.Models.img
-                                {
-                                    Link = $"/asset/images/{Path.GetFileName(image.FileName)}",
-                                    createdAt = DateTime.Now,
-                                    updatedAt = DateTime.Now,
-                                    ID_user = user.ID_user,
-
-
-                                };
-
-                                db.imgs.InsertOnSubmit(motelImage);
-                            }
+                            db.imgs.InsertOnSubmit(motelImage);
                         }
                     }
-
-                    if (Video != null && Video.ContentLength > 0)
-                    {
-                        var videoPath = Path.Combine(Server.MapPath("/asset/videos/"), Path.GetFileName(Video.FileName));
-                        Video.SaveAs(videoPath);
-
-                        var motelVideo = new _2home.Models.Video
-                        {
-                            Link = $"/asset/videos/{Path.GetFileName(Video.FileName)}",
-                            createdAt = DateTime.Now,
-                            updatedAt = DateTime.Now,
-                            ID_user = user.ID_user,
-
-                        };
-
-                        db.Videos.InsertOnSubmit(motelVideo);
-                    }
-
-                    db.SubmitChanges(); 
-
-                    return RedirectToAction("index");
                 }
-            
-          
+
+                
+                    var videoPath = Path.Combine(Server.MapPath("/asset/videos/"), Path.GetFileName(Video.FileName));
+                    Video.SaveAs(videoPath);
+
+                    var motelVideo = new _2home.Models.Video
+                    {
+                        Link = $"/asset/videos/{Path.GetFileName(Video.FileName)}", // Lưu đường dẫn video
+                        createdAt = DateTime.Now,
+                        updatedAt = DateTime.Now,
+                        ID_user = user.ID_user,
+                    };
+
+                    db.Videos.InsertOnSubmit(motelVideo);
+                
+
+                db.SubmitChanges();
+                return RedirectToAction("index");
+            }
         }
 
 
