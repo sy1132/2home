@@ -1,8 +1,89 @@
-﻿
-@{
-    ViewBag.Title = "Profile_user";
+﻿@{
+    ViewBag.Title = "Thông tin người dùng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Profile_user</h2>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title">Thông tin người dùng</h2>
+                </div>
+                <div class="card-body">
+                    <p><strong>Họ và tên:</strong> @ViewBag.Fullname</p>
+                    <p><strong>Email:</strong> @ViewBag.Email</p>
+                    <p><strong>Số điện thoại:</strong> @ViewBag.PhoneNumber</p>
+                    <p><strong>Giới tính:</strong> @ViewBag.Gender</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-light" id="btnMotel">Số trọ đã đăng ký</button>
+                        <button type="button" class="btn btn-outline-light" id="btnRoom">Số phòng đã đăng cho thuê</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover mt-3" id="motelTable">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Tên trọ</th>
+                                <th>Địa điểm</th>
+                                <th>Giá</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.Rooms)
+                            {
+                                <tr>
+                                    <td>@item.Name_motel</td>
+                                    <td>@item.location</td>
+                                    <td>@item.price</td>
+                                    <td>@item.is_available ? "Còn trống" : "Không còn trống"</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <table class="table table-hover mt-3" id="roomTable" style="display:none;">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Tên phòng</th>
+                                <th>Địa điểm</th>
+                                <th>Giá</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.Rooms)
+                            {
+                                <tr>
+                                    <td>@item.Name_motel</td>
+                                    <td>@item.location</td>
+                                    <td>@item.price</td>
+                                    <td>@item.is_available ? "Còn trống" : "Không còn trống"</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('btnMotel').addEventListener('click', function () {
+        document.getElementById('motelTable').style.display = 'table';
+        document.getElementById('roomTable').style.display = 'none';
+    });
+
+    document.getElementById('btnRoom').addEventListener('click', function () {
+        document.getElementById('motelTable').style.display = 'none';
+        document.getElementById('roomTable').style.display = 'table';
+    });
+</script>
 
