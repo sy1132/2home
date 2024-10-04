@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="secondhome" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Table Name="dbo.img" Member="imgs">
     <Type Name="img">
-      <Column Name="img_ID" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="img_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="updatedAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="createdAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
@@ -9,9 +9,34 @@
       <Association Name="user_img" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Room_Invoice" Member="Room_Invoices">
-    <Type Name="Room_Invoice">
-      <Column Name="room_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+  <Table Name="dbo.Video" Member="Videos">
+    <Type Name="Video">
+      <Column Name="video_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="updatedAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="createdAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Link" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="user_Video" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Motel" Member="Motels">
+    <Type Name="Motel">
+      <Column Name="Motel_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Name_motel" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Postal_Code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="is_available" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Motel_Room" Member="Rooms" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Room" />
+      <Association Name="user_Motel" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Rooms" Member="Rooms">
+    <Type Name="Room">
+      <Column Name="room_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Motel_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Date_of_Issue" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="Electricity_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
       <Column Name="Water_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
@@ -23,49 +48,13 @@
       <Column Name="Room_Rent" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
       <Column Name="Additional_Charges" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
       <Column Name="Total_Amount_Due" Type="System.Decimal" DbType="Decimal(15,2)" CanBeNull="true" />
-      <Association Name="room_Room_Invoice" Member="room" ThisKey="room_ID" OtherKey="room_ID" Type="room" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.rooms" Member="rooms">
-    <Type Name="room">
-      <Column Name="room_ID" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Motel_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Electricity_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Water_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Electricity_Usage" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Water_Usage" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Room_Status" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Room_Rent" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Association Name="room_Room_Invoice" Member="Room_Invoices" ThisKey="room_ID" OtherKey="room_ID" Type="Room_Invoice" />
-      <Association Name="Motel_room" Member="Motel" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Motel" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Video" Member="Videos">
-    <Type Name="Video">
-      <Column Name="video_ID" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="updatedAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="createdAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Link" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Association Name="user_Video" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Motel" Member="Motels">
-    <Type Name="Motel">
-      <Column Name="Motel_ID" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Name_motel" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="Postal_Code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="location" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="price" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="is_available" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="Motel_room" Member="rooms" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="room" />
-      <Association Name="user_Motel" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
+      <Association Name="Motel_Room" Member="Motel" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Motel" IsForeignKey="true" />
+      <Association Name="user_Room" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.[user]" Member="users">
     <Type Name="user">
-      <Column Name="ID_user" AutoSync="Never" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_user" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="username" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="password" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="fullname" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
@@ -77,6 +66,7 @@
       <Association Name="user_img" Member="imgs" ThisKey="ID_user" OtherKey="ID_user" Type="img" />
       <Association Name="user_Video" Member="Videos" ThisKey="ID_user" OtherKey="ID_user" Type="Video" />
       <Association Name="user_Motel" Member="Motels" ThisKey="ID_user" OtherKey="ID_user" Type="Motel" />
+      <Association Name="user_Room" Member="Rooms" ThisKey="ID_user" OtherKey="ID_user" Type="Room" />
     </Type>
   </Table>
 </Database>

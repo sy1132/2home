@@ -33,15 +33,15 @@ namespace _2home.Models
     partial void Insertimg(img instance);
     partial void Updateimg(img instance);
     partial void Deleteimg(img instance);
-    partial void Insertroom(room instance);
-    partial void Updateroom(room instance);
-    partial void Deleteroom(room instance);
     partial void InsertVideo(Video instance);
     partial void UpdateVideo(Video instance);
     partial void DeleteVideo(Video instance);
     partial void InsertMotel(Motel instance);
     partial void UpdateMotel(Motel instance);
     partial void DeleteMotel(Motel instance);
+    partial void InsertRoom(Room instance);
+    partial void UpdateRoom(Room instance);
+    partial void DeleteRoom(Room instance);
     partial void Insertuser(user instance);
     partial void Updateuser(user instance);
     partial void Deleteuser(user instance);
@@ -52,18 +52,18 @@ namespace _2home.Models
 		{
 			OnCreated();
 		}
-        public DataClasses1DataContext() :
-        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString1"].ConnectionString, mappingSource)
-        {
-
-        }
-        public DataClasses1DataContext(System.Data.IDbConnection connection) : 
+		
+		public DataClasses1DataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
-		
-		public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+        public DataClasses1DataContext() :
+        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString"].ConnectionString, mappingSource)
+        {
+
+        }
+        public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -83,22 +83,6 @@ namespace _2home.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Room_Invoice> Room_Invoices
-		{
-			get
-			{
-				return this.GetTable<Room_Invoice>();
-			}
-		}
-		
-		public System.Data.Linq.Table<room> rooms
-		{
-			get
-			{
-				return this.GetTable<room>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Video> Videos
 		{
 			get
@@ -112,6 +96,14 @@ namespace _2home.Models
 			get
 			{
 				return this.GetTable<Motel>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Room> Rooms
+		{
+			get
+			{
+				return this.GetTable<Room>();
 			}
 		}
 		
@@ -164,7 +156,7 @@ namespace _2home.Models
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_img_ID", DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_img_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int img_ID
 		{
 			get
@@ -323,502 +315,6 @@ namespace _2home.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Room_Invoice")]
-	public partial class Room_Invoice
-	{
-		
-		private System.Nullable<int> _room_ID;
-		
-		private System.Nullable<System.DateTime> _Date_of_Issue;
-		
-		private System.Nullable<decimal> _Electricity_Meter;
-		
-		private System.Nullable<decimal> _Water_Meter;
-		
-		private System.Nullable<decimal> _Electricity_Usage;
-		
-		private System.Nullable<decimal> _Water_Usage;
-		
-		private System.Nullable<decimal> _Electricity_Bill;
-		
-		private System.Nullable<decimal> _Water_Bill;
-		
-		private string _Room_Status;
-		
-		private System.Nullable<decimal> _Room_Rent;
-		
-		private System.Nullable<decimal> _Additional_Charges;
-		
-		private System.Nullable<decimal> _Total_Amount_Due;
-		
-		public Room_Invoice()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_room_ID", DbType="Int")]
-		public System.Nullable<int> room_ID
-		{
-			get
-			{
-				return this._room_ID;
-			}
-			set
-			{
-				if ((this._room_ID != value))
-				{
-					this._room_ID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date_of_Issue", DbType="Date")]
-		public System.Nullable<System.DateTime> Date_of_Issue
-		{
-			get
-			{
-				return this._Date_of_Issue;
-			}
-			set
-			{
-				if ((this._Date_of_Issue != value))
-				{
-					this._Date_of_Issue = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Electricity_Meter", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Electricity_Meter
-		{
-			get
-			{
-				return this._Electricity_Meter;
-			}
-			set
-			{
-				if ((this._Electricity_Meter != value))
-				{
-					this._Electricity_Meter = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Water_Meter", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Water_Meter
-		{
-			get
-			{
-				return this._Water_Meter;
-			}
-			set
-			{
-				if ((this._Water_Meter != value))
-				{
-					this._Water_Meter = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Electricity_Usage", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Electricity_Usage
-		{
-			get
-			{
-				return this._Electricity_Usage;
-			}
-			set
-			{
-				if ((this._Electricity_Usage != value))
-				{
-					this._Electricity_Usage = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Water_Usage", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Water_Usage
-		{
-			get
-			{
-				return this._Water_Usage;
-			}
-			set
-			{
-				if ((this._Water_Usage != value))
-				{
-					this._Water_Usage = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Electricity_Bill", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Electricity_Bill
-		{
-			get
-			{
-				return this._Electricity_Bill;
-			}
-			set
-			{
-				if ((this._Electricity_Bill != value))
-				{
-					this._Electricity_Bill = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Water_Bill", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Water_Bill
-		{
-			get
-			{
-				return this._Water_Bill;
-			}
-			set
-			{
-				if ((this._Water_Bill != value))
-				{
-					this._Water_Bill = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Room_Status", DbType="NVarChar(50)")]
-		public string Room_Status
-		{
-			get
-			{
-				return this._Room_Status;
-			}
-			set
-			{
-				if ((this._Room_Status != value))
-				{
-					this._Room_Status = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Room_Rent", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Room_Rent
-		{
-			get
-			{
-				return this._Room_Rent;
-			}
-			set
-			{
-				if ((this._Room_Rent != value))
-				{
-					this._Room_Rent = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Additional_Charges", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Additional_Charges
-		{
-			get
-			{
-				return this._Additional_Charges;
-			}
-			set
-			{
-				if ((this._Additional_Charges != value))
-				{
-					this._Additional_Charges = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Total_Amount_Due", DbType="Decimal(15,2)")]
-		public System.Nullable<decimal> Total_Amount_Due
-		{
-			get
-			{
-				return this._Total_Amount_Due;
-			}
-			set
-			{
-				if ((this._Total_Amount_Due != value))
-				{
-					this._Total_Amount_Due = value;
-				}
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.rooms")]
-	public partial class room : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _room_ID;
-		
-		private System.Nullable<int> _Motel_ID;
-		
-		private System.Nullable<decimal> _Electricity_Meter;
-		
-		private System.Nullable<decimal> _Water_Meter;
-		
-		private System.Nullable<decimal> _Electricity_Usage;
-		
-		private System.Nullable<decimal> _Water_Usage;
-		
-		private string _Room_Status;
-		
-		private System.Nullable<decimal> _Room_Rent;
-		
-		private EntityRef<Motel> _Motel;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void Onroom_IDChanging(int value);
-    partial void Onroom_IDChanged();
-    partial void OnMotel_IDChanging(System.Nullable<int> value);
-    partial void OnMotel_IDChanged();
-    partial void OnElectricity_MeterChanging(System.Nullable<decimal> value);
-    partial void OnElectricity_MeterChanged();
-    partial void OnWater_MeterChanging(System.Nullable<decimal> value);
-    partial void OnWater_MeterChanged();
-    partial void OnElectricity_UsageChanging(System.Nullable<decimal> value);
-    partial void OnElectricity_UsageChanged();
-    partial void OnWater_UsageChanging(System.Nullable<decimal> value);
-    partial void OnWater_UsageChanged();
-    partial void OnRoom_StatusChanging(string value);
-    partial void OnRoom_StatusChanged();
-    partial void OnRoom_RentChanging(System.Nullable<decimal> value);
-    partial void OnRoom_RentChanged();
-    #endregion
-		
-		public room()
-		{
-			this._Motel = default(EntityRef<Motel>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_room_ID", DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int room_ID
-		{
-			get
-			{
-				return this._room_ID;
-			}
-			set
-			{
-				if ((this._room_ID != value))
-				{
-					this.Onroom_IDChanging(value);
-					this.SendPropertyChanging();
-					this._room_ID = value;
-					this.SendPropertyChanged("room_ID");
-					this.Onroom_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", DbType="Int")]
-		public System.Nullable<int> Motel_ID
-		{
-			get
-			{
-				return this._Motel_ID;
-			}
-			set
-			{
-				if ((this._Motel_ID != value))
-				{
-					if (this._Motel.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnMotel_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Motel_ID = value;
-					this.SendPropertyChanged("Motel_ID");
-					this.OnMotel_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Electricity_Meter", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Electricity_Meter
-		{
-			get
-			{
-				return this._Electricity_Meter;
-			}
-			set
-			{
-				if ((this._Electricity_Meter != value))
-				{
-					this.OnElectricity_MeterChanging(value);
-					this.SendPropertyChanging();
-					this._Electricity_Meter = value;
-					this.SendPropertyChanged("Electricity_Meter");
-					this.OnElectricity_MeterChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Water_Meter", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Water_Meter
-		{
-			get
-			{
-				return this._Water_Meter;
-			}
-			set
-			{
-				if ((this._Water_Meter != value))
-				{
-					this.OnWater_MeterChanging(value);
-					this.SendPropertyChanging();
-					this._Water_Meter = value;
-					this.SendPropertyChanged("Water_Meter");
-					this.OnWater_MeterChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Electricity_Usage", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Electricity_Usage
-		{
-			get
-			{
-				return this._Electricity_Usage;
-			}
-			set
-			{
-				if ((this._Electricity_Usage != value))
-				{
-					this.OnElectricity_UsageChanging(value);
-					this.SendPropertyChanging();
-					this._Electricity_Usage = value;
-					this.SendPropertyChanged("Electricity_Usage");
-					this.OnElectricity_UsageChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Water_Usage", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Water_Usage
-		{
-			get
-			{
-				return this._Water_Usage;
-			}
-			set
-			{
-				if ((this._Water_Usage != value))
-				{
-					this.OnWater_UsageChanging(value);
-					this.SendPropertyChanging();
-					this._Water_Usage = value;
-					this.SendPropertyChanged("Water_Usage");
-					this.OnWater_UsageChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Room_Status", DbType="NVarChar(50)")]
-		public string Room_Status
-		{
-			get
-			{
-				return this._Room_Status;
-			}
-			set
-			{
-				if ((this._Room_Status != value))
-				{
-					this.OnRoom_StatusChanging(value);
-					this.SendPropertyChanging();
-					this._Room_Status = value;
-					this.SendPropertyChanged("Room_Status");
-					this.OnRoom_StatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Room_Rent", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Room_Rent
-		{
-			get
-			{
-				return this._Room_Rent;
-			}
-			set
-			{
-				if ((this._Room_Rent != value))
-				{
-					this.OnRoom_RentChanging(value);
-					this.SendPropertyChanging();
-					this._Room_Rent = value;
-					this.SendPropertyChanged("Room_Rent");
-					this.OnRoom_RentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_room", Storage="_Motel", ThisKey="Motel_ID", OtherKey="Motel_ID", IsForeignKey=true)]
-		public Motel Motel
-		{
-			get
-			{
-				return this._Motel.Entity;
-			}
-			set
-			{
-				Motel previousValue = this._Motel.Entity;
-				if (((previousValue != value) 
-							|| (this._Motel.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Motel.Entity = null;
-						previousValue.rooms.Remove(this);
-					}
-					this._Motel.Entity = value;
-					if ((value != null))
-					{
-						value.rooms.Add(this);
-						this._Motel_ID = value.Motel_ID;
-					}
-					else
-					{
-						this._Motel_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Motel");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Video")]
 	public partial class Video : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -859,7 +355,7 @@ namespace _2home.Models
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_video_ID", DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_video_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int video_ID
 		{
 			get
@@ -1038,7 +534,7 @@ namespace _2home.Models
 		
 		private string _is_available;
 		
-		private EntitySet<room> _rooms;
+		private EntitySet<Room> _Rooms;
 		
 		private EntityRef<user> _user;
 		
@@ -1064,12 +560,12 @@ namespace _2home.Models
 		
 		public Motel()
 		{
-			this._rooms = new EntitySet<room>(new Action<room>(this.attach_rooms), new Action<room>(this.detach_rooms));
+			this._Rooms = new EntitySet<Room>(new Action<Room>(this.attach_Rooms), new Action<Room>(this.detach_Rooms));
 			this._user = default(EntityRef<user>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int Motel_ID
 		{
 			get
@@ -1213,16 +709,16 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_room", Storage="_rooms", ThisKey="Motel_ID", OtherKey="Motel_ID")]
-		public EntitySet<room> rooms
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Rooms", ThisKey="Motel_ID", OtherKey="Motel_ID")]
+		public EntitySet<Room> Rooms
 		{
 			get
 			{
-				return this._rooms;
+				return this._Rooms;
 			}
 			set
 			{
-				this._rooms.Assign(value);
+				this._Rooms.Assign(value);
 			}
 		}
 		
@@ -1280,16 +776,472 @@ namespace _2home.Models
 			}
 		}
 		
-		private void attach_rooms(room entity)
+		private void attach_Rooms(Room entity)
 		{
 			this.SendPropertyChanging();
 			entity.Motel = this;
 		}
 		
-		private void detach_rooms(room entity)
+		private void detach_Rooms(Room entity)
 		{
 			this.SendPropertyChanging();
 			entity.Motel = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Rooms")]
+	public partial class Room : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _room_ID;
+		
+		private System.Nullable<int> _Motel_ID;
+		
+		private System.Nullable<int> _ID_user;
+		
+		private System.Nullable<System.DateTime> _Date_of_Issue;
+		
+		private System.Nullable<decimal> _Electricity_Meter;
+		
+		private System.Nullable<decimal> _Water_Meter;
+		
+		private System.Nullable<decimal> _Electricity_Usage;
+		
+		private System.Nullable<decimal> _Water_Usage;
+		
+		private System.Nullable<decimal> _Electricity_Bill;
+		
+		private System.Nullable<decimal> _Water_Bill;
+		
+		private string _Room_Status;
+		
+		private System.Nullable<decimal> _Room_Rent;
+		
+		private System.Nullable<decimal> _Additional_Charges;
+		
+		private System.Nullable<decimal> _Total_Amount_Due;
+		
+		private EntityRef<Motel> _Motel;
+		
+		private EntityRef<user> _user;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Onroom_IDChanging(int value);
+    partial void Onroom_IDChanged();
+    partial void OnMotel_IDChanging(System.Nullable<int> value);
+    partial void OnMotel_IDChanged();
+    partial void OnID_userChanging(System.Nullable<int> value);
+    partial void OnID_userChanged();
+    partial void OnDate_of_IssueChanging(System.Nullable<System.DateTime> value);
+    partial void OnDate_of_IssueChanged();
+    partial void OnElectricity_MeterChanging(System.Nullable<decimal> value);
+    partial void OnElectricity_MeterChanged();
+    partial void OnWater_MeterChanging(System.Nullable<decimal> value);
+    partial void OnWater_MeterChanged();
+    partial void OnElectricity_UsageChanging(System.Nullable<decimal> value);
+    partial void OnElectricity_UsageChanged();
+    partial void OnWater_UsageChanging(System.Nullable<decimal> value);
+    partial void OnWater_UsageChanged();
+    partial void OnElectricity_BillChanging(System.Nullable<decimal> value);
+    partial void OnElectricity_BillChanged();
+    partial void OnWater_BillChanging(System.Nullable<decimal> value);
+    partial void OnWater_BillChanged();
+    partial void OnRoom_StatusChanging(string value);
+    partial void OnRoom_StatusChanged();
+    partial void OnRoom_RentChanging(System.Nullable<decimal> value);
+    partial void OnRoom_RentChanged();
+    partial void OnAdditional_ChargesChanging(System.Nullable<decimal> value);
+    partial void OnAdditional_ChargesChanged();
+    partial void OnTotal_Amount_DueChanging(System.Nullable<decimal> value);
+    partial void OnTotal_Amount_DueChanged();
+    #endregion
+		
+		public Room()
+		{
+			this._Motel = default(EntityRef<Motel>);
+			this._user = default(EntityRef<user>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_room_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int room_ID
+		{
+			get
+			{
+				return this._room_ID;
+			}
+			set
+			{
+				if ((this._room_ID != value))
+				{
+					this.Onroom_IDChanging(value);
+					this.SendPropertyChanging();
+					this._room_ID = value;
+					this.SendPropertyChanged("room_ID");
+					this.Onroom_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", DbType="Int")]
+		public System.Nullable<int> Motel_ID
+		{
+			get
+			{
+				return this._Motel_ID;
+			}
+			set
+			{
+				if ((this._Motel_ID != value))
+				{
+					if (this._Motel.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMotel_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Motel_ID = value;
+					this.SendPropertyChanged("Motel_ID");
+					this.OnMotel_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int")]
+		public System.Nullable<int> ID_user
+		{
+			get
+			{
+				return this._ID_user;
+			}
+			set
+			{
+				if ((this._ID_user != value))
+				{
+					if (this._user.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnID_userChanging(value);
+					this.SendPropertyChanging();
+					this._ID_user = value;
+					this.SendPropertyChanged("ID_user");
+					this.OnID_userChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date_of_Issue", DbType="Date")]
+		public System.Nullable<System.DateTime> Date_of_Issue
+		{
+			get
+			{
+				return this._Date_of_Issue;
+			}
+			set
+			{
+				if ((this._Date_of_Issue != value))
+				{
+					this.OnDate_of_IssueChanging(value);
+					this.SendPropertyChanging();
+					this._Date_of_Issue = value;
+					this.SendPropertyChanged("Date_of_Issue");
+					this.OnDate_of_IssueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Electricity_Meter", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Electricity_Meter
+		{
+			get
+			{
+				return this._Electricity_Meter;
+			}
+			set
+			{
+				if ((this._Electricity_Meter != value))
+				{
+					this.OnElectricity_MeterChanging(value);
+					this.SendPropertyChanging();
+					this._Electricity_Meter = value;
+					this.SendPropertyChanged("Electricity_Meter");
+					this.OnElectricity_MeterChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Water_Meter", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Water_Meter
+		{
+			get
+			{
+				return this._Water_Meter;
+			}
+			set
+			{
+				if ((this._Water_Meter != value))
+				{
+					this.OnWater_MeterChanging(value);
+					this.SendPropertyChanging();
+					this._Water_Meter = value;
+					this.SendPropertyChanged("Water_Meter");
+					this.OnWater_MeterChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Electricity_Usage", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Electricity_Usage
+		{
+			get
+			{
+				return this._Electricity_Usage;
+			}
+			set
+			{
+				if ((this._Electricity_Usage != value))
+				{
+					this.OnElectricity_UsageChanging(value);
+					this.SendPropertyChanging();
+					this._Electricity_Usage = value;
+					this.SendPropertyChanged("Electricity_Usage");
+					this.OnElectricity_UsageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Water_Usage", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Water_Usage
+		{
+			get
+			{
+				return this._Water_Usage;
+			}
+			set
+			{
+				if ((this._Water_Usage != value))
+				{
+					this.OnWater_UsageChanging(value);
+					this.SendPropertyChanging();
+					this._Water_Usage = value;
+					this.SendPropertyChanged("Water_Usage");
+					this.OnWater_UsageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Electricity_Bill", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Electricity_Bill
+		{
+			get
+			{
+				return this._Electricity_Bill;
+			}
+			set
+			{
+				if ((this._Electricity_Bill != value))
+				{
+					this.OnElectricity_BillChanging(value);
+					this.SendPropertyChanging();
+					this._Electricity_Bill = value;
+					this.SendPropertyChanged("Electricity_Bill");
+					this.OnElectricity_BillChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Water_Bill", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Water_Bill
+		{
+			get
+			{
+				return this._Water_Bill;
+			}
+			set
+			{
+				if ((this._Water_Bill != value))
+				{
+					this.OnWater_BillChanging(value);
+					this.SendPropertyChanging();
+					this._Water_Bill = value;
+					this.SendPropertyChanged("Water_Bill");
+					this.OnWater_BillChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Room_Status", DbType="NVarChar(50)")]
+		public string Room_Status
+		{
+			get
+			{
+				return this._Room_Status;
+			}
+			set
+			{
+				if ((this._Room_Status != value))
+				{
+					this.OnRoom_StatusChanging(value);
+					this.SendPropertyChanging();
+					this._Room_Status = value;
+					this.SendPropertyChanged("Room_Status");
+					this.OnRoom_StatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Room_Rent", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Room_Rent
+		{
+			get
+			{
+				return this._Room_Rent;
+			}
+			set
+			{
+				if ((this._Room_Rent != value))
+				{
+					this.OnRoom_RentChanging(value);
+					this.SendPropertyChanging();
+					this._Room_Rent = value;
+					this.SendPropertyChanged("Room_Rent");
+					this.OnRoom_RentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Additional_Charges", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Additional_Charges
+		{
+			get
+			{
+				return this._Additional_Charges;
+			}
+			set
+			{
+				if ((this._Additional_Charges != value))
+				{
+					this.OnAdditional_ChargesChanging(value);
+					this.SendPropertyChanging();
+					this._Additional_Charges = value;
+					this.SendPropertyChanged("Additional_Charges");
+					this.OnAdditional_ChargesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Total_Amount_Due", DbType="Decimal(15,2)")]
+		public System.Nullable<decimal> Total_Amount_Due
+		{
+			get
+			{
+				return this._Total_Amount_Due;
+			}
+			set
+			{
+				if ((this._Total_Amount_Due != value))
+				{
+					this.OnTotal_Amount_DueChanging(value);
+					this.SendPropertyChanging();
+					this._Total_Amount_Due = value;
+					this.SendPropertyChanged("Total_Amount_Due");
+					this.OnTotal_Amount_DueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Motel", ThisKey="Motel_ID", OtherKey="Motel_ID", IsForeignKey=true)]
+		public Motel Motel
+		{
+			get
+			{
+				return this._Motel.Entity;
+			}
+			set
+			{
+				Motel previousValue = this._Motel.Entity;
+				if (((previousValue != value) 
+							|| (this._Motel.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Motel.Entity = null;
+						previousValue.Rooms.Remove(this);
+					}
+					this._Motel.Entity = value;
+					if ((value != null))
+					{
+						value.Rooms.Add(this);
+						this._Motel_ID = value.Motel_ID;
+					}
+					else
+					{
+						this._Motel_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Motel");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Room", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
+		public user user
+		{
+			get
+			{
+				return this._user.Entity;
+			}
+			set
+			{
+				user previousValue = this._user.Entity;
+				if (((previousValue != value) 
+							|| (this._user.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._user.Entity = null;
+						previousValue.Rooms.Remove(this);
+					}
+					this._user.Entity = value;
+					if ((value != null))
+					{
+						value.Rooms.Add(this);
+						this._ID_user = value.ID_user;
+					}
+					else
+					{
+						this._ID_user = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("user");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -1323,6 +1275,8 @@ namespace _2home.Models
 		
 		private EntitySet<Motel> _Motels;
 		
+		private EntitySet<Room> _Rooms;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1352,10 +1306,11 @@ namespace _2home.Models
 			this._imgs = new EntitySet<img>(new Action<img>(this.attach_imgs), new Action<img>(this.detach_imgs));
 			this._Videos = new EntitySet<Video>(new Action<Video>(this.attach_Videos), new Action<Video>(this.detach_Videos));
 			this._Motels = new EntitySet<Motel>(new Action<Motel>(this.attach_Motels), new Action<Motel>(this.detach_Motels));
+			this._Rooms = new EntitySet<Room>(new Action<Room>(this.attach_Rooms), new Action<Room>(this.detach_Rooms));
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int NOT NULL", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int ID_user
 		{
 			get
@@ -1574,6 +1529,19 @@ namespace _2home.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Room", Storage="_Rooms", ThisKey="ID_user", OtherKey="ID_user")]
+		public EntitySet<Room> Rooms
+		{
+			get
+			{
+				return this._Rooms;
+			}
+			set
+			{
+				this._Rooms.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1629,7 +1597,18 @@ namespace _2home.Models
 			this.SendPropertyChanging();
 			entity.user = null;
 		}
-
+		
+		private void attach_Rooms(Room entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = this;
+		}
+		
+		private void detach_Rooms(Room entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = null;
+		}
 	}
 }
 #pragma warning restore 1591
