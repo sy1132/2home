@@ -6,114 +6,36 @@
     ViewBag.Title = "DK";
 }
 
-<head>
-    <style>
-        .error-message {
-            color: red;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
 
-        .preview-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-            .preview-container img,
-            .preview-container video {
-                width: 100px;
-                height: 100px;
-                object-fit: cover;
-                cursor: pointer;
+    <head>
+        <style>
+            .error-message {
+                color: red;
+                font-size: 0.875rem;
+                margin-top: 0.25rem;
             }
+        </style>
+    </head>
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 700px;
-        }
-
-            .modal-content img,
-            .modal-content video {
-                width: 100%;
-            }
-
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-            .close:hover,
-            .close:focus {
-                color: #bbb;
-                text-decoration: none;
-                cursor: pointer;
-            }
-
-        .nav-button {
-            position: absolute;
-            top: 50%;
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            user-select: none;
-        }
-
-            .nav-button:hover {
-                color: #bbb;
-            }
-
-        .prev {
-            left: 10px;
-        }
-
-        .next {
-            right: 10px;
-        }
-    </style>
-</head>
-
-<div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem;">
+<div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem ;">
     <form asp-action="RegisterDK" enctype="multipart/form-data" method="post" class="row g-3">
         <h2 class="card-title text-center mb-4">Đăng ký cho thuê phòng trọ</h2>
         <div class="col-md-6">
             <label for="inputRoomName" class="form-label">Tên phòng trọ</label>
-            <input type="text" class="form-control" id="inputRoomName" name="RoomName">
+            <input type="text" class="form-control" id="inputRoomName" name="RoomName" >
             <span class="error-message" id="roomNameError"></span>
         </div>
         <div class="col-md-6">
             <label for="inputRooms" class="form-label">Số phòng</label>
-            <input type="number" class="form-control" id="inputRooms" name="Rooms" min="0">
+            <input type="number" class="form-control" id="inputRooms" name="Rooms" >
             <span class="error-message" id="roomError"></span>
         </div>
+
 
         <div class="col-12">
             <label for="inputLocation" class="form-label">Địa chỉ</label>
             <input type="text" class="form-control" id="inputLocation" name="LocationName">
-            <span class="error-message" id="LoactionNameError"></span>
+            <span class="error-message" id="LoactionNameError">
         </div>
         <div class="col-md-6">
             <label for="inputCity" class="form-label">Thành phố</label>
@@ -155,18 +77,18 @@
         </div>
         <div class="col-md-6">
             <label for="inputImage" class="form-label">Hình ảnh</label>
-            <input type="file" class="form-control" id="inputImage" name="Images" accept="image/*" multiple>
+            <input type="file" class="form-control" id="inputImage" name="Images" accept="image/* " multiple>
             <span class="error-message" id="imageError"></span>
-            <div class="preview-container" id="imagePreviewContainer"></div>
         </div>
+
+
         <div class="col-md-6">
             <label for="inputVideo" class="form-label">Video</label>
             <input type="file" class="form-control" id="inputVideo" name="Video" accept="video/*">
             <span class="error-message" id="videoError"></span>
-            <div class="preview-container" id="videoPreviewContainer"></div>
         </div>
         <div class="col-12">
-            <button type="submit" class="btn btn-primary w-100">Đăng</button>
+            <button type="submit" class="btn btn-primary w-100">Đăng </button>
         </div>
         <div class="col-12 text-center">
             <p id="message"></p>
@@ -174,107 +96,89 @@
     </form>
 </div>
 
-<!-- Modal for full-screen view -->
-<div id="myModal" class="modal">
-    <span class="close">&times;</span>
-    <span class="nav-button prev">&#10094;</span>
-    <span class="nav-button next">&#10095;</span>
-    <img class="modal-content" id="img01">
-    <video class="modal-content" id="vid01" controls></video>
-</div>
-
 <script>
-    let currentIndex = 0;
-    let files = [];
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-    document.getElementById('inputImage').addEventListener('change', function () {
-        const previewContainer = document.getElementById('imagePreviewContainer');
-        previewContainer.innerHTML = '';
-        const imageFiles = Array.from(this.files);
-        imageFiles.forEach((file, index) => {
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            img.addEventListener('click', function () {
-                showModal(index, 'image');
-            });
-            previewContainer.appendChild(img);
-        });
-        files = files.concat(imageFiles); // Combine image and video files
+    document.querySelectorAll('.error-message').forEach(function(el) {
+        el.innerText = '';
     });
 
-    document.getElementById('inputVideo').addEventListener('change', function () {
-        const previewContainer = document.getElementById('videoPreviewContainer');
-        previewContainer.innerHTML = '';
-        const videoFiles = Array.from(this.files);
-        videoFiles.forEach((file, index) => {
-            const video = document.createElement('video');
-            video.src = URL.createObjectURL(file);
-            video.addEventListener('click', function () {
-                showModal(index, 'video');
-            });
-            previewContainer.appendChild(video);
-        });
-        files = files.concat(videoFiles); // Combine image and video files
-    });
+    let isValid = true;
 
-    function showModal(index, type) {
-        currentIndex = index;
-        const modal = document.getElementById('myModal');
-        const img = document.getElementById('img01');
-        const video = document.getElementById('vid01');
-        if (type === 'image') {
-            img.src = URL.createObjectURL(files[index]);
-            img.style.display = 'block';
-            video.style.display = 'none';
-        } else {
-            video.src = URL.createObjectURL(files[index]);
-            video.style.display = 'block';
-            img.style.display = 'none';
-        }
-        modal.style.display = 'flex';
+    const roomName = document.getElementById('inputRoomName').value.trim();
+    const rooms = document.getElementById('inputRooms').value.trim();
+    const location = document.getElementById('inputLocation').value.trim();
+    const city = document.getElementById('inputCity').value.trim();
+    const ward = document.getElementById('inputWard').value.trim();
+    const district = document.getElementById('inputDistrict').value.trim();
+    const price = document.getElementById('inputPrice').value.trim();
+    const images = document.getElementById('inputImage').files;
+    const video = document.getElementById('inputVideo').files;
+
+    if (!roomName) {
+        document.getElementById('roomNameError').innerText = 'Vui lòng nhập tên phòng trọ';
+        isValid = false;
     }
 
-    document.querySelector('.close').addEventListener('click', function () {
-        const modal = document.getElementById('myModal');
-        modal.style.display = 'none';
-    });
+    if (!rooms || isNaN(rooms) || parseInt(rooms) <= 0) {
+        document.getElementById('roomError').innerText = 'Vui lòng nhập số phòng hợp lệ (phải là số dương)';
+        isValid = false;
+    }
 
-    window.addEventListener('click', function (event) {
-        const modal = document.getElementById('myModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
+    if (!location) {
+        document.getElementById('LoactionNameError').innerText = 'Vui lòng nhập địa chỉ';
+        isValid = false;
+    }
 
-    document.querySelector('.prev').addEventListener('click', function () {
-        currentIndex = (currentIndex > 0) ? currentIndex - 1 : files.length - 1;
-        const file = files[currentIndex];
-        const img = document.getElementById('img01');
-        const video = document.getElementById('vid01');
-        if (file.type.startsWith('image')) {
-            img.src = URL.createObjectURL(file);
-            img.style.display = 'block';
-            video.style.display = 'none';
-        } else {
-            video.src = URL.createObjectURL(file);
-            video.style.display = 'block';
-            img.style.display = 'none';
-        }
-    });
+    if (!city) {
+        document.getElementById('cityError').innerText = 'Vui lòng chọn thành phố';
+        isValid = false;
+    }
 
-    document.querySelector('.next').addEventListener('click', function () {
-        currentIndex = (currentIndex < files.length - 1) ? currentIndex + 1 : 0;
-        const file = files[currentIndex];
-        const img = document.getElementById('img01');
-        const video = document.getElementById('vid01');
-        if (file.type.startsWith('image')) {
-            img.src = URL.createObjectURL(file);
-            img.style.display = 'block';
-            video.style.display = 'none';
-        } else {
-            video.src = URL.createObjectURL(file);
-            video.style.display = 'block';
-            img.style.display = 'none';
-        }
-    });
+    if (!ward) {
+        document.getElementById('wardError').innerText = 'Vui lòng chọn phường';
+        isValid = false;
+    }
+
+    if (!district) {
+        document.getElementById('districtError').innerText = 'Vui lòng chọn khu';
+        isValid = false;
+    }
+
+    if (!price || parseFloat(price) <= 0) {
+        document.getElementById('priceError').innerText = 'Giá phải là số dương';
+        isValid = false;
+    }
+
+    if (images.length === 0) {
+        document.getElementById('imageError').innerText = 'Vui lòng chọn ít nhất một hình ảnh';
+        isValid = false;
+    } else if (images.length > 5) {
+        document.getElementById('imageError').innerText = 'Chỉ được phép tải lên tối đa 5 hình ảnh';
+        isValid = false;
+    }
+
+    if (video.length === 0) {
+        document.getElementById('videoError').innerText = 'Vui lòng thêm video';
+        isValid = false;
+    }
+
+    if (isValid) {
+        var formData = new FormData(this);
+
+        fetch('@Url.Action("RegisterForRent", "Home")', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('message').innerText = 'Thông tin đã được gửi lên admin, đang chờ được duyệt!';
+        })
+        .catch(error => {
+            document.getElementById('message').innerText = 'Có lỗi xảy ra, vui lòng thử lại.';
+            console.error('Error:', error);
+        });
+    }
+});
 </script>
