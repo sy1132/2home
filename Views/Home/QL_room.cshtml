@@ -1,6 +1,5 @@
 ﻿
-
-@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
+@model PagedList.IPagedList<_2home.ViewModels.room>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "QL_room";
@@ -15,14 +14,9 @@
             <th>Mã phòng trọ</th>
             <th>Người thuê trọ</th>
             <th>Ngày cập nhật</th>
-            <th>Số điện</th>
-            <th>Số nước</th>
-            <th>Tiền điện</th>
-            <th>Tiền nước</th>
             <th>Tổng tiền điện</th>
             <th>Tổng tiền nước</th>
             <th>Chi phí phát sinh</th>
-            <th>Tình Trạng</th>
             <th>Tổng tiền </th>
             <th>Tình Trạng</th>
             <th>Chi Tiết</th>
@@ -32,30 +26,20 @@
         @foreach (var items in Model)
         {
             <tr>
-                
-                <td></td>
-                <td>@items.Location</td>
-                <td>@items.Price</td>
+                <td>@items.Room_ID</td>
+                <td>@items.fullname</td>
+                <td>@items.Date_of_Issue</td> <!-- Format ngày tháng -->
+                <td>@items.Electricity_Bill</td>
+                <td>@items.Water_Bill</td>
+                <td>@items.Additional_Charges</td>
+                <td>@items.Total_Amount_Due</td>
+                <td>@items.Room_Status</td>
                 <td>
-                    @using (Html.BeginForm("UpdateAvailability", "Home", FormMethod.Post))
-                    {
-                        @Html.Hidden("ID_user", items.ID_user)
-                        <select name="is_available" onchange="this.form.submit()">
-                            <option value="Còn trống" @(items.is_available == "Còn trống" ? "selected" : "")>Còn trống</option>
-                            <option value="Hết phòng" @(items.is_available == "Hết phòng" ? "selected" : "")>Hết phòng</option>
-                            <option value="Đang chờ duyệt" @(items.is_available == "Đang chờ duyệt" ? "selected" : "")>Đang chờ duyệt</option>
-                        </select>
-                    }
-                </td>
-                <td>
-                    @using (Html.BeginForm("Details", "Home", FormMethod.Get))
-                    {
-                        @Html.Hidden("ID_user", items.ID_user)
-                        <input type="submit" value="Xem chi tiết" class="btn btn-primary" />
-                    }
+                    <a href="@Url.Action("ChiTietPhong", "Phong", new { id = items.Room_ID })" class="btn btn-info">Xem Chi Tiết</a>
                 </td>
             </tr>
         }
+
     </tbody>
 </table>
 

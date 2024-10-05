@@ -22,6 +22,7 @@ CREATE TABLE Motel (
     location NVARCHAR(255),
     price DECIMAL(10, 2),
     is_available NVARCHAR(50),
+	Details NVARCHAR(MAX),
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
 );
 
@@ -78,6 +79,8 @@ INSERT INTO Video ( ID_user, updatedAt, createdAt, Link)
 VALUES 
 (1,'2024-09-08 15:00:00', '2024-09-08 15:00:00', N'/asset/videos/video.mp4'),
 (2, '2024-09-08 16:00:00', '2024-09-08 16:00:00', N'/asset/videos/video.mp4')
+ALTER TABLE Motel
+ADD Details NVARCHAR(MAX);
 SELECT
     img.Link AS ImgLink,
     motel.Name_motel AS MotelName,

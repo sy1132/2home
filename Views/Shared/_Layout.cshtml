@@ -16,50 +16,6 @@
     </style>
 </head>
 <body>
-    @*<nav class="navbar navbar-expand-lg navbar-dark bg-black w-100">
-            <div class="container-fluid">
-                <a href="@Url.Action("Index", "Home")" class="navbar-brand">
-                    <img src="~/Content/logo 2 home ngang.png" alt="Alternate Text" class="rounded-2 float-start" style="width:100px;">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
-                    <ul class="navbar-nav ms-auto d-flex align-items-center">
-                        @if (Session["User"] != null)
-                        {
-                            var user = Session["User"] as _2home.ViewModels.User;
-                            if (user.userrole == "Admin")
-                            {
-                                <li class="nav-item">@Html.ActionLink("Quản lý tài khoản", "Manager_DK", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })</li>
-                                <li class="nav-item">@Html.ActionLink("Quản lý thuê", "rental_management", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })</li>
-
-                            }
-                            else if (user.userrole == "Innkeeper")
-                            {
-
-                            }
-                            else
-                            {
-                                <li class="nav-item">@Html.ActionLink("Đăng ký thuê", "DKthue", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })</li>
-
-                                <li class="nav-item">@Html.ActionLink("togher", "togher", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })</li>
-
-                            }
-                            <p class="navbar-brand nav-link" style="color: white;">Xin chào, @user.fullname</p>
-                            <a href="/Home/Logout" class="navbar-brand nav-link">Đăng xuất</a>
-
-                        }
-                        else
-                        {
-                            <li class="nav-item">@Html.ActionLink("Đăng ký", "DK", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })</li>
-                            <li class="nav-item">@Html.ActionLink("Đăng nhập", "Login", "Home", null, new { @class = "btn btn-outline-primary mx-2 nav-link-custom" })</li>
-                        }
-
-                    </ul>
-                </div>
-            </div>
-        </nav>*@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
         <div class="container-fluid">
             <a href="@Url.Action("Index", "Home")" class="navbar-brand">
@@ -73,33 +29,70 @@
                     @if (Session["User"] != null)
                     {
                         var user = Session["User"] as _2home.ViewModels.User;
-                        if (user.userrole == "Admin")
-                        {
-                            <li class="nav-item">
-                                @Html.ActionLink("Quản lý tài khoản", "Manager_DK", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })
-                            </li>
-                            <li class="nav-item">
-                                @Html.ActionLink("Quản lý thuê", "rental_management", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })
-                            </li>
-                        }
-                        else if (user.userrole == "Innkeeper")
-                        {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white mx-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Xin chào, @user.fullname
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @if (user.userrole == "Admin")
+                                {
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Manager_DK", "Home")">
+                                            <i class="fas fa-user-cog"></i> Quản lý tài khoản
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Kiemduyet", "Home")">
+                                            <i class="fas fa-clipboard-list"></i> Kiểm duyệt
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("rental_management", "Home")">
+                                            <i class="fas fa-home"></i> Quản lý thuê
+                                        </a>
+                                    </li>
+                                }
+                                else if (user.userrole == "Innkeeper")
+                                {
+                                    <!-- Add Innkeeper specific links here -->
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
+                                            <i class="fas fa-clipboard-list"></i> Đăng ký thuê
+                                        </a>
+                                    </li>
 
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                @Html.ActionLink("Đăng ký thuê", "DKthue", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })
-                            </li>
-                            <li class="nav-item">
-                                @Html.ActionLink("togher", "togher", "Home", null, new { @class = "btn btn-outline-danger mx-2 nav-link-custom" })
-                            </li>
-                        }
-                        <li class="nav-item">
-                            <span class="navbar-text text-white mx-2">Xin chào, @user.fullname</span>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/Home/Logout" class="btn btn-outline-light mx-2 nav-link-custom">Đăng xuất</a>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("QL_room", "Home")">
+                                            <i class="fas fa-clipboard-list"></i> QL_phòng
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("togher", "Home")">
+                                            <i class="fas fa-users"></i> Togher
+                                        </a>
+                                    </li>
+                                }
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-user"></i> Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cog"></i> Settings
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="/Home/Logout">
+                                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     }
                     else
@@ -117,7 +110,7 @@
     </nav>
 
     <div class="d-flex justify-content-center">
-        <div class="card-header bg-warning gap-2 m-5 p-3 rounded-3 d-flex flex-column w-50">
+        <div class="card-header bg-warning gap-2 m-3 p-3 rounded-3 d-flex flex-column w-50">
             <form class="d-flex flex-column mb-3" role="search" method="get" action="@Url.Action("Index")">
                 <button type="button" class="btn btn-success border-2 mb-2" style="font-weight: bold;" onclick="toggleSearch()">
                     Tìm kiếm
@@ -164,9 +157,6 @@
                 </div>
             </form>
         </div>
-
-
-
     </div>
 
     <div class="d-flex flex-column justify-content-center align-items-center">

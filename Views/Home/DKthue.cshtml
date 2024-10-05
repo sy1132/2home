@@ -2,10 +2,6 @@
     ViewBag.Title = "Đăng ký cho thuê phòng trọ";
 }
 
-@{
-    ViewBag.Title = "DK";
-}
-
 <head>
     <style>
         .error-message {
@@ -97,23 +93,22 @@
 </head>
 
 <div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem;">
-    <form asp-action="RegisterDK" enctype="multipart/form-data" method="post" class="row g-3">
+    <form id="registrationForm" asp-action="RegisterDK" enctype="multipart/form-data" method="post" class="row g-3">
         <h2 class="card-title text-center mb-4">Đăng ký cho thuê phòng trọ</h2>
         <div class="col-md-6">
             <label for="inputRoomName" class="form-label">Tên phòng trọ</label>
-            <input type="text" class="form-control" id="inputRoomName" name="RoomName">
+            <input type="text" class="form-control" id="inputRoomName" name="roomName">
             <span class="error-message" id="roomNameError"></span>
         </div>
         <div class="col-md-6">
             <label for="inputRooms" class="form-label">Số phòng</label>
             <input type="number" class="form-control" id="inputRooms" name="Rooms" min="0">
-            <span class="error-message" id="roomError"></span>
+            <span class="error-message" id="roomsError"></span>
         </div>
-
         <div class="col-12">
             <label for="inputLocation" class="form-label">Địa chỉ</label>
             <input type="text" class="form-control" id="inputLocation" name="LocationName">
-            <span class="error-message" id="LoactionNameError"></span>
+            <span class="error-message" id="locationError"></span>
         </div>
         <div class="col-md-6">
             <label for="inputCity" class="form-label">Thành phố</label>
@@ -137,7 +132,6 @@
             </select>
             <span class="error-message" id="wardError"></span>
         </div>
-
         <div class="col-md-6">
             <label for="inputDistrict" class="form-label">Khu</label>
             <select id="inputDistrict" class="form-select" name="District">
@@ -161,10 +155,16 @@
         </div>
         <div class="col-md-6">
             <label for="inputVideo" class="form-label">Video</label>
-            <input type="file" class="form-control" id="inputVideo" name="Video" accept="video/*">
+            <input type="file" class="form-control" id="inputVideo" name="Videos" accept="video/*" multiple>
             <span class="error-message" id="videoError"></span>
             <div class="preview-container" id="videoPreviewContainer"></div>
         </div>
+        <div class="col-12">
+            <label for="inputDetails" class="form-label">Chi tiết</label>
+            <textarea class="form-control" id="inputDetails" name="Details" rows="4" placeholder="Nhập chi tiết phòng trọ..."></textarea>
+            <span class="error-message" id="detailsError"></span>
+        </div>
+
         <div class="col-12">
             <button type="submit" class="btn btn-primary w-100">Đăng</button>
         </div>
@@ -246,35 +246,84 @@
         }
     });
 
-    document.querySelector('.prev').addEventListener('click', function () {
-        currentIndex = (currentIndex > 0) ? currentIndex - 1 : files.length - 1;
-        const file = files[currentIndex];
-        const img = document.getElementById('img01');
-        const video = document.getElementById('vid01');
-        if (file.type.startsWith('image')) {
-            img.src = URL.createObjectURL(file);
-            img.style.display = 'block';
-            video.style.display = 'none';
-        } else {
-            video.src = URL.createObjectURL(file);
-            video.style.display = 'block';
-            img.style.display = 'none';
-        }
-    });
+    document.getElementById('registrationForm').addEventListener('submit', function (event) {
+        // Reset error messages
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        document.getElementById('message').textContent = '';
 
-    document.querySelector('.next').addEventListener('click', function () {
-        currentIndex = (currentIndex < files.length - 1) ? currentIndex + 1 : 0;
-        const file = files[currentIndex];
-        const img = document.getElementById('img01');
-        const video = document.getElementById('vid01');
-        if (file.type.startsWith('image')) {
-            img.src = URL.createObjectURL(file);
-            img.style.display = 'block';
-            video.style.display = 'none';
+        let hasError = false;
+
+        // Validate Room Name
+        const roomName = document.getElementById('inputRoomName').value.trim();
+        if (!roomName) {
+            document.getElementById('roomNameError').textContent = 'Tên phòng trọ không được để trống.';
+            hasError = true;
+        }
+
+        // Validate Number of Rooms
+        const rooms = document.getElementById('inputRooms').value;
+        if (!rooms || rooms <= 0) {
+            document.getElementById('roomsError').textContent = 'Số phòng phải lớn hơn 0.';
+            hasError = true;
+        }
+
+        // Validate Location
+        const location = document.getElementById('inputLocation').value.trim();
+        if (!location) {
+            document.getElementById('locationError').textContent = 'Địa chỉ không được để trống.';
+            hasError = true;
+        }
+
+        // Validate City
+        const city = document.getElementById('inputCity').value;
+        if (!city) {
+            document.getElementById('cityError').textContent = 'Bạn chưa chọn thành phố.';
+            hasError = true;
+        }
+
+        // Validate Ward
+        const ward = document.getElementById('inputWard').value;
+        if (!ward) {
+            document.getElementById('wardError').textContent = 'Bạn chưa chọn phường.';
+            hasError = true;
+        }
+
+        // Validate District
+        const district = document.getElementById('inputDistrict').value;
+        if (!district) {
+            document.getElementById('districtError').textContent = 'Bạn chưa chọn khu.';
+            hasError = true;
+        }
+        const details = document.getElementById('inputDetails').value.trim();
+        if (!details) {
+            document.getElementById('detailsError').textContent = 'Bạn phải nhập chi tiết phòng trọ.';
+            hasError = true;
+        }
+        // Validate Price
+        const price = document.getElementById('inputPrice').value;
+        if (!price || price <= 0) {
+            document.getElementById('priceError').textContent = 'Giá phải lớn hơn 0.';
+            hasError = true;
+        }
+
+        // Validate Images
+        if (document.getElementById('inputImage').files.length === 0) {
+            document.getElementById('imageError').textContent = 'Bạn phải chọn ít nhất một hình ảnh.';
+            hasError = true;
+        }
+
+        // Validate Videos
+        if (document.getElementById('inputVideo').files.length === 0) {
+            document.getElementById('videoError').textContent = 'Bạn phải chọn ít nhất một video.';
+            hasError = true;
+        }
+
+        if (hasError) {
+            event.preventDefault(); // Prevent form submission if there are validation errors
         } else {
-            video.src = URL.createObjectURL(file);
-            video.style.display = 'block';
-            img.style.display = 'none';
+            // Show success message if no errors
+            document.getElementById('message').textContent = 'Đăng ký thành công!';
+            document.getElementById('message').style.color = 'green'; // Optional: Change text color to green
         }
     });
 </script>
