@@ -42,18 +42,8 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="@Url.Action("Kiemduyet", "Home")">
-                                            <i class="fas fa-clipboard-list"></i> Kiểm duyệt
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a class="dropdown-item" href="@Url.Action("rental_management", "Home")">
                                             <i class="fas fa-home"></i> Quản lý thuê
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="@Url.Action("mail", "Home")">
-                                            <i class="fas fa-home"></i> Thư
                                         </a>
                                     </li>
                                 }
@@ -68,12 +58,6 @@
                                             <i class="fas fa-clipboard-list"></i> Đăng ký thuê
                                         </a>
                                     </li>
-
-                                    <li>
-                                        <a class="dropdown-item" href="@Url.Action("QL_room", "Home")">
-                                            <i class="fas fa-clipboard-list"></i> QL_phòng
-                                        </a>
-                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("togher", "Home")">
                                             <i class="fas fa-users"></i> Togher
@@ -82,7 +66,7 @@
                                 }
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="@Url.Action("Profile_user", "Home", new { ID_user = user.ID_user })">
                                         <i class="fas fa-user"></i> Profile
                                     </a>
                                 </li>
@@ -190,6 +174,7 @@
     }
 
         .nav-link-custom:hover {
+
             color: #ffcc00; /* Example hover color */
         }
 </style>
