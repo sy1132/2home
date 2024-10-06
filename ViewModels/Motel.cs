@@ -8,5 +8,7 @@
         public decimal Price { get; set; }
         public string is_available { get; set; } 
         public string ImgLink { get; set; }
+        public string Details { get; set; }
+
     }
 }

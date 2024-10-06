@@ -22,6 +22,7 @@
                 @if (Model.ImgLinks != null && Model.ImgLinks.Any())
                 {
                     <div class="mt-4 d-flex justify-content-center">
+                        <img src="@Model.Link" class="img-thumbnail mx-1" style="width: 104.8px; height: 104.8px; cursor: pointer;" onclick="showVideo('@Model.Link')" />
                         @foreach (var imgLink in Model.ImgLinks)
                         {
                             <img src="@imgLink" class="img-thumbnail mx-1" style="width: 104.8px; height: 104.8px; cursor: pointer;" onclick="showImage('@imgLink')" />
