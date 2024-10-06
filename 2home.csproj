@@ -276,6 +276,7 @@
     <Content Include="Views\Home\rental_management.cshtml" />
     <Content Include="Views\Home\QL_room.cshtml" />
     <Content Include="Views\Home\Kiemduyet.cshtml" />
+    <Content Include="Views\Home\mail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

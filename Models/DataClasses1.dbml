@@ -53,8 +53,19 @@
       <Association Name="user_img" Member="imgs" ThisKey="ID_user" OtherKey="ID_user" Type="img" />
       <Association Name="user_Video" Member="Videos" ThisKey="ID_user" OtherKey="ID_user" Type="Video" />
       <Association Name="user_Room" Member="Rooms" ThisKey="ID_user" OtherKey="ID_user" Type="Room" />
-      <Association Name="user_Motel" Member="Motels" ThisKey="ID_user" OtherKey="ID_user" Type="Motel" />
       <Association Name="user_Mail" Member="Mails" ThisKey="ID_user" OtherKey="ID_user" Type="Mail" />
+      <Association Name="user_Motel" Member="Motels" ThisKey="ID_user" OtherKey="ID_user" Type="Motel" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Mail" Member="Mails">
+    <Type Name="Mail">
+      <Column Name="Mail_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Sender" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Recipient" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SendDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Content" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ID_user" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="user_Mail" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Motel" Member="Motels">
@@ -70,19 +81,9 @@
       <Column Name="CreatedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="Debt" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
       <Column Name="TotalPayment" Type="System.Decimal" DbType="Decimal(13,2)" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
-      <Association Name="Motel_Room" Member="Rooms" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Room" />
+      <Column Name="rooms" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Motel_Room" Member="Rooms1" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Room" />
       <Association Name="user_Motel" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Mail" Member="Mails">
-    <Type Name="Mail">
-      <Column Name="Mail_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Sender" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Recipient" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="SendDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Content" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="ID_user" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="user_Mail" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

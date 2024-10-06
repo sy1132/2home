@@ -20,6 +20,6 @@ namespace _2home.ViewModels
         public string Link { get; set; }
         public string link_location { get; set; }
         public string Details { get; set; }
-
+        public int? rooms { get; set; }
     }
 }

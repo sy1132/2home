@@ -240,7 +240,8 @@ namespace _2home.Controllers
                     price = Price,
                     is_available = "Đang chờ duyệt",
                     ID_user = user.ID_user,
-                    Details= Details
+                    Details= Details,
+                    rooms=Rooms
                 };
 
                 db.Motels.InsertOnSubmit(motel);
@@ -299,7 +300,8 @@ namespace _2home.Controllers
                             motel.location,
                             motel.price,
                             motel.is_available,
-                            motel.ID_user
+                            motel.ID_user,
+                            motel.rooms
                         } into grouped
                         select new index_Viewmodel
                         {
@@ -309,7 +311,8 @@ namespace _2home.Controllers
                             Location = grouped.Key.location,
                             Price = grouped.Key.price,
                             is_available = grouped.Key.is_available,
-                            ID_user = grouped.Key.ID_user
+                            ID_user = grouped.Key.ID_user,
+                            rooms=grouped.Key.rooms
                         };
             ViewBag.Page = page;
             List<SelectListItem> items = new List<SelectListItem>();
@@ -354,6 +357,25 @@ namespace _2home.Controllers
 
                     if ( recipientID.HasValue)
                     {
+                        for (int i = 0; i < motel.rooms; i++)
+                        {
+                            Room newRoom = new Room
+                            {
+                                Motel_ID = motel.Motel_ID, 
+                                Date_of_Issue = DateTime.Now,
+                                Electricity_Meter = 0.00m, 
+                                Water_Meter = 0.00m,
+                                Electricity_Usage = 0.00m,
+                                Water_Usage = 0.00m,
+                                Electricity_Bill = 0.00m,
+                                Water_Bill = 0.00m,
+                                Room_Status = "Trống", 
+                                Room_Rent = motel.price,
+                                Additional_Charges = 0,
+                                Total_Amount_Due = 0,
+                            };
+                            db.Rooms.InsertOnSubmit(newRoom);
+                        }
                         Mail newMail = new Mail
                         {
                             Sender = senderID.ID_user,
@@ -479,7 +501,11 @@ namespace _2home.Controllers
                 }
                 return RedirectToAction("Manager_DK");
         }
-
+        public ActionResult mail()
+        {
+            return View();
+            
+        }
         public ActionResult rental_management(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
 
         {
@@ -580,13 +606,15 @@ namespace _2home.Controllers
         {
             var query = from r in db.Rooms
                         join m in db.Motels on r.Motel_ID equals m.Motel_ID
-                        join u in db.users on r.ID_user equals u.ID_user
+                        join u in db.users on m.ID_user equals u.ID_user
                         select new room
                         {
                             Room_ID = r.room_ID,
                             Motel_ID = r.Motel_ID,
                             ID_User = r.ID_user,
-                            fullname=u.fullname,
+                            fullname = (from user in db.users
+                                        where u.ID_user == r.ID_user
+                                        select u.fullname).FirstOrDefault(),
                             Date_of_Issue = r.Date_of_Issue,
                             Electricity_Meter = r.Electricity_Meter,
                             Water_Meter = r.Water_Meter,

@@ -42,12 +42,12 @@ namespace _2home.Models
     partial void Insertuser(user instance);
     partial void Updateuser(user instance);
     partial void Deleteuser(user instance);
-    partial void InsertMotel(Motel instance);
-    partial void UpdateMotel(Motel instance);
-    partial void DeleteMotel(Motel instance);
     partial void InsertMail(Mail instance);
     partial void UpdateMail(Mail instance);
     partial void DeleteMail(Mail instance);
+    partial void InsertMotel(Motel instance);
+    partial void UpdateMotel(Motel instance);
+    partial void DeleteMotel(Motel instance);
     #endregion
 		
 		public DataClasses1DataContext(string connection) : 
@@ -61,12 +61,8 @@ namespace _2home.Models
 		{
 			OnCreated();
 		}
-        public DataClasses1DataContext() :
-       base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString"].ConnectionString, mappingSource)
-        {
-
-        }
-        public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		
+		public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -77,8 +73,12 @@ namespace _2home.Models
 		{
 			OnCreated();
 		}
-		
-		public System.Data.Linq.Table<img> imgs
+        public DataClasses1DataContext() :
+        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString"].ConnectionString, mappingSource)
+        {
+
+        }
+        public System.Data.Linq.Table<img> imgs
 		{
 			get
 			{
@@ -110,19 +110,19 @@ namespace _2home.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Motel> Motels
-		{
-			get
-			{
-				return this.GetTable<Motel>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Mail> Mails
 		{
 			get
 			{
 				return this.GetTable<Mail>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Motel> Motels
+		{
+			get
+			{
+				return this.GetTable<Motel>();
 			}
 		}
 	}
@@ -943,12 +943,12 @@ namespace _2home.Models
 					if ((previousValue != null))
 					{
 						this._Motel.Entity = null;
-						previousValue.Rooms.Remove(this);
+						previousValue.Rooms1.Remove(this);
 					}
 					this._Motel.Entity = value;
 					if ((value != null))
 					{
-						value.Rooms.Add(this);
+						value.Rooms1.Add(this);
 						this._Motel_ID = value.Motel_ID;
 					}
 					else
@@ -1011,9 +1011,9 @@ namespace _2home.Models
 		
 		private EntitySet<Room> _Rooms;
 		
-		private EntitySet<Motel> _Motels;
-		
 		private EntitySet<Mail> _Mails;
+		
+		private EntitySet<Motel> _Motels;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1044,8 +1044,8 @@ namespace _2home.Models
 			this._imgs = new EntitySet<img>(new Action<img>(this.attach_imgs), new Action<img>(this.detach_imgs));
 			this._Videos = new EntitySet<Video>(new Action<Video>(this.attach_Videos), new Action<Video>(this.detach_Videos));
 			this._Rooms = new EntitySet<Room>(new Action<Room>(this.attach_Rooms), new Action<Room>(this.detach_Rooms));
-			this._Motels = new EntitySet<Motel>(new Action<Motel>(this.attach_Motels), new Action<Motel>(this.detach_Motels));
 			this._Mails = new EntitySet<Mail>(new Action<Mail>(this.attach_Mails), new Action<Mail>(this.detach_Mails));
+			this._Motels = new EntitySet<Motel>(new Action<Motel>(this.attach_Motels), new Action<Motel>(this.detach_Motels));
 			OnCreated();
 		}
 		
@@ -1268,19 +1268,6 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Motel", Storage="_Motels", ThisKey="ID_user", OtherKey="ID_user")]
-		public EntitySet<Motel> Motels
-		{
-			get
-			{
-				return this._Motels;
-			}
-			set
-			{
-				this._Motels.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Mail", Storage="_Mails", ThisKey="ID_user", OtherKey="ID_user")]
 		public EntitySet<Mail> Mails
 		{
@@ -1291,6 +1278,19 @@ namespace _2home.Models
 			set
 			{
 				this._Mails.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Motel", Storage="_Motels", ThisKey="ID_user", OtherKey="ID_user")]
+		public EntitySet<Motel> Motels
+		{
+			get
+			{
+				return this._Motels;
+			}
+			set
+			{
+				this._Motels.Assign(value);
 			}
 		}
 		
@@ -1350,6 +1350,18 @@ namespace _2home.Models
 			entity.user = null;
 		}
 		
+		private void attach_Mails(Mail entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = this;
+		}
+		
+		private void detach_Mails(Mail entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = null;
+		}
+		
 		private void attach_Motels(Motel entity)
 		{
 			this.SendPropertyChanging();
@@ -1361,17 +1373,228 @@ namespace _2home.Models
 			this.SendPropertyChanging();
 			entity.user = null;
 		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Mail")]
+	public partial class Mail : INotifyPropertyChanging, INotifyPropertyChanged
+	{
 		
-		private void attach_Mails(Mail entity)
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Mail_ID;
+		
+		private int _Sender;
+		
+		private int _Recipient;
+		
+		private System.DateTime _SendDate;
+		
+		private string _Content;
+		
+		private int _ID_user;
+		
+		private EntityRef<user> _user;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMail_IDChanging(int value);
+    partial void OnMail_IDChanged();
+    partial void OnSenderChanging(int value);
+    partial void OnSenderChanged();
+    partial void OnRecipientChanging(int value);
+    partial void OnRecipientChanged();
+    partial void OnSendDateChanging(System.DateTime value);
+    partial void OnSendDateChanged();
+    partial void OnContentChanging(string value);
+    partial void OnContentChanged();
+    partial void OnID_userChanging(int value);
+    partial void OnID_userChanged();
+    #endregion
+		
+		public Mail()
 		{
-			this.SendPropertyChanging();
-			entity.user = this;
+			this._user = default(EntityRef<user>);
+			OnCreated();
 		}
 		
-		private void detach_Mails(Mail entity)
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Mail_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Mail_ID
 		{
-			this.SendPropertyChanging();
-			entity.user = null;
+			get
+			{
+				return this._Mail_ID;
+			}
+			set
+			{
+				if ((this._Mail_ID != value))
+				{
+					this.OnMail_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Mail_ID = value;
+					this.SendPropertyChanged("Mail_ID");
+					this.OnMail_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sender", DbType="Int NOT NULL")]
+		public int Sender
+		{
+			get
+			{
+				return this._Sender;
+			}
+			set
+			{
+				if ((this._Sender != value))
+				{
+					this.OnSenderChanging(value);
+					this.SendPropertyChanging();
+					this._Sender = value;
+					this.SendPropertyChanged("Sender");
+					this.OnSenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Recipient", DbType="Int NOT NULL")]
+		public int Recipient
+		{
+			get
+			{
+				return this._Recipient;
+			}
+			set
+			{
+				if ((this._Recipient != value))
+				{
+					this.OnRecipientChanging(value);
+					this.SendPropertyChanging();
+					this._Recipient = value;
+					this.SendPropertyChanged("Recipient");
+					this.OnRecipientChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendDate", DbType="DateTime NOT NULL")]
+		public System.DateTime SendDate
+		{
+			get
+			{
+				return this._SendDate;
+			}
+			set
+			{
+				if ((this._SendDate != value))
+				{
+					this.OnSendDateChanging(value);
+					this.SendPropertyChanging();
+					this._SendDate = value;
+					this.SendPropertyChanged("SendDate");
+					this.OnSendDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Content", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Content
+		{
+			get
+			{
+				return this._Content;
+			}
+			set
+			{
+				if ((this._Content != value))
+				{
+					this.OnContentChanging(value);
+					this.SendPropertyChanging();
+					this._Content = value;
+					this.SendPropertyChanged("Content");
+					this.OnContentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int NOT NULL")]
+		public int ID_user
+		{
+			get
+			{
+				return this._ID_user;
+			}
+			set
+			{
+				if ((this._ID_user != value))
+				{
+					if (this._user.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnID_userChanging(value);
+					this.SendPropertyChanging();
+					this._ID_user = value;
+					this.SendPropertyChanged("ID_user");
+					this.OnID_userChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Mail", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
+		public user user
+		{
+			get
+			{
+				return this._user.Entity;
+			}
+			set
+			{
+				user previousValue = this._user.Entity;
+				if (((previousValue != value) 
+							|| (this._user.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._user.Entity = null;
+						previousValue.Mails.Remove(this);
+					}
+					this._user.Entity = value;
+					if ((value != null))
+					{
+						value.Mails.Add(this);
+						this._ID_user = value.ID_user;
+					}
+					else
+					{
+						this._ID_user = default(int);
+					}
+					this.SendPropertyChanged("user");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -1403,7 +1626,9 @@ namespace _2home.Models
 		
 		private System.Nullable<decimal> _TotalPayment;
 		
-		private EntitySet<Room> _Rooms;
+		private System.Nullable<int> _rooms;
+		
+		private EntitySet<Room> _Rooms1;
 		
 		private EntityRef<user> _user;
 		
@@ -1433,11 +1658,13 @@ namespace _2home.Models
     partial void OnDebtChanged();
     partial void OnTotalPaymentChanging(System.Nullable<decimal> value);
     partial void OnTotalPaymentChanged();
+    partial void OnroomsChanging(System.Nullable<int> value);
+    partial void OnroomsChanged();
     #endregion
 		
 		public Motel()
 		{
-			this._Rooms = new EntitySet<Room>(new Action<Room>(this.attach_Rooms), new Action<Room>(this.detach_Rooms));
+			this._Rooms1 = new EntitySet<Room>(new Action<Room>(this.attach_Rooms1), new Action<Room>(this.detach_Rooms1));
 			this._user = default(EntityRef<user>);
 			OnCreated();
 		}
@@ -1666,16 +1893,36 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Rooms", ThisKey="Motel_ID", OtherKey="Motel_ID")]
-		public EntitySet<Room> Rooms
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_rooms", DbType="Int")]
+		public System.Nullable<int> rooms
 		{
 			get
 			{
-				return this._Rooms;
+				return this._rooms;
 			}
 			set
 			{
-				this._Rooms.Assign(value);
+				if ((this._rooms != value))
+				{
+					this.OnroomsChanging(value);
+					this.SendPropertyChanging();
+					this._rooms = value;
+					this.SendPropertyChanged("rooms");
+					this.OnroomsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Rooms1", ThisKey="Motel_ID", OtherKey="Motel_ID")]
+		public EntitySet<Room> Rooms1
+		{
+			get
+			{
+				return this._Rooms1;
+			}
+			set
+			{
+				this._Rooms1.Assign(value);
 			}
 		}
 		
@@ -1733,239 +1980,16 @@ namespace _2home.Models
 			}
 		}
 		
-		private void attach_Rooms(Room entity)
+		private void attach_Rooms1(Room entity)
 		{
 			this.SendPropertyChanging();
 			entity.Motel = this;
 		}
 		
-		private void detach_Rooms(Room entity)
+		private void detach_Rooms1(Room entity)
 		{
 			this.SendPropertyChanging();
 			entity.Motel = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Mail")]
-	public partial class Mail : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Mail_ID;
-		
-		private int _Sender;
-		
-		private int _Recipient;
-		
-		private System.DateTime _SendDate;
-		
-		private string _Content;
-		
-		private int _ID_user;
-		
-		private EntityRef<user> _user;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnMail_IDChanging(int value);
-    partial void OnMail_IDChanged();
-    partial void OnSenderChanging(int value);
-    partial void OnSenderChanged();
-    partial void OnRecipientChanging(int value);
-    partial void OnRecipientChanged();
-    partial void OnSendDateChanging(System.DateTime value);
-    partial void OnSendDateChanged();
-    partial void OnContentChanging(string value);
-    partial void OnContentChanged();
-    partial void OnID_userChanging(int value);
-    partial void OnID_userChanged();
-    #endregion
-		
-		public Mail()
-		{
-			this._user = default(EntityRef<user>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Mail_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Mail_ID
-		{
-			get
-			{
-				return this._Mail_ID;
-			}
-			set
-			{
-				if ((this._Mail_ID != value))
-				{
-					this.OnMail_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Mail_ID = value;
-					this.SendPropertyChanged("Mail_ID");
-					this.OnMail_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sender", DbType="Int NOT NULL")]
-		public int Sender
-		{
-			get
-			{
-				return this._Sender;
-			}
-			set
-			{
-				if ((this._Sender != value))
-				{
-					this.OnSenderChanging(value);
-					this.SendPropertyChanging();
-					this._Sender = value;
-					this.SendPropertyChanged("Sender");
-					this.OnSenderChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Recipient", DbType="Int NOT NULL")]
-		public int Recipient
-		{
-			get
-			{
-				return this._Recipient;
-			}
-			set
-			{
-				if ((this._Recipient != value))
-				{
-					this.OnRecipientChanging(value);
-					this.SendPropertyChanging();
-					this._Recipient = value;
-					this.SendPropertyChanged("Recipient");
-					this.OnRecipientChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendDate", DbType="DateTime NOT NULL")]
-		public System.DateTime SendDate
-		{
-			get
-			{
-				return this._SendDate;
-			}
-			set
-			{
-				if ((this._SendDate != value))
-				{
-					this.OnSendDateChanging(value);
-					this.SendPropertyChanging();
-					this._SendDate = value;
-					this.SendPropertyChanged("SendDate");
-					this.OnSendDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Content", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Content
-		{
-			get
-			{
-				return this._Content;
-			}
-			set
-			{
-				if ((this._Content != value))
-				{
-					this.OnContentChanging(value);
-					this.SendPropertyChanging();
-					this._Content = value;
-					this.SendPropertyChanged("Content");
-					this.OnContentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int NOT NULL")]
-		public int ID_user
-		{
-			get
-			{
-				return this._ID_user;
-			}
-			set
-			{
-				if ((this._ID_user != value))
-				{
-					if (this._user.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnID_userChanging(value);
-					this.SendPropertyChanging();
-					this._ID_user = value;
-					this.SendPropertyChanged("ID_user");
-					this.OnID_userChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Mail", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
-		public user user
-		{
-			get
-			{
-				return this._user.Entity;
-			}
-			set
-			{
-				user previousValue = this._user.Entity;
-				if (((previousValue != value) 
-							|| (this._user.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._user.Entity = null;
-						previousValue.Mails.Remove(this);
-					}
-					this._user.Entity = value;
-					if ((value != null))
-					{
-						value.Mails.Add(this);
-						this._ID_user = value.ID_user;
-					}
-					else
-					{
-						this._ID_user = default(int);
-					}
-					this.SendPropertyChanged("user");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 }
