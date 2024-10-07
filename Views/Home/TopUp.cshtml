@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Nạp tiền";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <h2>Nạp tiền</h2>
+                    <p>Quét mã QR để nạp tiền:</p>
+                    <img src="@ViewBag.QrUrl" alt="QR Code" class="img-fluid mb-3" />
+                    <p class="text-muted">Sử dụng ứng dụng ngân hàng của bạn để quét mã QR và hoàn tất giao dịch.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card sticky-top">
+                <div class="card-body text-center">
+                    <img src="path_to_profile_image" class="rounded-circle mb-3" alt="Profile Image" style="width: 100px; height: 100px;">
+                    <h5>Thông tin người dùng</h5>
+                    <p><strong>Tên:</strong> @ViewBag.UserName</p>
+                    <p><strong>Số tiền hiện tại:</strong> @ViewBag.Amount VND</p>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Quay lại trang chủ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body p {
+        font-size: 1.1rem;
+    }
+</style>

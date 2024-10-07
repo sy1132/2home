@@ -509,5 +509,15 @@ namespace _2home.Controllers
             }
             return View();
         }
+        public ActionResult TopUp(int ID_user, int ID_room, decimal amount)
+        {
+            string bank = "Vietcombank";
+            string qrUrl = $"https://qr.sepay.vn/img?acc=1026787663&bank={bank}&amount={amount}&des={ID_user}";
+            ViewBag.QrUrl = qrUrl;
+            ViewBag.Amount = amount;
+            ViewBag.UserName = "Tên người dùng"; // Thay thế bằng tên người dùng thực tế
+            return View();
+        }
+
     }
 }

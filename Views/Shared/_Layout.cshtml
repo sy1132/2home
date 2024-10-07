@@ -54,7 +54,7 @@
                                 else
                                 {
                                     <li>
-                                        <a class="dropdown-item text-bg-success" href="#">
+                                        <a class="dropdown-item text-bg-success" href="@Url.Action("TopUp", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
                                             <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">Loading...</span> VND
                                         </a>
                                     </li>
