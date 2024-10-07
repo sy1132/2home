@@ -491,5 +491,23 @@ namespace _2home.Controllers
 
 
         }
+        public ActionResult Profile_user(int ID_user)
+        {
+            using (var db = new DataClasses1DataContext())
+            {
+                var user = db.users.FirstOrDefault(u => u.ID_user == ID_user);
+                if (user != null)
+                {
+                    ViewBag.Fullname = user.fullname;
+                    ViewBag.Email = user.Email;
+                    ViewBag.PhoneNumber = user.PhoneNumber;
+                    ViewBag.Gender = user.gender;
+
+                    var rooms = db.Motels.Where(m => m.ID_user == ID_user).ToList();
+                    ViewBag.Rooms = rooms;
+                }
+            }
+            return View();
+        }
     }
 }

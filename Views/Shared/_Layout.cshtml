@@ -54,6 +54,12 @@
                                 else
                                 {
                                     <li>
+                                        <a class="dropdown-item text-bg-success" href="#">
+                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">Loading...</span> VND
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
                                         <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
                                             <i class="fas fa-clipboard-list"></i> Đăng ký thuê
                                         </a>
@@ -77,7 +83,7 @@
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item" href="/Home/Logout">
+                                    <a class="dropdown-item text-bg-danger" href="/Home/Logout">
                                         <i class="fas fa-sign-out-alt"></i> Đăng xuất
                                     </a>
                                 </li>
