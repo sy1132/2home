@@ -154,6 +154,7 @@
     <Compile Include="ViewModels\pic.cs" />
     <Compile Include="ViewModels\room.cs" />
     <Compile Include="ViewModels\user.cs" />
+    <Compile Include="ViewModels\viewmail.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="asset\css\Details.css" />

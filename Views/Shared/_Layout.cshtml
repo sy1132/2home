@@ -13,9 +13,6 @@
         .nav-link-custom {
             font-weight: bold;
         }
-        .dropdown-menu {
-            z-index: 1050;
-        }
     </style>
 </head>
 <body>
@@ -45,10 +42,16 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a class="dropdown-item" href="@Url.Action("Kiemduyet", "Home")">
+                                            <i class="fas fa-clipboard-list"></i> Kiểm duyệt
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item" href="@Url.Action("rental_management", "Home")">
                                             <i class="fas fa-home"></i> Quản lý thuê
                                         </a>
                                     </li>
+
                                 }
                                 else if (user.userrole == "Innkeeper")
                                 {
@@ -57,14 +60,14 @@
                                 else
                                 {
                                     <li>
-                                        <a class="dropdown-item text-bg-success" href="@Url.Action("TopUp", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
-                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">Loading...</span> VND
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
                                         <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
                                             <i class="fas fa-clipboard-list"></i> Đăng ký thuê
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("QL_room", "Home")">
+                                            <i class="fas fa-clipboard-list"></i> QL_phòng
                                         </a>
                                     </li>
                                     <li>
@@ -73,9 +76,14 @@
                                         </a>
                                     </li>
                                 }
+                                <li>
+                                    <a class="dropdown-item" href="@Url.Action("mail", "Home")">
+                                        <i class="fas fa-home"></i> Thư
+                                    </a>
+                                </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item" href="@Url.Action("Profile_user", "Home", new { ID_user = user.ID_user })">
+                                    <a class="dropdown-item" href="#">
                                         <i class="fas fa-user"></i> Profile
                                     </a>
                                 </li>
@@ -86,7 +94,7 @@
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item text-bg-danger" href="/Home/Logout">
+                                    <a class="dropdown-item" href="/Home/Logout">
                                         <i class="fas fa-sign-out-alt"></i> Đăng xuất
                                     </a>
                                 </li>
@@ -183,7 +191,6 @@
     }
 
         .nav-link-custom:hover {
-
             color: #ffcc00; /* Example hover color */
         }
 </style>
