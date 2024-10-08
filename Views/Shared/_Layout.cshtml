@@ -13,8 +13,42 @@
         .nav-link-custom {
             font-weight: bold;
         }
+
         .dropdown-menu {
             z-index: 1050;
+        }
+
+        .search-container {
+            transition: width 0.5s ease;
+            width: 0;
+            overflow: hidden;
+        }
+
+        .search-container.active {
+            width: 100%;
+        }
+
+        .nav-link-custom {
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+            .nav-link-custom:hover {
+                color: #ffcc00; /* Example hover color */
+            }
+
+        .social-media-links a {
+            color: #000;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+            .social-media-links a:hover {
+                color: #007bff;
+            }
+
+        .contact-info, .creator-info {
+            font-size: 1em;
         }
     </style>
 </head>
@@ -176,10 +210,67 @@
     <div class="d-flex flex-column justify-content-center align-items-center">
         @RenderBody()
         <hr />
-        <footer class="text-center">
-            <p>&copy; @DateTime.Now.Year - Phòng chuyên môn Devmaster</p>
+        <footer class="bg-dark text-white mt-5 w-100">
+            <div class="container-fluid py-5">
+                <div class="row text-center text-md-left d-flex justify-content-between">
+                    <!-- Contact Us -->
+                    <div class="col-md-4 mb-4">
+                        <h5 class="text-uppercase font-weight-bold">Contact Us</h5>
+                        <p>
+                            Customer Support:
+                            <a href="tel:+1234567890" class="text-info">+1234567890</a>
+                        </p>
+                    </div>
+
+                    <!-- Follow Us -->
+                    <div class="col-md-4 mb-4">
+                        <h5 class="text-uppercase font-weight-bold">Follow Us</h5>
+                        <div class="d-flex justify-content-center justify-content-md-start">
+                            <a href="https://www.facebook.com" target="_blank" class="btn btn-outline-primary btn-sm mx-2">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://www.youtube.com" target="_blank" class="btn btn-outline-danger btn-sm mx-2">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="https://www.tiktok.com" target="_blank" class="btn btn-outline-light btn-sm mx-2">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                            <a href="https://zalo.me" target="_blank" class="btn btn-outline-info btn-sm mx-2">
+                                <i class="fab fa-zalo"></i>
+                            </a>
+                            <a href="https://www.instagram.com" target="_blank" class="btn btn-outline-danger btn-sm mx-2">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://twitter.com" target="_blank" class="btn btn-outline-info btn-sm mx-2">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="https://telegram.org" target="_blank" class="btn btn-outline-primary btn-sm mx-2">
+                                <i class="fab fa-telegram-plane"></i>
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- Created By -->
+                    <div class="col-md-4 mb-4">
+                        <h5 class="text-uppercase font-weight-bold">Created By</h5>
+                        <p>Person 1, Person 2, Person 3</p>
+                        <p>&copy; @DateTime.Now.Year - Phòng chuyên môn Devmaster</p>
+                    </div>
+                </div>
+
+                <!-- Horizontal Line -->
+                <hr class="bg-white">
+
+                <!-- Footer Bottom -->
+                <div class="text-center pt-3">
+                    <p>© All rights reserved</p>
+                </div>
+            </div>
         </footer>
+
     </div>
+
 </body>
 </html>
 <style>
