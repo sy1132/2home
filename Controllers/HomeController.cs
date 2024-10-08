@@ -35,14 +35,15 @@ namespace _2home.Controllers
             
             var query = from img in db.imgs
                         join motel in db.Motels on img.ID_user equals motel.ID_user
-                        where motel.is_available == "Còn trống"
+                        where motel.is_available == "Còn trống" && motel.Debt==0
                         group img by new
                         {
                             motel.Name_motel,
                             motel.location,
                             motel.price,
                             motel.is_available,
-                            motel.ID_user
+                            motel.ID_user,
+                            motel.Details
                         } into grouped
                 select new index_Viewmodel
                 {
@@ -51,11 +52,21 @@ namespace _2home.Controllers
                     Location = grouped.Key.location,
                     Price = grouped.Key.price,
                     is_available = grouped.Key.is_available,
-                    ID_user = grouped.Key.ID_user
+                    ID_user = grouped.Key.ID_user,
+                    Details = grouped.Key.Details
                 };
             if (!String.IsNullOrEmpty(searchString))
-                query = query.Where(b => b.MotelName.Contains(searchString));
+            {
+                var keywords = searchString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                           .Select(k => k.Trim())
+                                           .ToList();
 
+                foreach (var keyword in keywords)
+                {
+                    query = query.Where(b => b.MotelName.Contains(keyword)
+                                          || b.Details.Contains(keyword));
+                }
+            }
             if (!String.IsNullOrEmpty(City))
                 query = query.Where(b => b.Location.Contains(City));
 
@@ -212,7 +223,7 @@ namespace _2home.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult DKthue(string roomName, int? Rooms, string LocationName, string city, string ward, string district, decimal Price, IEnumerable<HttpPostedFileBase> Images, HttpPostedFileBase Video)
+        public ActionResult DKthue(string roomName,string Details, int? Rooms, string LocationName, string city, string ward, string district, decimal Price, IEnumerable<HttpPostedFileBase> Images, HttpPostedFileBase Videos)
         {
             using (var db = new DataClasses1DataContext())
             {
@@ -229,6 +240,8 @@ namespace _2home.Controllers
                     price = Price,
                     is_available = "Đang chờ duyệt",
                     ID_user = user.ID_user,
+                    Details= Details,
+                    rooms=Rooms
                 };
 
                 db.Motels.InsertOnSubmit(motel);
@@ -257,12 +270,12 @@ namespace _2home.Controllers
                 }
 
                 
-                    var videoPath = Path.Combine(Server.MapPath("/asset/videos/"), Path.GetFileName(Video.FileName));
-                    Video.SaveAs(videoPath);
+                    var videoPath = Path.Combine(Server.MapPath("/asset/videos/"), Path.GetFileName(Videos.FileName));
+                    Videos.SaveAs(videoPath);
 
                     var motelVideo = new _2home.Models.Video
                     {
-                        Link = $"/asset/videos/{Path.GetFileName(Video.FileName)}", // Lưu đường dẫn video
+                        Link = $"/asset/videos/{Path.GetFileName(Videos.FileName)}", // Lưu đường dẫn video
                         createdAt = DateTime.Now,
                         updatedAt = DateTime.Now,
                         ID_user = user.ID_user,
@@ -274,6 +287,148 @@ namespace _2home.Controllers
                 db.SubmitChanges();
                 return RedirectToAction("index");
             }
+        }
+
+        public ActionResult Kiemduyet(int? size, int? page)
+        {
+            var query = from img in db.imgs
+                        join motel in db.Motels on img.ID_user equals motel.ID_user
+                        where motel.is_available == "Đang chờ duyệt" 
+                        group img by new
+                        {
+                            motel.Name_motel,
+                            motel.location,
+                            motel.price,
+                            motel.is_available,
+                            motel.ID_user,
+                            motel.rooms
+                        } into grouped
+                        select new index_Viewmodel
+                        {
+                            ImgLink = grouped.Select(g => g.Link).FirstOrDefault(),
+                            MotelName = grouped.Key.Name_motel,
+                       
+                            Location = grouped.Key.location,
+                            Price = grouped.Key.price,
+                            is_available = grouped.Key.is_available,
+                            ID_user = grouped.Key.ID_user,
+                            rooms=grouped.Key.rooms
+                        };
+            ViewBag.Page = page;
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "10", Value = "10" });
+            items.Add(new SelectListItem { Text = "20", Value = "20" });
+            items.Add(new SelectListItem { Text = "25", Value = "25" });
+            items.Add(new SelectListItem { Text = "50", Value = "50" });
+            items.Add(new SelectListItem { Text = "100", Value = "100" });
+            items.Add(new SelectListItem { Text = "200", Value = "200" });
+            foreach (var item in items)
+            {
+                if (item.Value == size.ToString()) item.Selected = true;
+            }
+            ViewBag.size = items;
+            ViewBag.currentSize = size;
+
+            page = page ?? 1;
+            int pageSize = (size ?? 10);
+
+            int pageNumber = (page ?? 1);
+            var model = query.ToList();
+            return View(model.ToPagedList(pageNumber, pageSize));
+        }
+        [HttpPost]
+        public ActionResult Accept(int? ID_user)
+        {
+            if (ID_user.HasValue)
+            {
+                var motel = db.Motels.FirstOrDefault(m => m.ID_user == ID_user.Value);
+                if (motel != null)
+                {
+                    motel.is_available = "Đã duyệt";
+                    db.SubmitChanges();
+
+                    var senderID = Session["User"] as _2home.ViewModels.User;
+                    if (senderID == null)
+                    {
+                        return RedirectToAction("Login");
+                    }
+                    var recipientUser = db.users.FirstOrDefault(u => u.ID_user == motel.ID_user);
+                    var recipientID = recipientUser?.ID_user;
+
+                    if ( recipientID.HasValue)
+                    {
+                        for (int i = 0; i < motel.rooms; i++)
+                        {
+                            Room newRoom = new Room
+                            {
+                                Motel_ID = motel.Motel_ID, 
+                                Date_of_Issue = DateTime.Now,
+                                Electricity_Meter = 0.00m, 
+                                Water_Meter = 0.00m,
+                                Electricity_Usage = 0.00m,
+                                Water_Usage = 0.00m,
+                                Electricity_Bill = 0.00m,
+                                Water_Bill = 0.00m,
+                                Room_Status = "Trống", 
+                                Room_Rent = motel.price,
+                                Additional_Charges = 0,
+                                Total_Amount_Due = 0,
+                            };
+                            db.Rooms.InsertOnSubmit(newRoom);
+                        }
+                        Mail newMail = new Mail
+                        {
+                            Sender = senderID.ID_user,
+                            Recipient = recipientID.Value,
+                            Content = "Đơn đăng ký nhà trọ của bạn đã được chấp nhận.",
+                            SendDate = DateTime.Now,
+                            ID_user = (int)motel.ID_user
+                        };
+
+                        db.Mails.InsertOnSubmit(newMail);
+                        db.SubmitChanges();
+                    }
+                }
+            }
+            return RedirectToAction("Kiemduyet");
+        }
+
+        [HttpPost]
+        public ActionResult Reject(int? ID_user)
+        {
+            if (ID_user.HasValue)
+            {
+                var motel = db.Motels.FirstOrDefault(m => m.ID_user == ID_user.Value);
+                if (motel != null)
+                {
+                    motel.is_available = "Bị từ chối";
+                    db.SubmitChanges();
+
+                    var senderID = Session["User"] as _2home.ViewModels.User;
+                    if (senderID == null)
+                    {
+                        return RedirectToAction("Login");
+                    }
+                    var recipientUser = db.users.FirstOrDefault(u => u.ID_user == motel.ID_user);
+                    var recipientID = recipientUser?.ID_user;
+
+                    if (recipientID.HasValue)
+                    {
+                        Mail newMail = new Mail
+                        {
+                            Sender = senderID.ID_user,
+                            Recipient = recipientID.Value,
+                            Content = "Đơn đăng ký nhà trọ của bạn đã bị từ chối.",
+                            SendDate = DateTime.Now,
+                            ID_user = (int)motel.ID_user
+                        };
+
+                        db.Mails.InsertOnSubmit(newMail);
+                        db.SubmitChanges();
+                    }
+                }
+            }
+            return RedirectToAction("Kiemduyet");
         }
 
 
@@ -346,7 +501,11 @@ namespace _2home.Controllers
                 }
                 return RedirectToAction("Manager_DK");
         }
-
+        public ActionResult mail()
+        {
+            return View();
+            
+        }
         public ActionResult rental_management(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
 
         {
@@ -447,13 +606,15 @@ namespace _2home.Controllers
         {
             var query = from r in db.Rooms
                         join m in db.Motels on r.Motel_ID equals m.Motel_ID
-                        join u in db.users on r.ID_user equals u.ID_user
+                        join u in db.users on m.ID_user equals u.ID_user
                         select new room
                         {
                             Room_ID = r.room_ID,
                             Motel_ID = r.Motel_ID,
                             ID_User = r.ID_user,
-                            fullname=u.fullname,
+                            fullname = (from user in db.users
+                                        where u.ID_user == r.ID_user
+                                        select u.fullname).FirstOrDefault(),
                             Date_of_Issue = r.Date_of_Issue,
                             Electricity_Meter = r.Electricity_Meter,
                             Water_Meter = r.Water_Meter,

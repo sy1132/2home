@@ -1,0 +1,63 @@
+﻿@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Rental Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Ảnh</th>
+            <th>Tên nhà trọ</th>
+            <th>Vị Trí</th>
+            <th>Giá</th>
+            <th>Tình Trạng</th>
+            <th>Chi Tiết</th>
+            <th>Hành Động</th> <!-- Thêm cột Hành Động -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var items in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(items.ImgLink))
+                    {
+                        <img class="img-trang" src="@items.ImgLink" alt="Image" style="width:100px; height:auto;" />
+                    }
+                    else
+                    {
+                        <span>Không có hình ảnh</span>
+                    }
+                </td>
+                <td>@items.MotelName</td>
+                <td>@items.Location</td>
+                <td>@items.Price</td>
+                <td>@items.is_available</td>
+                <td>
+                    @using (Html.BeginForm("Accept", "Home", FormMethod.Post))
+                    {
+                        @Html.Hidden("ID_user", items.ID_user)
+                        <input type="submit" value="Đồng ý" class="btn btn-success" />
+                    }
+
+                </td>
+                <td>
+                    @using (Html.BeginForm("Reject", "Home", FormMethod.Post))
+                    {
+                        @Html.Hidden("ID_user", items.ID_user)
+                        <input type="submit" value="Từ chối" class="btn btn-danger" />
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("Kiemduyet", new { page }), PagedListRenderOptions.Classic)
+</div>
