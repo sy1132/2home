@@ -36,6 +36,9 @@ namespace _2home.Models
     partial void InsertVideo(Video instance);
     partial void UpdateVideo(Video instance);
     partial void DeleteVideo(Video instance);
+    partial void InsertMail(Mail instance);
+    partial void UpdateMail(Mail instance);
+    partial void DeleteMail(Mail instance);
     partial void InsertMotel(Motel instance);
     partial void UpdateMotel(Motel instance);
     partial void DeleteMotel(Motel instance);
@@ -59,7 +62,7 @@ namespace _2home.Models
 			OnCreated();
 		}
         public DataClasses1DataContext() :
-        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString1"].ConnectionString, mappingSource)
+        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString"].ConnectionString, mappingSource)
         {
 
         }
@@ -88,6 +91,14 @@ namespace _2home.Models
 			get
 			{
 				return this.GetTable<Video>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Mail> Mails
+		{
+			get
+			{
+				return this.GetTable<Mail>();
 			}
 		}
 		
@@ -514,6 +525,229 @@ namespace _2home.Models
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Mail")]
+	public partial class Mail : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Mail_ID;
+		
+		private int _Sender;
+		
+		private int _Recipient;
+		
+		private System.DateTime _SendDate;
+		
+		private string _Content;
+		
+		private int _ID_user;
+		
+		private EntityRef<user> _user;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMail_IDChanging(int value);
+    partial void OnMail_IDChanged();
+    partial void OnSenderChanging(int value);
+    partial void OnSenderChanged();
+    partial void OnRecipientChanging(int value);
+    partial void OnRecipientChanged();
+    partial void OnSendDateChanging(System.DateTime value);
+    partial void OnSendDateChanged();
+    partial void OnContentChanging(string value);
+    partial void OnContentChanged();
+    partial void OnID_userChanging(int value);
+    partial void OnID_userChanged();
+    #endregion
+		
+		public Mail()
+		{
+			this._user = default(EntityRef<user>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Mail_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Mail_ID
+		{
+			get
+			{
+				return this._Mail_ID;
+			}
+			set
+			{
+				if ((this._Mail_ID != value))
+				{
+					this.OnMail_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Mail_ID = value;
+					this.SendPropertyChanged("Mail_ID");
+					this.OnMail_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sender", DbType="Int NOT NULL")]
+		public int Sender
+		{
+			get
+			{
+				return this._Sender;
+			}
+			set
+			{
+				if ((this._Sender != value))
+				{
+					this.OnSenderChanging(value);
+					this.SendPropertyChanging();
+					this._Sender = value;
+					this.SendPropertyChanged("Sender");
+					this.OnSenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Recipient", DbType="Int NOT NULL")]
+		public int Recipient
+		{
+			get
+			{
+				return this._Recipient;
+			}
+			set
+			{
+				if ((this._Recipient != value))
+				{
+					this.OnRecipientChanging(value);
+					this.SendPropertyChanging();
+					this._Recipient = value;
+					this.SendPropertyChanged("Recipient");
+					this.OnRecipientChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendDate", DbType="DateTime NOT NULL")]
+		public System.DateTime SendDate
+		{
+			get
+			{
+				return this._SendDate;
+			}
+			set
+			{
+				if ((this._SendDate != value))
+				{
+					this.OnSendDateChanging(value);
+					this.SendPropertyChanging();
+					this._SendDate = value;
+					this.SendPropertyChanged("SendDate");
+					this.OnSendDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Content", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Content
+		{
+			get
+			{
+				return this._Content;
+			}
+			set
+			{
+				if ((this._Content != value))
+				{
+					this.OnContentChanging(value);
+					this.SendPropertyChanging();
+					this._Content = value;
+					this.SendPropertyChanged("Content");
+					this.OnContentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int NOT NULL")]
+		public int ID_user
+		{
+			get
+			{
+				return this._ID_user;
+			}
+			set
+			{
+				if ((this._ID_user != value))
+				{
+					if (this._user.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnID_userChanging(value);
+					this.SendPropertyChanging();
+					this._ID_user = value;
+					this.SendPropertyChanged("ID_user");
+					this.OnID_userChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Mail", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
+		public user user
+		{
+			get
+			{
+				return this._user.Entity;
+			}
+			set
+			{
+				user previousValue = this._user.Entity;
+				if (((previousValue != value) 
+							|| (this._user.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._user.Entity = null;
+						previousValue.Mails.Remove(this);
+					}
+					this._user.Entity = value;
+					if ((value != null))
+					{
+						value.Mails.Add(this);
+						this._ID_user = value.ID_user;
+					}
+					else
+					{
+						this._ID_user = default(int);
+					}
+					this.SendPropertyChanged("user");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Motel")]
 	public partial class Motel : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -534,7 +768,17 @@ namespace _2home.Models
 		
 		private string _is_available;
 		
-		private EntitySet<Room> _Rooms;
+		private string _Details;
+		
+		private System.Nullable<System.DateTime> _CreatedDate;
+		
+		private System.Nullable<decimal> _Debt;
+		
+		private System.Nullable<decimal> _TotalPayment;
+		
+		private System.Nullable<int> _rooms;
+		
+		private EntitySet<Room> _Rooms1;
 		
 		private EntityRef<user> _user;
 		
@@ -556,11 +800,21 @@ namespace _2home.Models
     partial void OnpriceChanged();
     partial void Onis_availableChanging(string value);
     partial void Onis_availableChanged();
+    partial void OnDetailsChanging(string value);
+    partial void OnDetailsChanged();
+    partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedDateChanged();
+    partial void OnDebtChanging(System.Nullable<decimal> value);
+    partial void OnDebtChanged();
+    partial void OnTotalPaymentChanging(System.Nullable<decimal> value);
+    partial void OnTotalPaymentChanged();
+    partial void OnroomsChanging(System.Nullable<int> value);
+    partial void OnroomsChanged();
     #endregion
 		
 		public Motel()
 		{
-			this._Rooms = new EntitySet<Room>(new Action<Room>(this.attach_Rooms), new Action<Room>(this.detach_Rooms));
+			this._Rooms1 = new EntitySet<Room>(new Action<Room>(this.attach_Rooms1), new Action<Room>(this.detach_Rooms1));
 			this._user = default(EntityRef<user>);
 			OnCreated();
 		}
@@ -709,16 +963,116 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Rooms", ThisKey="Motel_ID", OtherKey="Motel_ID")]
-		public EntitySet<Room> Rooms
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Details", DbType="NVarChar(MAX)")]
+		public string Details
 		{
 			get
 			{
-				return this._Rooms;
+				return this._Details;
 			}
 			set
 			{
-				this._Rooms.Assign(value);
+				if ((this._Details != value))
+				{
+					this.OnDetailsChanging(value);
+					this.SendPropertyChanging();
+					this._Details = value;
+					this.SendPropertyChanged("Details");
+					this.OnDetailsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="Date")]
+		public System.Nullable<System.DateTime> CreatedDate
+		{
+			get
+			{
+				return this._CreatedDate;
+			}
+			set
+			{
+				if ((this._CreatedDate != value))
+				{
+					this.OnCreatedDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedDate = value;
+					this.SendPropertyChanged("CreatedDate");
+					this.OnCreatedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Debt", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Debt
+		{
+			get
+			{
+				return this._Debt;
+			}
+			set
+			{
+				if ((this._Debt != value))
+				{
+					this.OnDebtChanging(value);
+					this.SendPropertyChanging();
+					this._Debt = value;
+					this.SendPropertyChanged("Debt");
+					this.OnDebtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPayment", AutoSync=AutoSync.Always, DbType="Decimal(13,2)", IsDbGenerated=true, UpdateCheck=UpdateCheck.Never)]
+		public System.Nullable<decimal> TotalPayment
+		{
+			get
+			{
+				return this._TotalPayment;
+			}
+			set
+			{
+				if ((this._TotalPayment != value))
+				{
+					this.OnTotalPaymentChanging(value);
+					this.SendPropertyChanging();
+					this._TotalPayment = value;
+					this.SendPropertyChanged("TotalPayment");
+					this.OnTotalPaymentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_rooms", DbType="Int")]
+		public System.Nullable<int> rooms
+		{
+			get
+			{
+				return this._rooms;
+			}
+			set
+			{
+				if ((this._rooms != value))
+				{
+					this.OnroomsChanging(value);
+					this.SendPropertyChanging();
+					this._rooms = value;
+					this.SendPropertyChanged("rooms");
+					this.OnroomsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Rooms1", ThisKey="Motel_ID", OtherKey="Motel_ID")]
+		public EntitySet<Room> Rooms1
+		{
+			get
+			{
+				return this._Rooms1;
+			}
+			set
+			{
+				this._Rooms1.Assign(value);
 			}
 		}
 		
@@ -776,13 +1130,13 @@ namespace _2home.Models
 			}
 		}
 		
-		private void attach_Rooms(Room entity)
+		private void attach_Rooms1(Room entity)
 		{
 			this.SendPropertyChanging();
 			entity.Motel = this;
 		}
 		
-		private void detach_Rooms(Room entity)
+		private void detach_Rooms1(Room entity)
 		{
 			this.SendPropertyChanging();
 			entity.Motel = null;
@@ -1173,12 +1527,12 @@ namespace _2home.Models
 					if ((previousValue != null))
 					{
 						this._Motel.Entity = null;
-						previousValue.Rooms.Remove(this);
+						previousValue.Rooms1.Remove(this);
 					}
 					this._Motel.Entity = value;
 					if ((value != null))
 					{
-						value.Rooms.Add(this);
+						value.Rooms1.Add(this);
 						this._Motel_ID = value.Motel_ID;
 					}
 					else
@@ -1269,9 +1623,13 @@ namespace _2home.Models
 		
 		private string _gender;
 		
+		private System.Nullable<int> _blance;
+		
 		private EntitySet<img> _imgs;
 		
 		private EntitySet<Video> _Videos;
+		
+		private EntitySet<Mail> _Mails;
 		
 		private EntitySet<Motel> _Motels;
 		
@@ -1299,12 +1657,15 @@ namespace _2home.Models
     partial void OnuserroleChanged();
     partial void OngenderChanging(string value);
     partial void OngenderChanged();
+    partial void OnblanceChanging(System.Nullable<int> value);
+    partial void OnblanceChanged();
     #endregion
 		
 		public user()
 		{
 			this._imgs = new EntitySet<img>(new Action<img>(this.attach_imgs), new Action<img>(this.detach_imgs));
 			this._Videos = new EntitySet<Video>(new Action<Video>(this.attach_Videos), new Action<Video>(this.detach_Videos));
+			this._Mails = new EntitySet<Mail>(new Action<Mail>(this.attach_Mails), new Action<Mail>(this.detach_Mails));
 			this._Motels = new EntitySet<Motel>(new Action<Motel>(this.attach_Motels), new Action<Motel>(this.detach_Motels));
 			this._Rooms = new EntitySet<Room>(new Action<Room>(this.attach_Rooms), new Action<Room>(this.detach_Rooms));
 			OnCreated();
@@ -1490,6 +1851,26 @@ namespace _2home.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_blance", DbType="Int")]
+		public System.Nullable<int> blance
+		{
+			get
+			{
+				return this._blance;
+			}
+			set
+			{
+				if ((this._blance != value))
+				{
+					this.OnblanceChanging(value);
+					this.SendPropertyChanging();
+					this._blance = value;
+					this.SendPropertyChanged("blance");
+					this.OnblanceChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_img", Storage="_imgs", ThisKey="ID_user", OtherKey="ID_user")]
 		public EntitySet<img> imgs
 		{
@@ -1513,6 +1894,19 @@ namespace _2home.Models
 			set
 			{
 				this._Videos.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Mail", Storage="_Mails", ThisKey="ID_user", OtherKey="ID_user")]
+		public EntitySet<Mail> Mails
+		{
+			get
+			{
+				return this._Mails;
+			}
+			set
+			{
+				this._Mails.Assign(value);
 			}
 		}
 		
@@ -1581,6 +1975,18 @@ namespace _2home.Models
 		}
 		
 		private void detach_Videos(Video entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = null;
+		}
+		
+		private void attach_Mails(Mail entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = this;
+		}
+		
+		private void detach_Mails(Mail entity)
 		{
 			this.SendPropertyChanging();
 			entity.user = null;
