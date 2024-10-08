@@ -39,5 +39,6 @@ namespace _2home.ViewModels
 
         public virtual Motel Motel { get; set; }
         public virtual User User { get; set; }
+        public Nullable<decimal> Price { get; set; }
     }
 }

@@ -11,31 +11,31 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Mã phòng trọ</th>
             <th>Người thuê trọ</th>
             <th>Ngày cập nhật</th>
             <th>Tổng tiền điện</th>
             <th>Tổng tiền nước</th>
             <th>Chi phí phát sinh</th>
+            <th>Tiền trọ</th>
             <th>Tổng tiền </th>
             <th>Tình Trạng</th>
-            <th>Chi Tiết</th>
+            <th>Cập nhật</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var items in Model)
         {
             <tr>
-                <td>@items.Room_ID</td>
                 <td>@items.fullname</td>
-                <td>@items.Date_of_Issue</td> 
+                <td>@items.Date_of_Issue</td>
                 <td>@items.Electricity_Bill</td>
                 <td>@items.Water_Bill</td>
                 <td>@items.Additional_Charges</td>
+                <td>@items.Price</td>
                 <td>@items.Total_Amount_Due</td>
                 <td>@items.Room_Status</td>
                 <td>
-                    <a href="@Url.Action("ChiTietPhong", "Phong", new { id = items.Room_ID })" class="btn btn-info">Xem Chi Tiết</a>
+                    <a href="@Url.Action("Capnhat", "Home", new { id = items.Room_ID })" class="btn btn-info">Cập nhật</a>
                 </td>
             </tr>
         }

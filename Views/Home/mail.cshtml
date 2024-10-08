@@ -1,8 +1,40 @@
-﻿
+﻿@model PagedList.IPagedList<_2home.ViewModels.viewmail>
+@using PagedList.Mvc;
 @{
-    ViewBag.Title = "mail";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Mail List";
 }
 
-<h2>mail</h2>
+<h2>Mail List</h2>
 
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>người gửi</th>
+            <th>người nhận</th>
+            <th>ngày gửi</th>
+            <th>nội dung</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.user1</td>
+                <td>@item.user2</td>
+                <td>@item.SendDate.ToString("dd/MM/yyyy")</td>
+                <td>@item.Content</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<form method="get" action="@Url.Action("mail")">
+    <div class="form-group">
+        <label for="size">Items per page:</label>
+        @Html.DropDownList("size", (IEnumerable<SelectListItem>)ViewBag.size, new { @class = "form-control", @onchange = "this.form.submit();" })
+    </div>
+</form>
+<div class="text-center">
+    @Html.PagedListPager(Model, page => Url.Action("mail", new { page, size = ViewBag.currentSize }))
+</div>

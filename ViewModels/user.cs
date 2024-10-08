@@ -16,6 +16,7 @@ namespace _2home.ViewModels
             public string gender { get; set; }
             public string userrole { get; set; }
             public int? MotelID { get; set; }
+        public int? blance { get; set; }
 
     }
     }

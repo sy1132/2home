@@ -208,7 +208,8 @@ namespace _2home.Controllers
                     password = password,
                     PhoneNumber = phone,
                     gender = gender,
-                    userrole = "user"
+                    userrole = "user",
+                    blance=0
                 };
 
                 db.users.InsertOnSubmit(newUser);
@@ -501,11 +502,70 @@ namespace _2home.Controllers
                 }
                 return RedirectToAction("Manager_DK");
         }
-        public ActionResult mail()
+        public ActionResult mail(int? size, int? page)
+{
+            var id_save = Session["User"] as _2home.ViewModels.User;
+            if (id_save == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var user_save = id_save.ID_user;
+            var query = from m in db.Mails
+                        join u in db.users on m.ID_user equals u.ID_user
+                        where m.Recipient==user_save
+                        select new
+                        {
+                            user1 = (from u1 in db.users
+                                     where u1.ID_user == m.Sender
+                                     select u1.fullname).FirstOrDefault(),
+                            user2 = (from u1 in db.users
+                                     where u1.ID_user == m.Recipient
+                                     select u1.fullname).FirstOrDefault(),
+
+                            SendDate = m.SendDate,
+                            Content = m.Content
+                        };
+
+
+            var mailList = query.ToList().Select(m => new _2home.ViewModels.viewmail
+    {
+        user1=m.user1,
+        user2 = m.user2,
+
+        SendDate = m.SendDate,
+        Content = m.Content
+    });
+
+    List<SelectListItem> items = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "10", Value = "10" },
+        new SelectListItem { Text = "20", Value = "20" },
+        new SelectListItem { Text = "25", Value = "25" },
+        new SelectListItem { Text = "50", Value = "50" },
+        new SelectListItem { Text = "100", Value = "100" },
+        new SelectListItem { Text = "200", Value = "200" }
+    };
+
+    if (size.HasValue)
+    {
+        foreach (var item in items)
         {
-            return View();
-            
+            if (item.Value == size.Value.ToString()) item.Selected = true;
         }
+    }
+
+    ViewBag.size = items;
+    ViewBag.currentSize = size;
+
+    page = page ?? 1;
+    int pageSize = size ?? 10;
+    int pageNumber = page.Value;
+
+    var model = mailList.ToPagedList(pageNumber, pageSize);
+    return View(model);
+}
+
         public ActionResult rental_management(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
 
         {
@@ -604,11 +664,20 @@ namespace _2home.Controllers
         public ActionResult QL_room(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
 
         {
+            var id_save = Session["User"] as _2home.ViewModels.User;
+            if (id_save == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var user_save = id_save.ID_user;
             var query = from r in db.Rooms
                         join m in db.Motels on r.Motel_ID equals m.Motel_ID
                         join u in db.users on m.ID_user equals u.ID_user
+                        where u.ID_user == user_save
                         select new room
                         {
+                            Price=m.price,
                             Room_ID = r.room_ID,
                             Motel_ID = r.Motel_ID,
                             ID_User = r.ID_user,

@@ -11,7 +11,8 @@ CREATE TABLE [user] (
     PhoneNumber NVARCHAR(15),
     Email NVARCHAR(100),
     userrole NVARCHAR(50),
-	gender NVARCHAR(10)
+	gender NVARCHAR(10),
+	blance INT DEFAULT 0
 );
 
 CREATE TABLE Motel (
@@ -23,8 +24,14 @@ CREATE TABLE Motel (
     price DECIMAL(10, 2),
     is_available NVARCHAR(50),
 	Details NVARCHAR(MAX),
+	rooms int,
+	CreatedDate date,
+	Debt decimal(10, 2),
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
+
 );
+UPDATE Motel
+SET debt = debt + DATEDIFF(MONTH, CreatedDate, GETDATE()) * price;
 
 
 
@@ -65,39 +72,19 @@ CREATE TABLE img (
     Link NVARCHAR(255),
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
 );
-INSERT INTO [user] (username, password, fullname, MotelID, PhoneNumber, Email, userrole)
-VALUES 
-( N'john_doe', N'password123', N'John Doe', NULL, N'1234567890', N'john@example.com', N'Admin'),
-( N'jane_smith', N'password123', N'Jane Smith', NULL, N'0987654321', N'jane@example.com', N'User'),
-(N'admin_user', N'password123', N'Admin User', NULL, N'1122334455', N'admin@example.com', N'Admin');
-	INSERT INTO img (ID_user, updatedAt, createdAt, Link)
-VALUES 
-(1,'2024-09-08 12:00:00', '2024-09-08 12:00:00', N'/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg'),
-(2, '2024-09-08 13:00:00', '2024-09-08 13:00:00', N'/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg'),
-(3,'2024-09-08 14:00:00', '2024-09-08 14:00:00', N'/asset/images/pngtree-outline-user-icon-png-image_1727916.jpg');
-INSERT INTO Video ( ID_user, updatedAt, createdAt, Link)
-VALUES 
-(1,'2024-09-08 15:00:00', '2024-09-08 15:00:00', N'/asset/videos/video.mp4'),
-(2, '2024-09-08 16:00:00', '2024-09-08 16:00:00', N'/asset/videos/video.mp4')
-ALTER TABLE Motel
-ADD Details NVARCHAR(MAX);
-SELECT
-    img.Link AS ImgLink,
-    motel.Name_motel AS MotelName,
-    motel.location AS Location,
-    motel.price AS Price,
-    motel.is_available AS is_available,
-    motel.ID_user AS ID_user
-FROM
-    img AS img
-JOIN
-    Motel AS motel
-ON
-    img.ID_user = motel.ID_user;
-	SELECT * FROM Motel
-	INSERT INTO Motel (ID_user, Name_motel, Postal_Code, location, price, is_available)
-VALUES
-(1, N'Green Field Motel', N'12345', N'123 Green Street', 1000.00, N'Còn tr?ng'),
-(2, N'Ocean View Motel', N'54321', N'456 Ocean Road', 1500.00, N'Còn tr?ng'),
-(3, N'Mountain Lodge Motel', N'67890', N'789 Mountain Drive', 1200.00, N'Còn tr?ng');
+CREATE TABLE Mail (
+    Mail_ID INT IDENTITY(1,1) PRIMARY KEY,  
+    Sender NVARCHAR(100) NOT NULL,
+	ID_user INT,
+    Recipient NVARCHAR(100) NOT NULL,      
+    SendDate DATETIME NOT NULL DEFAULT GETDATE(), 
+    Content NVARCHAR(MAX) NOT NULL,        
+    FOREIGN KEY (ID_user) REFERENCES [user](ID_user) 
+);
+
+
+
+SELECT * FROM Rooms
+SELECT * FROM Motel
 SELECT * FROM [user]
+SELECT * FROM Mail
