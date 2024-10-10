@@ -24,9 +24,9 @@
             overflow: hidden;
         }
 
-        .search-container.active {
-            width: 100%;
-        }
+            .search-container.active {
+                width: 100%;
+            }
 
         .nav-link-custom {
             font-weight: bold;
@@ -51,8 +51,7 @@
             font-size: 1em;
         }
     </style>
-</head>
-<script>
+    <script>
     const data = {
         di_an: {
             wards: {
@@ -207,7 +206,8 @@
             });
         }
     }
-</script>
+    </script>
+</head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
         <div class="container-fluid">
@@ -260,10 +260,15 @@
                                             <i class="fas fa-clipboard-list"></i> QL_phòng
                                         </a>
                                     </li>
-                                   
+
                                 }
                                 else
                                 {
+                                    <li>
+                                        <a class="dropdown-item text-bg-success" href="@Url.Action("TopUp", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
+                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">@user.blance</span> VND
+                                        </a>
+                                    </li>
 
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
