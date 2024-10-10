@@ -18,7 +18,9 @@
         }
     </style>
 </head>
+
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
         <div class="container-fluid">
             <a href="@Url.Action("Index", "Home")" class="navbar-brand">
@@ -70,7 +72,7 @@
                                             <i class="fas fa-clipboard-list"></i> QL_phòng
                                         </a>
                                     </li>
-                                   
+
                                 }
                                 else
                                 {
@@ -158,7 +160,7 @@
 
                     <div class="d-flex justify-content-start">
                         <fieldset class="me-2">
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="city" name="City">
+                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputCity" name="City">
                                 <option selected value="">Chọn thành phố...</option>
                                 <option value="Dĩ An">Dĩ An</option>
                                 <option value="Thuận An">Thuận An</option>
@@ -169,20 +171,14 @@
                         </fieldset>
 
                         <fieldset class="me-2">
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="ward" name="Ward">
+                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputWard" name="Ward" disabled>
                                 <option selected value="">Chọn phường...</option>
-                                <option value="Phú Lợi">Phú Lợi</option>
-                                <option value="Thành phố mới">Thành phố mới</option>
-                                <option value="Thủ Dầu Một">Thủ Dầu Một</option>
                             </select>
                         </fieldset>
 
                         <fieldset>
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="district" name="District">
+                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputDistrict" name="District" disabled>
                                 <option selected value="">Chọn khu...</option>
-                                <option value="Bình Chuẩn">Bình Chuẩn</option>
-                                <option value="Thành phố mới">Thành phố mới</option>
-                                <option value="Thủ Dầu Một">Thủ Dầu Một</option>
                             </select>
                         </fieldset>
                     </div>
@@ -222,6 +218,78 @@
 </style>
 
 <script>
+    const data = {
+        "Dĩ An": {
+            wards: {
+                "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
+                "Bình An": ["Bình Thung 1", "Bình Thung 2", "Nội Hóa 1", "Nội Hóa 2", "Châu Thới"],
+            }
+        },
+        "Thuận An": {
+            wards: {
+                "An Phú": ["1A", "1B", "2", "3", "4"],
+            }
+        },
+        "Thủ Dầu Một": {
+            wards: {
+                "Chánh Mỹ": ["Chánh Lộc 1", "Chánh Lộc 2"],
+            }
+        },
+        "Tân Uyên": {
+            wards: {
+                "Hội Nghĩa": ["1", "2", "3", "4"],
+            }
+        },
+        "Bến Cát": {
+            wards: {
+                "An Điền": ["An Mỹ", "An Sơn"],
+            }
+        }
+    };
+    document.getElementById('inputCity').addEventListener('change', function () {
+        const city = this.value;
+        const wardSelect = document.getElementById('inputWard');
+        const districtSelect = document.getElementById('inputDistrict');
+
+        // Reset ward and district selections
+        wardSelect.innerHTML = '<option value="">Chọn phường</option>';
+        districtSelect.innerHTML = '<option value="">Chọn khu</option>';
+        wardSelect.disabled = true;
+        districtSelect.disabled = true;
+
+        if (city && data[city]) {
+            const wards = data[city].wards;
+            wardSelect.disabled = false;
+
+            for (const ward in wards) {
+                const option = document.createElement('option');
+                option.value = ward;
+                option.textContent = ward;
+                wardSelect.add(option);
+            }
+        }
+    });
+
+    document.getElementById('inputWard').addEventListener('change', function () {
+        const city = document.getElementById('inputCity').value;
+        const ward = this.value;
+        const districtSelect = document.getElementById('inputDistrict');
+
+        districtSelect.innerHTML = '<option value="">Chọn khu</option>';
+        districtSelect.disabled = true;
+
+        if (city && ward && data[city].wards[ward]) {
+            const neighborhoods = data[city].wards[ward];
+            districtSelect.disabled = false;
+
+            neighborhoods.forEach(function (neighborhood) {
+                const option = document.createElement('option');
+                option.value = neighborhood;
+                option.textContent = neighborhood;
+                districtSelect.add(option);
+            });
+        }
+    });
     function toggleSearch() {
         var searchContainer = document.getElementById("search-container");
         if (searchContainer.style.display === "none") {

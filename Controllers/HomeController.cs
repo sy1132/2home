@@ -35,7 +35,7 @@ namespace _2home.Controllers
 
             var query = from img in db.imgs
                         join motel in db.Motels on img.ID_user equals motel.ID_user
-                        where motel.is_available == "Còn trống" && motel.Debt==0
+                        where motel.is_available == "Còn trống" 
                         group img by new
                         {
                             motel.Name_motel,
@@ -824,8 +824,6 @@ namespace _2home.Controllers
                     // Thay thế với logic tìm kiếm của bạn
                     // var result = YourSearchMethod(motelId, roomId);
 
-                    // Giả sử bạn đã có dữ liệu tìm kiếm và truyền vào ViewBag
-                    ViewBag.SearchResult = result; // Giả sử bạn có kết quả tìm kiếm
                 }
             }
 
