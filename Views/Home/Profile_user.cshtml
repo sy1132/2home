@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Thông tin người dùng";
+    ViewBag.Title = "Profile_user";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -75,8 +75,7 @@
     </div>
 </div>
 
-<script>
-    document.getElementById('btnMotel').addEventListener('click', function () {
+<script>document.getElementById('btnMotel').addEventListener('click', function () {
         document.getElementById('motelTable').style.display = 'table';
         document.getElementById('roomTable').style.display = 'none';
     });
@@ -84,6 +83,5 @@
     document.getElementById('btnRoom').addEventListener('click', function () {
         document.getElementById('motelTable').style.display = 'none';
         document.getElementById('roomTable').style.display = 'table';
-    });
-</script>
+    });</script>
 

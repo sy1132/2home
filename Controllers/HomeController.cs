@@ -21,6 +21,8 @@ using System.Threading;
 using System.Diagnostics;
 using System.Web.Security;
 using System.IO;
+using System.Net.Mail;
+using System.Net;
 
 namespace _2home.Controllers
 {
@@ -849,26 +851,8 @@ namespace _2home.Controllers
 
         }
         [HttpPost]
-        public ActionResult ForgotPassword(string identifier)
+        public ActionResult ForgotPassword()
         {
-            if (string.IsNullOrEmpty(identifier))
-            {
-                ViewBag.Message = "Vui lòng nhập email hoặc số điện thoại hợp lệ.";
-                return View();
-            }
-
-            var user = db.users.FirstOrDefault(u => u.email == identifier || u.phone == identifier);
-
-            if (user != null)
-            {
-                ViewBag.Username = user.username;
-                ViewBag.Fullname = user.fullname;
-            }
-            else
-            {
-                ViewBag.Message = "Không tìm thấy tài khoản với email hoặc số điện thoại đã cung cấp.";
-            }
-
             return View();
         }
 
