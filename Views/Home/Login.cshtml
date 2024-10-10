@@ -20,9 +20,12 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
-
+                
                 <div class="text-center mt-3">
                     <a href="@Url.Action("ForgotPassword", "Home")" class="btn btn-link">Quên mật khẩu?</a>
+                </div>
+                <div class="text-center mt-2 d-flex">
+                    <p>Bạn chưa có tài khoản sao, vậy </p><a href="@Url.Action("DK", "Home")"> Đăng Ký </a><p> thôi</p>
                 </div>
             </form>
             @if (ViewBag.Message != null)

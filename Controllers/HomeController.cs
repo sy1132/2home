@@ -748,6 +748,29 @@ namespace _2home.Controllers
             ViewBag.UserName = "Tên người dùng"; // Thay thế bằng tên người dùng thực tế
             return View();
         }
+        [HttpPost]
+        public ActionResult ForgotPassword(string identifier)
+        {
+            if (string.IsNullOrEmpty(identifier))
+            {
+                ViewBag.Message = "Vui lòng nhập email hoặc số điện thoại hợp lệ.";
+                return View();
+            }
+
+            var user = db.users.FirstOrDefault(u => u.email == identifier || u.phone == identifier);
+
+            if (user != null)
+            {
+                ViewBag.Username = user.username;
+                ViewBag.Fullname = user.fullname;
+            }
+            else
+            {
+                ViewBag.Message = "Không tìm thấy tài khoản với email hoặc số điện thoại đã cung cấp.";
+            }
+
+            return View();
+        }
 
     }
 }
