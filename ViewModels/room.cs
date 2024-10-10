@@ -19,9 +19,11 @@ namespace _2home.ViewModels
 
         public decimal? Water_Meter { get; set; }
 
-        public decimal? Electricity_Usage { get; set; }
+        public decimal? Previous_Water_Meter { get; set; }
 
-        public decimal? Water_Usage { get; set; }
+        public decimal? Previous_Electricity_Usage { get; set; }
+        public decimal? Water_Unit_Price { get; set; }
+        public decimal? Electricity_Unit_Price { get; set; }
 
         public decimal? Electricity_Bill { get; set; }
 
