@@ -248,18 +248,10 @@
                                 }
                                 else if (user.userrole == "Innkeeper")
                                 {
-                                    <!-- Add Innkeeper specific links here -->
-                                }
-                                else
-                                {
+
                                     <li>
                                         <a class="dropdown-item text-bg-success" href="@Url.Action("TopUp", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
-                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">Loading...</span> VND
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
-                                            <i class="fas fa-clipboard-list"></i> Đăng ký thuê
+                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">@user.blance</span> VND
                                         </a>
                                     </li>
 
@@ -268,6 +260,32 @@
                                             <i class="fas fa-clipboard-list"></i> QL_phòng
                                         </a>
                                     </li>
+                                   
+                                }
+                                else
+                                {
+
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
+                                            <i class="fas fa-clipboard-list"></i> Đăng ký thuê
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        @if (user.MotelID == null)
+                                        {
+                                            <a class="dropdown-item" href="@Url.Action("JoinRental", "Home")">
+                                                <i class="fas fa-user-plus"></i> Tham gia trọ
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" href="@Url.Action("rent_check", "Home")">
+                                                <i class="fas fa-clipboard-list"></i> Xem tiền trọ
+                                            </a>
+                                        }
+                                    </li>
+
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("togher", "Home")">
                                             <i class="fas fa-users"></i> Togher

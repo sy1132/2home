@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "JoinRental";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>JoinRental</h2>
+
+<div class="d-flex justify-content-center mb-3">
+    <form method="get" action="@Url.Action("JoinRental")" class="d-flex">
+        <input type="text" class="form-control me-2" placeholder="Nhập mã phòng trọ (MotelIDrRoomID)" name="searchString" required />
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </form>
+</div>
+
+@if (ViewBag.SearchResult != null)
+{
+    <div>
+        <h4>Kết quả tìm kiếm:</h4>
+        <!-- Hiển thị kết quả tìm kiếm ở đây -->
+        <!-- Giả sử bạn đã có ViewBag.SearchResult là danh sách phòng -->
+        foreach (var room in ViewBag.SearchResult)
+        {
+        <div>
+            <p>Motel ID: @room.Motel_ID</p>
+            <p>Room ID: @room.Room_ID</p>
+            <p>Thông tin khác: @room.OtherInfo</p> <!-- Thay thế với các thuộc tính thực tế của phòng -->
+        </div>
+        }
+    </div>
+}
