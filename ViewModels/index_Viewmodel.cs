@@ -9,7 +9,7 @@ namespace _2home.ViewModels
     {
         public string ImgLink { get; set; }
         public string MotelName { get; set; }
-        public string Motel_ID { get; set; }
+        public int? Motel_ID { get; set; }
 
 
         public string Location { get; set; }

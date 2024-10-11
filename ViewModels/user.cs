@@ -8,7 +8,9 @@ namespace _2home.ViewModels
         public class User
         {
         public int ID_user { get; set; }
-            public string Email { get; set; }
+        public int Motel_ID { get; set; }
+
+        public string Email { get; set; }
             public string password { get; set; }
             public string fullname { get; set; }
             public string username { get; set; }

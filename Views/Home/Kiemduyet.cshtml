@@ -16,7 +16,7 @@
             <th>Giá</th>
             <th>Tình Trạng</th>
             <th>Chi Tiết</th>
-            <th>Hành Động</th> <!-- Thêm cột Hành Động -->
+            <th>Hành Động</th>
         </tr>
     </thead>
     <tbody>
@@ -37,22 +37,22 @@
                 <td>@items.Location</td>
                 <td>@items.Price</td>
                 <td>@items.is_available</td>
+                <td>@items.Motel_ID</td>
                 <td>
                     @using (Html.BeginForm("Accept", "Home", FormMethod.Post))
                     {
-                        @Html.Hidden("ID_user", items.ID_user)
+                        @Html.Hidden("Motel_ID", items.Motel_ID)
                         <input type="submit" value="Đồng ý" class="btn btn-success" />
                     }
-
                 </td>
                 <td>
                     @using (Html.BeginForm("Reject", "Home", FormMethod.Post))
                     {
-                        @Html.Hidden("ID_user", items.ID_user)
+                        @Html.Hidden("Motel_ID", items.Motel_ID)
                         <input type="submit" value="Từ chối" class="btn btn-danger" />
                     }
-
                 </td>
+
             </tr>
         }
     </tbody>

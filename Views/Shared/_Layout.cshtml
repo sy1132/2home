@@ -218,7 +218,7 @@
 </style>
 
 <script>
-    const data = {
+    const data1 = {
         "Dĩ An": {
             wards: {
                 "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
@@ -246,6 +246,7 @@
             }
         }
     };
+
     document.getElementById('inputCity').addEventListener('change', function () {
         const city = this.value;
         const wardSelect = document.getElementById('inputWard');
@@ -257,8 +258,8 @@
         wardSelect.disabled = true;
         districtSelect.disabled = true;
 
-        if (city && data[city]) {
-            const wards = data[city].wards;
+        if (city && data1[city]) {
+            const wards = data1[city].wards;
             wardSelect.disabled = false;
 
             for (const ward in wards) {
@@ -278,8 +279,8 @@
         districtSelect.innerHTML = '<option value="">Chọn khu</option>';
         districtSelect.disabled = true;
 
-        if (city && ward && data[city].wards[ward]) {
-            const neighborhoods = data[city].wards[ward];
+        if (city && ward && data1[city].wards[ward]) {
+            const neighborhoods = data1[city].wards[ward];
             districtSelect.disabled = false;
 
             neighborhoods.forEach(function (neighborhood) {
@@ -290,6 +291,7 @@
             });
         }
     });
+
     function toggleSearch() {
         var searchContainer = document.getElementById("search-container");
         if (searchContainer.style.display === "none") {

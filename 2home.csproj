@@ -280,6 +280,7 @@
     <Content Include="Views\Home\rent_check.cshtml" />
     <Content Include="Views\Home\JoinRental.cshtml" />
     <Content Include="Views\Home\Profile_user.cshtml" />
+    <Content Include="Views\Home\Kiemduyet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
