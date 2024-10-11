@@ -813,27 +813,52 @@ namespace _2home.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public ActionResult JoinRental()
+        {
+            return View();
+        }
 
+        [HttpPost]
         public ActionResult JoinRental(string searchString)
         {
+            ViewBag.HasSubmitted = true;
+
             if (!string.IsNullOrEmpty(searchString))
             {
-                // Tách Motel_ID và Room_ID
                 var parts = searchString.Split('r');
                 if (parts.Length == 2)
                 {
                     var motelId = parts[0];
                     var roomId = parts[1];
+                    int motelIdInt = int.Parse(roomId);
+                    int roomIdInt = int.Parse(roomId);
+                    var result = (from r in db.Rooms
+                                  where r.Motel_ID == motelIdInt && r.room_ID == roomIdInt
+                                  select r).ToList();
 
-                    // Thực hiện tìm kiếm phòng dựa vào motelId và roomId
-                    // Thay thế với logic tìm kiếm của bạn
-                    // var result = YourSearchMethod(motelId, roomId);
-
+                    if (result != null && result.Any())
+                    {
+                        ViewBag.SearchResult = result;
+                    }
+                    else
+                    {
+                        ViewBag.SearchResult = null;
+                    }
                 }
+                else
+                {
+                    ViewBag.SearchResult = null; // Không tìm thấy kết quả nếu định dạng sai
+                }
+            }
+            else
+            {
+                ViewBag.SearchResult = null;
             }
 
             return View();
         }
+
 
 
         public ActionResult TopUp(int ID_user, int ID_room, decimal amount)
@@ -851,6 +876,33 @@ namespace _2home.Controllers
             return View();
 
         }
+        public ActionResult ForgotPassword()
+        {
+           
+            return View();
 
+        }
+        [HttpPost]
+        public ActionResult ForgotPassword(string identifier)
+        {
+
+            var user = (from u in db.users
+                        where identifier == u.Email || identifier == u.username
+                        select u).FirstOrDefault();
+
+            if (user != null)
+            {
+                ViewBag.Username = user.username;
+                ViewBag.Fullname = user.fullname;
+                ViewBag.Password = user.password;
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Không tìm thấy tài khoản với thông tin đã cung cấp.";
+            }
+
+            return View();
+
+        }
     }
 }
