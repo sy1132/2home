@@ -58,20 +58,20 @@ CREATE TABLE Rooms(
 
 CREATE TABLE Video (
     video_ID int IDENTITY(1,1) PRIMARY KEY,
-    ID_user INT,
+    Motel_ID INT,
     updatedAt DATETIME,
     createdAt DATETIME,
     Link NVARCHAR(255),
-    FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
+    FOREIGN KEY (Motel_ID) REFERENCES [Motel](Motel_ID)
 );
 
 CREATE TABLE img (
     img_ID INT IDENTITY(1,1) PRIMARY KEY ,
-    ID_user INT,
+    Motel_ID INT,
     updatedAt DATETIME,
     createdAt DATETIME,
     Link NVARCHAR(255),
-    FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
+    FOREIGN KEY (Motel_ID) REFERENCES [Motel](Motel_ID)
 );
 CREATE TABLE Mail (
     Mail_ID INT IDENTITY(1,1) PRIMARY KEY,  
@@ -86,5 +86,7 @@ CREATE TABLE Mail (
 
 SELECT * FROM Rooms
 SELECT * FROM Motel
+SELECT * FROM img
+SELECT * FROM Video
 SELECT * FROM [user]
 SELECT * FROM Mail

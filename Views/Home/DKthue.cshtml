@@ -111,8 +111,8 @@
             <span class="error-message" id="locationError"></span>
         </div>
         <div class="col-md-6">
-            <label for="inputCity" class="form-label">Chọn thành phố:</label>
-            <select id="inputCity" class="form-select" name="city">
+            <label for="citySelect" class="form-label">Chọn thành phố:</label>
+            <select id="citySelect" class="form-select" name="city">
                 <option value="">Chọn thành phố</option>
                 <option value="Dĩ An">Dĩ An</option>
                 <option value="Thuận An">Thuận An</option>
@@ -124,16 +124,16 @@
         </div>
 
         <div class="col-md-6">
-            <label for="inputWard" class="form-label">Chọn phường:</label>
-            <select id="inputWard" class="form-select" name="ward" disabled>
+            <label for="wardSelect" class="form-label">Chọn phường:</label>
+            <select id="wardSelect" class="form-select" name="ward" disabled>
                 <option value="">Chọn phường</option>
             </select>
             <span class="error-message" id="wardError"></span>
         </div>
 
         <div class="col-md-6">
-            <label for="inputDistrict" class="form-label">Khu</label>
-            <select id="inputDistrict" class="form-select" name="District" disabled>
+            <label for="districtSelect" class="form-label">Khu</label>
+            <select id="districtSelect" class="form-select" name="District" disabled>
                 <option value="">Chọn khu</option>
             </select>
             <span class="error-message" id="districtError"></span>
@@ -180,7 +180,7 @@
 </div>
 
 <script>
-    const data = {
+    const data2 = {
         "Dĩ An": {
             wards: {
                 "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
@@ -209,51 +209,50 @@
         }
     };
 
+    document.getElementById('citySelect').addEventListener('change', function () {
+        const selectedCity = this.value;
+        const selectedWardSelect = document.getElementById('wardSelect');
+        const selectedDistrictSelect = document.getElementById('districtSelect');
 
-    document.getElementById('inputCity').addEventListener('change', function () {
-    const city = this.value;
-    const wardSelect = document.getElementById('inputWard');
-    const districtSelect = document.getElementById('inputDistrict');
+        // Reset ward and district selections
+        selectedWardSelect.innerHTML = '<option value="">Chọn phường</option>';
+        selectedDistrictSelect.innerHTML = '<option value="">Chọn khu</option>';
+        selectedWardSelect.disabled = true;
+        selectedDistrictSelect.disabled = true;
 
-    // Reset ward and district selections
-    wardSelect.innerHTML = '<option value="">Chọn phường</option>';
-    districtSelect.innerHTML = '<option value="">Chọn khu</option>';
-    wardSelect.disabled = true;
-    districtSelect.disabled = true;
+        if (selectedCity && data2[selectedCity]) {
+            const wards = data2[selectedCity].wards;
+            selectedWardSelect.disabled = false;
 
-    if (city && data[city]) {
-        const wards = data[city].wards;
-        wardSelect.disabled = false;
-
-        for (const ward in wards) {
-            const option = document.createElement('option');
-            option.value = ward;
-            option.textContent = ward;
-            wardSelect.add(option);
+            for (const selectedWard in wards) {
+                const option = document.createElement('option');
+                option.value = selectedWard;
+                option.textContent = selectedWard;
+                selectedWardSelect.add(option);
+            }
         }
-    }
-});
+    });
 
-document.getElementById('inputWard').addEventListener('change', function () {
-    const city = document.getElementById('inputCity').value;
-    const ward = this.value;
-    const districtSelect = document.getElementById('inputDistrict');
+    document.getElementById('wardSelect').addEventListener('change', function () {
+        const selectedCity = document.getElementById('citySelect').value;
+        const selectedWard = this.value;
+        const selectedDistrictSelect = document.getElementById('districtSelect');
 
-    districtSelect.innerHTML = '<option value="">Chọn khu</option>';
-    districtSelect.disabled = true;
+        selectedDistrictSelect.innerHTML = '<option value="">Chọn khu</option>';
+        selectedDistrictSelect.disabled = true;
 
-    if (city && ward && data[city].wards[ward]) {
-        const neighborhoods = data[city].wards[ward];
-        districtSelect.disabled = false;
+        if (selectedCity && selectedWard && data2[selectedCity].wards[selectedWard]) {
+            const selectedNeighborhoods = data2[selectedCity].wards[selectedWard];
+            selectedDistrictSelect.disabled = false;
 
-        neighborhoods.forEach(function (neighborhood) {
-            const option = document.createElement('option');
-            option.value = neighborhood;
-            option.textContent = neighborhood;
-            districtSelect.add(option);
-        });
-    }
-});
+            selectedNeighborhoods.forEach(function (selectedNeighborhood) {
+                const option = document.createElement('option');
+                option.value = selectedNeighborhood;
+                option.textContent = selectedNeighborhood;
+                selectedDistrictSelect.add(option);
+            });
+        }
+    });
 
 
     let currentIndex = 0;
@@ -271,7 +270,7 @@ document.getElementById('inputWard').addEventListener('change', function () {
             });
             previewContainer.appendChild(img);
         });
-        files = files.concat(imageFiles); // Combine image and video files
+        files = files.concat(imageFiles); 
     });
 
     document.getElementById('inputVideo').addEventListener('change', function () {
@@ -286,7 +285,7 @@ document.getElementById('inputWard').addEventListener('change', function () {
             });
             previewContainer.appendChild(video);
         });
-        files = files.concat(videoFiles); // Combine image and video files
+        files = files.concat(videoFiles); 
     });
 
     function showModal(index, type) {
@@ -347,7 +346,7 @@ document.getElementById('inputWard').addEventListener('change', function () {
         }
 
         // Validate City
-        const city = document.getElementById('inputCity').value;
+        const city = document.getElementById('citySelect').value;
         if (!city) {
             document.getElementById('cityError').textContent = 'Bạn chưa chọn thành phố.';
             hasError = true;
@@ -358,14 +357,14 @@ document.getElementById('inputWard').addEventListener('change', function () {
             hasError = true;
         }
         // Validate Ward
-        const ward = document.getElementById('inputWard').value;
+        const ward = document.getElementById('wardSelect').value;
         if (!ward) {
             document.getElementById('wardError').textContent = 'Bạn chưa chọn phường.';
             hasError = true;
         }
 
         // Validate District
-        const district = document.getElementById('inputDistrict').value;
+        const district = document.getElementById('districtSelect').value;
         if (!district) {
             document.getElementById('districtError').textContent = 'Bạn chưa chọn khu.';
             hasError = true;

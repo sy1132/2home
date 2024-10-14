@@ -55,18 +55,18 @@ namespace _2home.Models
 		{
 			OnCreated();
 		}
-		
-		public DataClasses1DataContext(System.Data.IDbConnection connection) : 
-				base(connection, mappingSource)
-		{
-			OnCreated();
-		}
         public DataClasses1DataContext() :
         base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString2"].ConnectionString, mappingSource)
         {
 
         }
-        public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+        public DataClasses1DataContext(System.Data.IDbConnection connection) : 
+				base(connection, mappingSource)
+		{
+			OnCreated();
+		}
+		
+		public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -135,7 +135,7 @@ namespace _2home.Models
 		
 		private int _img_ID;
 		
-		private System.Nullable<int> _ID_user;
+		private System.Nullable<int> _Motel_ID;
 		
 		private System.Nullable<System.DateTime> _updatedAt;
 		
@@ -143,7 +143,7 @@ namespace _2home.Models
 		
 		private string _Link;
 		
-		private EntityRef<user> _user;
+		private EntityRef<Motel> _Motel;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -151,8 +151,8 @@ namespace _2home.Models
     partial void OnCreated();
     partial void Onimg_IDChanging(int value);
     partial void Onimg_IDChanged();
-    partial void OnID_userChanging(System.Nullable<int> value);
-    partial void OnID_userChanged();
+    partial void OnMotel_IDChanging(System.Nullable<int> value);
+    partial void OnMotel_IDChanged();
     partial void OnupdatedAtChanging(System.Nullable<System.DateTime> value);
     partial void OnupdatedAtChanged();
     partial void OncreatedAtChanging(System.Nullable<System.DateTime> value);
@@ -163,7 +163,7 @@ namespace _2home.Models
 		
 		public img()
 		{
-			this._user = default(EntityRef<user>);
+			this._Motel = default(EntityRef<Motel>);
 			OnCreated();
 		}
 		
@@ -187,26 +187,26 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int")]
-		public System.Nullable<int> ID_user
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", DbType="Int")]
+		public System.Nullable<int> Motel_ID
 		{
 			get
 			{
-				return this._ID_user;
+				return this._Motel_ID;
 			}
 			set
 			{
-				if ((this._ID_user != value))
+				if ((this._Motel_ID != value))
 				{
-					if (this._user.HasLoadedOrAssignedValue)
+					if (this._Motel.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnID_userChanging(value);
+					this.OnMotel_IDChanging(value);
 					this.SendPropertyChanging();
-					this._ID_user = value;
-					this.SendPropertyChanged("ID_user");
-					this.OnID_userChanged();
+					this._Motel_ID = value;
+					this.SendPropertyChanged("Motel_ID");
+					this.OnMotel_IDChanged();
 				}
 			}
 		}
@@ -271,36 +271,36 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_img", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
-		public user user
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_img", Storage="_Motel", ThisKey="Motel_ID", OtherKey="Motel_ID", IsForeignKey=true)]
+		public Motel Motel
 		{
 			get
 			{
-				return this._user.Entity;
+				return this._Motel.Entity;
 			}
 			set
 			{
-				user previousValue = this._user.Entity;
+				Motel previousValue = this._Motel.Entity;
 				if (((previousValue != value) 
-							|| (this._user.HasLoadedOrAssignedValue == false)))
+							|| (this._Motel.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._user.Entity = null;
+						this._Motel.Entity = null;
 						previousValue.imgs.Remove(this);
 					}
-					this._user.Entity = value;
+					this._Motel.Entity = value;
 					if ((value != null))
 					{
 						value.imgs.Add(this);
-						this._ID_user = value.ID_user;
+						this._Motel_ID = value.Motel_ID;
 					}
 					else
 					{
-						this._ID_user = default(Nullable<int>);
+						this._Motel_ID = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("user");
+					this.SendPropertyChanged("Motel");
 				}
 			}
 		}
@@ -334,7 +334,7 @@ namespace _2home.Models
 		
 		private int _video_ID;
 		
-		private System.Nullable<int> _ID_user;
+		private System.Nullable<int> _Motel_ID;
 		
 		private System.Nullable<System.DateTime> _updatedAt;
 		
@@ -342,7 +342,7 @@ namespace _2home.Models
 		
 		private string _Link;
 		
-		private EntityRef<user> _user;
+		private EntityRef<Motel> _Motel;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -350,8 +350,8 @@ namespace _2home.Models
     partial void OnCreated();
     partial void Onvideo_IDChanging(int value);
     partial void Onvideo_IDChanged();
-    partial void OnID_userChanging(System.Nullable<int> value);
-    partial void OnID_userChanged();
+    partial void OnMotel_IDChanging(System.Nullable<int> value);
+    partial void OnMotel_IDChanged();
     partial void OnupdatedAtChanging(System.Nullable<System.DateTime> value);
     partial void OnupdatedAtChanged();
     partial void OncreatedAtChanging(System.Nullable<System.DateTime> value);
@@ -362,7 +362,7 @@ namespace _2home.Models
 		
 		public Video()
 		{
-			this._user = default(EntityRef<user>);
+			this._Motel = default(EntityRef<Motel>);
 			OnCreated();
 		}
 		
@@ -386,26 +386,26 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int")]
-		public System.Nullable<int> ID_user
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", DbType="Int")]
+		public System.Nullable<int> Motel_ID
 		{
 			get
 			{
-				return this._ID_user;
+				return this._Motel_ID;
 			}
 			set
 			{
-				if ((this._ID_user != value))
+				if ((this._Motel_ID != value))
 				{
-					if (this._user.HasLoadedOrAssignedValue)
+					if (this._Motel.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnID_userChanging(value);
+					this.OnMotel_IDChanging(value);
 					this.SendPropertyChanging();
-					this._ID_user = value;
-					this.SendPropertyChanged("ID_user");
-					this.OnID_userChanged();
+					this._Motel_ID = value;
+					this.SendPropertyChanged("Motel_ID");
+					this.OnMotel_IDChanged();
 				}
 			}
 		}
@@ -470,36 +470,36 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Video", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
-		public user user
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Video", Storage="_Motel", ThisKey="Motel_ID", OtherKey="Motel_ID", IsForeignKey=true)]
+		public Motel Motel
 		{
 			get
 			{
-				return this._user.Entity;
+				return this._Motel.Entity;
 			}
 			set
 			{
-				user previousValue = this._user.Entity;
+				Motel previousValue = this._Motel.Entity;
 				if (((previousValue != value) 
-							|| (this._user.HasLoadedOrAssignedValue == false)))
+							|| (this._Motel.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._user.Entity = null;
+						this._Motel.Entity = null;
 						previousValue.Videos.Remove(this);
 					}
-					this._user.Entity = value;
+					this._Motel.Entity = value;
 					if ((value != null))
 					{
 						value.Videos.Add(this);
-						this._ID_user = value.ID_user;
+						this._Motel_ID = value.Motel_ID;
 					}
 					else
 					{
-						this._ID_user = default(Nullable<int>);
+						this._Motel_ID = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("user");
+					this.SendPropertyChanged("Motel");
 				}
 			}
 		}
@@ -533,11 +533,11 @@ namespace _2home.Models
 		
 		private int _Mail_ID;
 		
-		private int _Sender;
+		private System.Nullable<int> _Sender;
 		
 		private System.Nullable<int> _ID_user;
 		
-		private int _Recipient;
+		private System.Nullable<int> _Recipient;
 		
 		private System.DateTime _SendDate;
 		
@@ -551,11 +551,11 @@ namespace _2home.Models
     partial void OnCreated();
     partial void OnMail_IDChanging(int value);
     partial void OnMail_IDChanged();
-    partial void OnSenderChanging(int value);
+    partial void OnSenderChanging(System.Nullable<int> value);
     partial void OnSenderChanged();
     partial void OnID_userChanging(System.Nullable<int> value);
     partial void OnID_userChanged();
-    partial void OnRecipientChanging(int value);
+    partial void OnRecipientChanging(System.Nullable<int> value);
     partial void OnRecipientChanged();
     partial void OnSendDateChanging(System.DateTime value);
     partial void OnSendDateChanged();
@@ -589,8 +589,8 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sender", DbType="Int NOT NULL")]
-		public int Sender
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sender", DbType="Int")]
+		public System.Nullable<int> Sender
 		{
 			get
 			{
@@ -633,8 +633,8 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Recipient", DbType="Int NOT NULL")]
-		public int Recipient
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Recipient", DbType="Int")]
+		public System.Nullable<int> Recipient
 		{
 			get
 			{
@@ -774,6 +774,10 @@ namespace _2home.Models
 		
 		private System.Nullable<decimal> _Debt;
 		
+		private EntitySet<img> _imgs;
+		
+		private EntitySet<Video> _Videos;
+		
 		private EntitySet<Room> _Rooms1;
 		
 		private EntityRef<user> _user;
@@ -806,6 +810,8 @@ namespace _2home.Models
 		
 		public Motel()
 		{
+			this._imgs = new EntitySet<img>(new Action<img>(this.attach_imgs), new Action<img>(this.detach_imgs));
+			this._Videos = new EntitySet<Video>(new Action<Video>(this.attach_Videos), new Action<Video>(this.detach_Videos));
 			this._Rooms1 = new EntitySet<Room>(new Action<Room>(this.attach_Rooms1), new Action<Room>(this.detach_Rooms1));
 			this._user = default(EntityRef<user>);
 			OnCreated();
@@ -1015,6 +1021,32 @@ namespace _2home.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_img", Storage="_imgs", ThisKey="Motel_ID", OtherKey="Motel_ID")]
+		public EntitySet<img> imgs
+		{
+			get
+			{
+				return this._imgs;
+			}
+			set
+			{
+				this._imgs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Video", Storage="_Videos", ThisKey="Motel_ID", OtherKey="Motel_ID")]
+		public EntitySet<Video> Videos
+		{
+			get
+			{
+				return this._Videos;
+			}
+			set
+			{
+				this._Videos.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Rooms1", ThisKey="Motel_ID", OtherKey="Motel_ID")]
 		public EntitySet<Room> Rooms1
 		{
@@ -1080,6 +1112,30 @@ namespace _2home.Models
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_imgs(img entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = this;
+		}
+		
+		private void detach_imgs(img entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = null;
+		}
+		
+		private void attach_Videos(Video entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = this;
+		}
+		
+		private void detach_Videos(Video entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = null;
 		}
 		
 		private void attach_Rooms1(Room entity)
@@ -1625,10 +1681,6 @@ namespace _2home.Models
 		
 		private System.Nullable<int> _blance;
 		
-		private EntitySet<img> _imgs;
-		
-		private EntitySet<Video> _Videos;
-		
 		private EntitySet<Mail> _Mails;
 		
 		private EntitySet<Motel> _Motels;
@@ -1663,8 +1715,6 @@ namespace _2home.Models
 		
 		public user()
 		{
-			this._imgs = new EntitySet<img>(new Action<img>(this.attach_imgs), new Action<img>(this.detach_imgs));
-			this._Videos = new EntitySet<Video>(new Action<Video>(this.attach_Videos), new Action<Video>(this.detach_Videos));
 			this._Mails = new EntitySet<Mail>(new Action<Mail>(this.attach_Mails), new Action<Mail>(this.detach_Mails));
 			this._Motels = new EntitySet<Motel>(new Action<Motel>(this.attach_Motels), new Action<Motel>(this.detach_Motels));
 			this._Rooms = new EntitySet<Room>(new Action<Room>(this.attach_Rooms), new Action<Room>(this.detach_Rooms));
@@ -1871,32 +1921,6 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_img", Storage="_imgs", ThisKey="ID_user", OtherKey="ID_user")]
-		public EntitySet<img> imgs
-		{
-			get
-			{
-				return this._imgs;
-			}
-			set
-			{
-				this._imgs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Video", Storage="_Videos", ThisKey="ID_user", OtherKey="ID_user")]
-		public EntitySet<Video> Videos
-		{
-			get
-			{
-				return this._Videos;
-			}
-			set
-			{
-				this._Videos.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Mail", Storage="_Mails", ThisKey="ID_user", OtherKey="ID_user")]
 		public EntitySet<Mail> Mails
 		{
@@ -1954,30 +1978,6 @@ namespace _2home.Models
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_imgs(img entity)
-		{
-			this.SendPropertyChanging();
-			entity.user = this;
-		}
-		
-		private void detach_imgs(img entity)
-		{
-			this.SendPropertyChanging();
-			entity.user = null;
-		}
-		
-		private void attach_Videos(Video entity)
-		{
-			this.SendPropertyChanging();
-			entity.user = this;
-		}
-		
-		private void detach_Videos(Video entity)
-		{
-			this.SendPropertyChanging();
-			entity.user = null;
 		}
 		
 		private void attach_Mails(Mail entity)

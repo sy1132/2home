@@ -14,6 +14,7 @@ namespace _2home.ViewModels
         public string Link { get; set; }
         public List<string> ImgLinks { get; set; }
         public int? ID_user { get; set; }
+        public int? Motel_ID { get; set; }
 
     }
 }

@@ -279,8 +279,13 @@
     <Content Include="Views\Home\TopUp.cshtml" />
     <Content Include="Views\Home\rent_check.cshtml" />
     <Content Include="Views\Home\JoinRental.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\Home\Profile_user.cshtml" />
+    <Content Include="Views\Home\Kiemduyet.cshtml" />
+=======
+>>>>>>> parent of 46984cf (new)
     <Content Include="Views\Home\ForgotPassword.cshtml" />
+    <Content Include="Views\Home\Profile_user.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
