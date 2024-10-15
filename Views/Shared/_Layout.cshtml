@@ -13,202 +13,14 @@
         .nav-link-custom {
             font-weight: bold;
         }
-
         .dropdown-menu {
             z-index: 1050;
         }
-
-        .search-container {
-            transition: width 0.5s ease;
-            width: 0;
-            overflow: hidden;
-        }
-
-        .search-container.active {
-            width: 100%;
-        }
-
-        .nav-link-custom {
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-            .nav-link-custom:hover {
-                color: #ffcc00; /* Example hover color */
-            }
-
-        .social-media-links a {
-            color: #000;
-            text-decoration: none;
-            font-size: 1.2em;
-        }
-
-            .social-media-links a:hover {
-                color: #007bff;
-            }
-
-        .contact-info, .creator-info {
-            font-size: 1em;
-        }
     </style>
 </head>
-<script>
-    const data = {
-        di_an: {
-            wards: {
-                "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
-                "Bình An": ["Bình Thung 1", "Bình Thung 2", "Nội Hóa 1", "Nội Hóa 2", "Châu Thới"],
-                "Bình Thắng": ["Quyết Thắng", "Trung Thắng", "Ngãi Thắng", "Hiệp Thắng"],
-                "Dĩ An": ["Bình Minh 1", "Bình Minh 2", "Đông Tân", "Nhị Đồng 1", "Nhị Đồng 2", "Thắng Lợi 1", "Thắng Lợi 2", "Thống Nhất 1", "Thống Nhất 2"],
-                "Đông Hòa": ["Đông A", "Đông B", "Tây A", "Tây B", "Tân Hòa", "Tân Lập", "Tân Quý"],
-                "Tân Bình": ["Tân Thắng", "Tân Hiệp", "Tân Phước", "Tân Phú 1", "Tân Phú 2"],
-                "Tân Đông Hiệp": ["Đông Tác", "Đông Chiêu", "Chiêu Liêu", "Đông Thành", "Tân Long", "Đông An", "Tân An"]
-            }
-        },
-        thuan_an: {
-            wards: {
-                "An Phú": ["1A", "1B", "2", "3", "4"],
-                "Bình Hòa": ["Bình Đức 1", "Bình Đức 2", "Bình Đức 3", "Bình Đáng", "Đồng An 1", "Đồng An 2", "Đồng An 3", "Đông Ba"],
-                "Thuận Giao": ["Hòa Lân 1", "Hòa Lân 2", "Bình Thuận 1", "Bình Thuận 2", "Bình Giao"],
-                "Bình Chuẩn": ["Bình Phước A", "Bình Phước B", "Bình Phú", "Bình Quới A", "Bình Quới B"],
-                "Lái Thiêu": ["Bình Đức 1", "Bình Đức 2", "Bình Hòa", "Chợ", "Đông Nhì", "Đông Tư", "Hòa Long", "Long Thới", "Nguyễn Trãi"],
-                "Vĩnh Phú": ["Phú Hội", "Đông", "Trung", "Tây", "Hòa Long"],
-                "An Thạnh": ["Thạnh Lợi", "Thạnh Hòa A", "Thạnh Hòa B", "Thạnh Lộc", "Thạnh Bình", "Thạnh Phú", "Thạnh Quý"],
-                "Bình Nhâm": ["Bình Hòa", "Bình Phước", "Bình Thuận", "Bình Đức"],
-                "Hưng Định": ["Hưng Phước", "Hưng Lộc", "Hưng Thọ"]
-            }
-        },
-        thu_dau_mot: {
-            wards: {
-                "Chánh Mỹ": ["Chánh Lộc 1", "Chánh Lộc 2", "Chánh Lộc 3", "Chánh Lộc 4", "Chánh Lộc 5", "Chánh Lộc 6", "Chánh Lộc 7", "Mỹ Hảo 1", "Mỹ Hảo 2"],
-                "Chánh Nghĩa": ["Khu phố 1", "Khu phố 2", "Khu phố 3", "Khu phố 4", "Khu phố 5", "Khu phố 6", "Khu phố 7", "Khu phố 8", "Khu phố 9", "Khu phố 10", "Khu phố 11", "Khu phố 12"],
-                "Định Hòa": ["1", "2", "3", "4", "5", "6", "7", "8"],
-                "Hiệp An": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-                "Hòa Phú": ["1", "2", "3", "4", "5"],
-                "Hiệp Thành": ["1", "2", "3", "4", "5", "6", "7", "8"],
-                "Phú Cường": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"],
-                "Phú Hòa": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-                "Phú Lợi": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-                "Phú Mỹ": ["1", "2", "3", "4", "5", "6", "7", "8"],
-                "Phú Tân": ["1", "2", "3"],
-                "Phú Thọ": ["2", "3", "4", "5", "6", "7", "8"],
-                "Tân An": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-                "Tương Bình Hiệp": ["1", "2", "3", "4", "5", "6", "7", "8"]
-            }
-        },
-        tan_uyen: {
-            wards: {
-                "Hội Nghĩa": ["1", "2", "3", "4", "5", "Nông trường cao su 1", "Nông trường cao su 2"],
-                "Khánh Bình": ["Bình Chánh", "Bình Chánh Đông", "Bình Khánh", "Khánh Lộc", "Khánh Tân", "Khánh Vân", "Long Bình"],
-                "Phú Chánh": ["Chánh Long", "Phú Bưng", "Phú Thọ", "Phú Trung"],
-                "Tân Hiệp": ["Bà Trì", "Ông Đông", "Tân Bình", "Tân Hội", "Tân Long", "Tân Phú"],
-                "Tân Phước Khánh": ["Bình Hòa 1", "Bình Hòa 2", "Khánh Hòa", "Khánh Hội", "Khánh Long", "Khánh Lộc", "Khánh Lợi", "Khánh Thạnh"],
-                "Tân Vĩnh Hiệp": ["Hóa Nhựt", "Tân An", "Tân Hóa", "Vĩnh An", "Vĩnh Trường"]
-            }
-        },
-        ben_cat: {
-            wards: {
-                "An Điền": ["An Mỹ", "An Sơn", "Kiến An", "Kiến Điền", "Tân Lập"],
-                "An Tây": ["An Thành", "Đồng Sỏi", "Lồ Ồ", "Rạch Bắp"],
-                "Chánh Phú Hòa": ["1A", "1B", "2", "3", "4", "5", "7", "8", "9"],
-                "Hòa Lợi": ["An Hòa", "An Lợi", "Bến Đồn", "Phú Hòa", "Phú Nghị"],
-                "Mỹ Phước": ["1", "2", "3", "4", "5"],
-                "Tân Định": ["1", "2", "3", "4"],
-                "Thới Hòa": ["1", "2", "3A", "3B", "4", "5", "6"]
-            }
-        }
-    };
 
-
-    document.getElementById('city').addEventListener('change', function () {
-        const city = this.value;
-        const wardSelect = document.getElementById('ward');
-        const neighborhoodSelect = document.getElementById('neighborhood');
-
-        // Clear previous options
-        wardSelect.innerHTML = '<option value="">Select Ward</option>';
-        neighborhoodSelect.innerHTML = '<option value="">Select Neighborhood</option>';
-        wardSelect.disabled = true;
-        neighborhoodSelect.disabled = true;
-
-        if (city && data[city]) {
-            const wards = data[city].wards;
-            wardSelect.disabled = false;
-
-            for (const ward in wards) {
-                const option = document.createElement('option');
-                option.value = ward;
-                option.textContent = ward;
-                option.text = ward.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                wardSelect.add(option);
-            }
-        }
-    });
-
-    document.getElementById('ward').addEventListener('change', function () {
-        const city = document.getElementById('city').value;
-        const ward = this.value;
-        const neighborhoodSelect = document.getElementById('neighborhood');
-
-        // Clear previous options
-        neighborhoodSelect.innerHTML = '<option value="">Select Neighborhood</option>';
-        neighborhoodSelect.disabled = true;
-
-        if (ward && data[city] && data[city].wards[ward]) {
-            const neighborhoods = data[city].wards[ward];
-            neighborhoodSelect.disabled = false;
-
-            neighborhoods.forEach(function (neighborhood) {
-                const option = document.createElement('option');
-                option.value = neighborhood;
-                option.text = neighborhood;
-                neighborhoodSelect.add(option);
-            });
-        }
-    });
-
-
-    function updateWards() {
-        const citySelect = document.getElementById('city');
-        const wardSelect = document.getElementById('ward');
-        const selectedCity = citySelect.value;
-
-        // Xóa các phường hiện tại
-        wardSelect.innerHTML = '<option value="">Chọn phường...</option>';
-
-        if (selectedCity && data[selectedCity]) {
-            const wards = data[selectedCity].wards;
-            for (let ward in wards) {
-                const option = document.createElement('option');
-                option.value = ward;
-                option.textContent = ward.replace('_', ' ').toUpperCase();
-                wardSelect.appendChild(option);
-            }
-        }
-    }
-
-    function updateDistricts() {
-        const citySelect = document.getElementById('city');
-        const wardSelect = document.getElementById('ward');
-        const districtSelect = document.getElementById('district');
-        const selectedCity = citySelect.value;
-        const selectedWard = wardSelect.value;
-
-        // Xóa các khu phố hiện tại
-        districtSelect.innerHTML = '<option value="">Chọn khu...</option>';
-
-        if (selectedCity && selectedWard && data[selectedCity].wards[selectedWard]) {
-            const districts = data[selectedCity].wards[selectedWard];
-            districts.forEach(district => {
-                const option = document.createElement('option');
-                option.value = district;
-                option.textContent = district;
-                districtSelect.appendChild(option);
-            });
-        }
-    }
-</script>
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
         <div class="container-fluid">
             <a href="@Url.Action("Index", "Home")" class="navbar-brand">
@@ -248,18 +60,10 @@
                                 }
                                 else if (user.userrole == "Innkeeper")
                                 {
-                                    <!-- Add Innkeeper specific links here -->
-                                }
-                                else
-                                {
+
                                     <li>
                                         <a class="dropdown-item text-bg-success" href="@Url.Action("TopUp", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
-                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">Loading...</span> VND
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
-                                            <i class="fas fa-clipboard-list"></i> Đăng ký thuê
+                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">@user.blance</span> VND
                                         </a>
                                     </li>
 
@@ -268,6 +72,32 @@
                                             <i class="fas fa-clipboard-list"></i> QL_phòng
                                         </a>
                                     </li>
+
+                                }
+                                else
+                                {
+
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
+                                            <i class="fas fa-clipboard-list"></i> Đăng ký thuê
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        @if (user.MotelID == null)
+                                        {
+                                            <a class="dropdown-item" href="@Url.Action("JoinRental", "Home")">
+                                                <i class="fas fa-user-plus"></i> Tham gia trọ
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" href="@Url.Action("rent_check", "Home")">
+                                                <i class="fas fa-clipboard-list"></i> Xem tiền trọ
+                                            </a>
+                                        }
+                                    </li>
+
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("togher", "Home")">
                                             <i class="fas fa-users"></i> Togher
@@ -330,28 +160,27 @@
 
                     <div class="d-flex justify-content-start">
                         <fieldset class="me-2">
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="city" name="City" onchange="updateWards()">
+                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputCity" name="City">
                                 <option selected value="">Chọn thành phố...</option>
-                                <option value="di_an">Dĩ An</option>
-                                <option value="thuan_an">Thuận An</option>
-                                <option value="thu_dau_mot">Thủ Dầu Một</option>
-                                <option value="tan_uyen">Tân Uyên</option>
-                                <option value="ben_cat">Bến Cát</option>
+                                <option value="Dĩ An">Dĩ An</option>
+                                <option value="Thuận An">Thuận An</option>
+                                <option value="Thủ Dầu Một">Thủ Dầu Một</option>
+                                <option value="Tân Uyên">Tân Uyên</option>
+                                <option value="Bến Cát">Bến Cát</option>
                             </select>
                         </fieldset>
 
                         <fieldset class="me-2">
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="ward" name="Ward" onchange="updateDistricts()">
+                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputWard" name="Ward" disabled>
                                 <option selected value="">Chọn phường...</option>
                             </select>
                         </fieldset>
 
                         <fieldset>
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="district" name="District">
+                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputDistrict" name="District" disabled>
                                 <option selected value="">Chọn khu...</option>
                             </select>
                         </fieldset>
-
                     </div>
                 </div>
             </form>
@@ -361,67 +190,10 @@
     <div class="d-flex flex-column justify-content-center align-items-center">
         @RenderBody()
         <hr />
-        <footer class="bg-dark text-white mt-5 w-100">
-            <div class="container-fluid py-5">
-                <div class="row text-center text-md-left d-flex justify-content-between">
-                    <!-- Contact Us -->
-                    <div class="col-md-4 mb-4">
-                        <h5 class="text-uppercase font-weight-bold">Contact Us</h5>
-                        <p>
-                            Customer Support:
-                            <a href="tel:+1234567890" class="text-info">+1234567890</a>
-                        </p>
-                    </div>
-
-                    <!-- Follow Us -->
-                    <div class="col-md-4 mb-4">
-                        <h5 class="text-uppercase font-weight-bold">Follow Us</h5>
-                        <div class="d-flex justify-content-center justify-content-md-start">
-                            <a href="https://www.facebook.com" target="_blank" class="btn btn-outline-primary btn-sm mx-2">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                            <a href="https://www.youtube.com" target="_blank" class="btn btn-outline-danger btn-sm mx-2">
-                                <i class="fab fa-youtube"></i>
-                            </a>
-                            <a href="https://www.tiktok.com" target="_blank" class="btn btn-outline-light btn-sm mx-2">
-                                <i class="fab fa-tiktok"></i>
-                            </a>
-                            <a href="https://zalo.me" target="_blank" class="btn btn-outline-info btn-sm mx-2">
-                                <i class="fab fa-zalo"></i>
-                            </a>
-                            <a href="https://www.instagram.com" target="_blank" class="btn btn-outline-danger btn-sm mx-2">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                            <a href="https://twitter.com" target="_blank" class="btn btn-outline-info btn-sm mx-2">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a href="https://telegram.org" target="_blank" class="btn btn-outline-primary btn-sm mx-2">
-                                <i class="fab fa-telegram-plane"></i>
-                            </a>
-                        </div>
-
-                    </div>
-
-                    <!-- Created By -->
-                    <div class="col-md-4 mb-4">
-                        <h5 class="text-uppercase font-weight-bold">Created By</h5>
-                        <p>Person 1, Person 2, Person 3</p>
-                        <p>&copy; @DateTime.Now.Year - Phòng chuyên môn Devmaster</p>
-                    </div>
-                </div>
-
-                <!-- Horizontal Line -->
-                <hr class="bg-white">
-
-                <!-- Footer Bottom -->
-                <div class="text-center pt-3">
-                    <p>© All rights reserved</p>
-                </div>
-            </div>
+        <footer class="text-center">
+            <p>&copy; @DateTime.Now.Year - Phòng chuyên môn Devmaster</p>
         </footer>
-
     </div>
-
 </body>
 </html>
 <style>
@@ -446,6 +218,80 @@
 </style>
 
 <script>
+    const data1 = {
+        "Dĩ An": {
+            wards: {
+                "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
+                "Bình An": ["Bình Thung 1", "Bình Thung 2", "Nội Hóa 1", "Nội Hóa 2", "Châu Thới"],
+            }
+        },
+        "Thuận An": {
+            wards: {
+                "An Phú": ["1A", "1B", "2", "3", "4"],
+            }
+        },
+        "Thủ Dầu Một": {
+            wards: {
+                "Chánh Mỹ": ["Chánh Lộc 1", "Chánh Lộc 2"],
+            }
+        },
+        "Tân Uyên": {
+            wards: {
+                "Hội Nghĩa": ["1", "2", "3", "4"],
+            }
+        },
+        "Bến Cát": {
+            wards: {
+                "An Điền": ["An Mỹ", "An Sơn"],
+            }
+        }
+    };
+
+    document.getElementById('inputCity').addEventListener('change', function () {
+        const city = this.value;
+        const wardSelect = document.getElementById('inputWard');
+        const districtSelect = document.getElementById('inputDistrict');
+
+        // Reset ward and district selections
+        wardSelect.innerHTML = '<option value="">Chọn phường</option>';
+        districtSelect.innerHTML = '<option value="">Chọn khu</option>';
+        wardSelect.disabled = true;
+        districtSelect.disabled = true;
+
+        if (city && data1[city]) {
+            const wards = data1[city].wards;
+            wardSelect.disabled = false;
+
+            for (const ward in wards) {
+                const option = document.createElement('option');
+                option.value = ward;
+                option.textContent = ward;
+                wardSelect.add(option);
+            }
+        }
+    });
+
+    document.getElementById('inputWard').addEventListener('change', function () {
+        const city = document.getElementById('inputCity').value;
+        const ward = this.value;
+        const districtSelect = document.getElementById('inputDistrict');
+
+        districtSelect.innerHTML = '<option value="">Chọn khu</option>';
+        districtSelect.disabled = true;
+
+        if (city && ward && data1[city].wards[ward]) {
+            const neighborhoods = data1[city].wards[ward];
+            districtSelect.disabled = false;
+
+            neighborhoods.forEach(function (neighborhood) {
+                const option = document.createElement('option');
+                option.value = neighborhood;
+                option.textContent = neighborhood;
+                districtSelect.add(option);
+            });
+        }
+    });
+
     function toggleSearch() {
         var searchContainer = document.getElementById("search-container");
         if (searchContainer.style.display === "none") {

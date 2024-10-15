@@ -60,7 +60,7 @@
                 <td>
                     @using (Html.BeginForm("UpdateAvailability", "Home", FormMethod.Post))
                     {
-                        @Html.Hidden("ID_user", items.ID_user)
+                        @Html.Hidden("Motel_ID", items.Motel_ID)
                         <select name="is_available" onchange="this.form.submit()">
                             <option value="Còn trống" @(items.is_available == "Còn trống" ? "selected" : "")>Còn trống</option>
                             <option value="Hết phòng" @(items.is_available == "Hết phòng" ? "selected" : "")>Hết phòng</option>
@@ -71,7 +71,7 @@
                 <td>
                     @using (Html.BeginForm("Details", "Home", FormMethod.Get))
                     {
-                        @Html.Hidden("ID_user", items.ID_user)
+                        @Html.Hidden("Motel_ID", items.Motel_ID)
                         <input type="submit" value="Xem chi tiết" class="btn btn-primary" />
                     }
                 </td>

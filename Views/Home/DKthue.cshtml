@@ -91,169 +91,7 @@
         }
     </style>
 </head>
-<script>
-    const data = {
-        di_an: {
-            wards: {
-                "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
-                "Bình An": ["Bình Thung 1", "Bình Thung 2", "Nội Hóa 1", "Nội Hóa 2", "Châu Thới"],
-                "Bình Thắng": ["Quyết Thắng", "Trung Thắng", "Ngãi Thắng", "Hiệp Thắng"],
-                "Dĩ An": ["Bình Minh 1", "Bình Minh 2", "Đông Tân", "Nhị Đồng 1", "Nhị Đồng 2", "Thắng Lợi 1", "Thắng Lợi 2", "Thống Nhất 1", "Thống Nhất 2"],
-                "Đông Hòa": ["Đông A", "Đông B", "Tây A", "Tây B", "Tân Hòa", "Tân Lập", "Tân Quý"],
-                "Tân Bình": ["Tân Thắng", "Tân Hiệp", "Tân Phước", "Tân Phú 1", "Tân Phú 2"],
-                "Tân Đông Hiệp": ["Đông Tác", "Đông Chiêu", "Chiêu Liêu", "Đông Thành", "Tân Long", "Đông An", "Tân An"]
-            }
-        },
-        thuan_an: {
-            wards: {
-                "An Phú": ["1A", "1B", "2", "3", "4"],
-                "Bình Hòa": ["Bình Đức 1", "Bình Đức 2", "Bình Đức 3", "Bình Đáng", "Đồng An 1", "Đồng An 2", "Đồng An 3", "Đông Ba"],
-                "Thuận Giao": ["Hòa Lân 1", "Hòa Lân 2", "Bình Thuận 1", "Bình Thuận 2", "Bình Giao"],
-                "Bình Chuẩn": ["Bình Phước A", "Bình Phước B", "Bình Phú", "Bình Quới A", "Bình Quới B"],
-                "Lái Thiêu": ["Bình Đức 1", "Bình Đức 2", "Bình Hòa", "Chợ", "Đông Nhì", "Đông Tư", "Hòa Long", "Long Thới", "Nguyễn Trãi"],
-                "Vĩnh Phú": ["Phú Hội", "Đông", "Trung", "Tây", "Hòa Long"],
-                "An Thạnh": ["Thạnh Lợi", "Thạnh Hòa A", "Thạnh Hòa B", "Thạnh Lộc", "Thạnh Bình", "Thạnh Phú", "Thạnh Quý"],
-                "Bình Nhâm": ["Bình Hòa", "Bình Phước", "Bình Thuận", "Bình Đức"],
-                "Hưng Định": ["Hưng Phước", "Hưng Lộc", "Hưng Thọ"]
-            }
-        },
-        thu_dau_mot: {
-            wards: {
-                "Chánh Mỹ": ["Chánh Lộc 1", "Chánh Lộc 2", "Chánh Lộc 3", "Chánh Lộc 4", "Chánh Lộc 5", "Chánh Lộc 6", "Chánh Lộc 7", "Mỹ Hảo 1", "Mỹ Hảo 2"],
-                "Chánh Nghĩa": ["Khu phố 1", "Khu phố 2", "Khu phố 3", "Khu phố 4", "Khu phố 5", "Khu phố 6", "Khu phố 7", "Khu phố 8", "Khu phố 9", "Khu phố 10", "Khu phố 11", "Khu phố 12"],
-                "Định Hòa": ["1", "2", "3", "4", "5", "6", "7", "8"],
-                "Hiệp An": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-                "Hòa Phú": ["1", "2", "3", "4", "5"],
-                "Hiệp Thành": ["1", "2", "3", "4", "5", "6", "7", "8"],
-                "Phú Cường": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"],
-                "Phú Hòa": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-                "Phú Lợi": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-                "Phú Mỹ": ["1", "2", "3", "4", "5", "6", "7", "8"],
-                "Phú Tân": ["1", "2", "3"],
-                "Phú Thọ": ["2", "3", "4", "5", "6", "7", "8"],
-                "Tân An": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-                "Tương Bình Hiệp": ["1", "2", "3", "4", "5", "6", "7", "8"]
-            }
-        },
-        tan_uyen: {
-            wards: {
-                "Hội Nghĩa": ["1", "2", "3", "4", "5", "Nông trường cao su 1", "Nông trường cao su 2"],
-                "Khánh Bình": ["Bình Chánh", "Bình Chánh Đông", "Bình Khánh", "Khánh Lộc", "Khánh Tân", "Khánh Vân", "Long Bình"],
-                "Phú Chánh": ["Chánh Long", "Phú Bưng", "Phú Thọ", "Phú Trung"],
-                "Tân Hiệp": ["Bà Trì", "Ông Đông", "Tân Bình", "Tân Hội", "Tân Long", "Tân Phú"],
-                "Tân Phước Khánh": ["Bình Hòa 1", "Bình Hòa 2", "Khánh Hòa", "Khánh Hội", "Khánh Long", "Khánh Lộc", "Khánh Lợi", "Khánh Thạnh"],
-                "Tân Vĩnh Hiệp": ["Hóa Nhựt", "Tân An", "Tân Hóa", "Vĩnh An", "Vĩnh Trường"]
-            }
-        },
-        ben_cat: {
-            wards: {
-                "An Điền": ["An Mỹ", "An Sơn", "Kiến An", "Kiến Điền", "Tân Lập"],
-                "An Tây": ["An Thành", "Đồng Sỏi", "Lồ Ồ", "Rạch Bắp"],
-                "Chánh Phú Hòa": ["1A", "1B", "2", "3", "4", "5", "7", "8", "9"],
-                "Hòa Lợi": ["An Hòa", "An Lợi", "Bến Đồn", "Phú Hòa", "Phú Nghị"],
-                "Mỹ Phước": ["1", "2", "3", "4", "5"],
-                "Tân Định": ["1", "2", "3", "4"],
-                "Thới Hòa": ["1", "2", "3A", "3B", "4", "5", "6"]
-            }
-        }
-    };
 
-
-    document.getElementById('inputCity').addEventListener('change', function () {
-        const city = this.value;
-        const wardSelect = document.getElementById('inputWard');
-        const neighborhoodSelect = document.getElementById('neighborhood');
-
-        // Clear previous options
-        wardSelect.innerHTML = '<option value="">Select Ward</option>';
-        neighborhoodSelect.innerHTML = '<option value="">Select Neighborhood</option>';
-        wardSelect.disabled = true;
-        neighborhoodSelect.disabled = true;
-
-        if (city && data[city]) {
-            const wards = data[city].wards;
-            wardSelect.disabled = false;
-
-            for (const ward in wards) {
-                const option = document.createElement('option');
-                option.value = ward;
-                option.textContent = ward;
-                option.text = ward.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                wardSelect.add(option);
-            }
-        }
-    });
-
-    document.getElementById('inputWard').addEventListener('change', function () {
-        const city = document.getElementById('inputCity').value;
-        const ward = this.value;
-        const neighborhoodSelect = document.getElementById('neighborhood');
-
-        // Clear previous options
-        neighborhoodSelect.innerHTML = '<option value="">Select Neighborhood</option>';
-        neighborhoodSelect.disabled = true;
-
-        if (ward && data[city] && data[city].wards[ward]) {
-            const neighborhoods = data[city].wards[ward];
-            neighborhoodSelect.disabled = false;
-
-            neighborhoods.forEach(function (neighborhood) {
-                const option = document.createElement('option');
-                option.value = neighborhood;
-                option.text = neighborhood;
-                neighborhoodSelect.add(option);
-            });
-        }
-    });
-
-
-    function updateWards() {
-        const city = document.getElementById('inputCity').value;
-        const wardSelect = document.getElementById('inputWard');
-        const districtSelect = document.getElementById('inputDistrict');
-
-        // Xóa tùy chọn hiện tại của phường và khu
-        wardSelect.innerHTML = '<option value="">Chọn phường...</option>';
-        districtSelect.innerHTML = '<option value="">Chọn khu...</option>';
-        districtSelect.disabled = true;
-
-        if (city && data[city]) {
-            const wards = data[city];
-            for (let ward in wards) {
-                const option = document.createElement('option');
-                option.value = ward;
-                option.textContent = ward.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                wardSelect.appendChild(option);
-            }
-            wardSelect.disabled = false;
-        } else {
-            wardSelect.disabled = true;
-        }
-    }
-
-    // Hàm cập nhật khu khi thay đổi phường
-    function updateDistricts() {
-        const city = document.getElementById('inputCity').value;
-        const ward = document.getElementById('inputWard').value;
-        const districtSelect = document.getElementById('inputDistrict');
-
-        // Xóa tùy chọn hiện tại của khu
-        districtSelect.innerHTML = '<option value="">Chọn khu...</option>';
-
-        if (city && ward && data[city][ward]) {
-            const neighborhoods = data[city][ward];
-            neighborhoods.forEach(neighborhood => {
-                const option = document.createElement('option');
-                option.value = neighborhood;
-                option.textContent = neighborhood;
-                districtSelect.appendChild(option);
-            });
-            districtSelect.disabled = false;
-        } else {
-            districtSelect.disabled = true;
-        }
-    }
-</script>
 <div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem;">
     <form id="registrationForm" asp-action="RegisterDK" enctype="multipart/form-data" method="post" class="row g-3">
         <h2 class="card-title text-center mb-4">Đăng ký cho thuê phòng trọ</h2>
@@ -273,28 +111,30 @@
             <span class="error-message" id="locationError"></span>
         </div>
         <div class="col-md-6">
-            <label for="inputCity" class="form-label">Thành phố</label>
-            <select id="inputCity" class="form-select" name="City" onchange="updateWards()">
-                <option selected value="">Chọn thành phố...</option>
-                <option value="di_an">Dĩ An</option>
-                <option value="thuan_an">Thuận An</option>
-                <option value="thu_dau_mot">Thủ Dầu Một</option>
-                <option value="tan_uyen">Tân Uyên</option>
-                <option value="ben_cat">Bến Cát</option>
+            <label for="citySelect" class="form-label">Chọn thành phố:</label>
+            <select id="citySelect" class="form-select" name="city">
+                <option value="">Chọn thành phố</option>
+                <option value="Dĩ An">Dĩ An</option>
+                <option value="Thuận An">Thuận An</option>
+                <option value="Thủ Dầu Một">Thủ Dầu Một</option>
+                <option value="Tân Uyên">Tân Uyên</option>
+                <option value="Bến Cát">Bến Cát</option>
             </select>
             <span class="error-message" id="cityError"></span>
         </div>
+
         <div class="col-md-6">
-            <label for="inputWard" class="form-label">Phường</label>
-            <select id="inputWard" class="form-select" name="Ward" onchange="updateDistricts()">
-                <option selected value="">Chọn phường...</option>
+            <label for="wardSelect" class="form-label">Chọn phường:</label>
+            <select id="wardSelect" class="form-select" name="ward" disabled>
+                <option value="">Chọn phường</option>
             </select>
             <span class="error-message" id="wardError"></span>
         </div>
+
         <div class="col-md-6">
-            <label for="inputDistrict" class="form-label">Khu</label>
-            <select id="inputDistrict" class="form-select" name="District">
-                <option selected value="">Chọn khu...</option>
+            <label for="districtSelect" class="form-label">Khu</label>
+            <select id="districtSelect" class="form-select" name="District" disabled>
+                <option value="">Chọn khu</option>
             </select>
             <span class="error-message" id="districtError"></span>
         </div>
@@ -340,6 +180,81 @@
 </div>
 
 <script>
+    const data2 = {
+        "Dĩ An": {
+            wards: {
+                "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
+                "Bình An": ["Bình Thung 1", "Bình Thung 2", "Nội Hóa 1", "Nội Hóa 2", "Châu Thới"],
+            }
+        },
+        "Thuận An": {
+            wards: {
+                "An Phú": ["1A", "1B", "2", "3", "4"],
+            }
+        },
+        "Thủ Dầu Một": {
+            wards: {
+                "Chánh Mỹ": ["Chánh Lộc 1", "Chánh Lộc 2"],
+            }
+        },
+        "Tân Uyên": {
+            wards: {
+                "Hội Nghĩa": ["1", "2", "3", "4"],
+            }
+        },
+        "Bến Cát": {
+            wards: {
+                "An Điền": ["An Mỹ", "An Sơn"],
+            }
+        }
+    };
+
+    document.getElementById('citySelect').addEventListener('change', function () {
+        const selectedCity = this.value;
+        const selectedWardSelect = document.getElementById('wardSelect');
+        const selectedDistrictSelect = document.getElementById('districtSelect');
+
+        // Reset ward and district selections
+        selectedWardSelect.innerHTML = '<option value="">Chọn phường</option>';
+        selectedDistrictSelect.innerHTML = '<option value="">Chọn khu</option>';
+        selectedWardSelect.disabled = true;
+        selectedDistrictSelect.disabled = true;
+
+        if (selectedCity && data2[selectedCity]) {
+            const wards = data2[selectedCity].wards;
+            selectedWardSelect.disabled = false;
+
+            for (const selectedWard in wards) {
+                const option = document.createElement('option');
+                option.value = selectedWard;
+                option.textContent = selectedWard;
+                selectedWardSelect.add(option);
+            }
+        }
+    });
+
+    document.getElementById('wardSelect').addEventListener('change', function () {
+        const selectedCity = document.getElementById('citySelect').value;
+        const selectedWard = this.value;
+        const selectedDistrictSelect = document.getElementById('districtSelect');
+
+        selectedDistrictSelect.innerHTML = '<option value="">Chọn khu</option>';
+        selectedDistrictSelect.disabled = true;
+
+        if (selectedCity && selectedWard && data2[selectedCity].wards[selectedWard]) {
+            const selectedNeighborhoods = data2[selectedCity].wards[selectedWard];
+            selectedDistrictSelect.disabled = false;
+
+            selectedNeighborhoods.forEach(function (selectedNeighborhood) {
+                const option = document.createElement('option');
+                option.value = selectedNeighborhood;
+                option.textContent = selectedNeighborhood;
+                selectedDistrictSelect.add(option);
+            });
+        }
+    });
+
+
     let currentIndex = 0;
     let files = [];
 
@@ -355,7 +270,7 @@
             });
             previewContainer.appendChild(img);
         });
-        files = files.concat(imageFiles); // Combine image and video files
+        files = files.concat(imageFiles); 
     });
 
     document.getElementById('inputVideo').addEventListener('change', function () {
@@ -370,7 +285,7 @@
             });
             previewContainer.appendChild(video);
         });
-        files = files.concat(videoFiles); // Combine image and video files
+        files = files.concat(videoFiles); 
     });
 
     function showModal(index, type) {
@@ -431,21 +346,25 @@
         }
 
         // Validate City
-        const city = document.getElementById('inputCity').value;
+        const city = document.getElementById('citySelect').value;
         if (!city) {
             document.getElementById('cityError').textContent = 'Bạn chưa chọn thành phố.';
             hasError = true;
         }
-
+        const price = document.getElementById('inputPrice').value;
+        if (!price || price <= 0) {
+            document.getElementById('priceError').textContent = 'Giá phải lớn hơn 0.';
+            hasError = true;
+        }
         // Validate Ward
-        const ward = document.getElementById('inputWard').value;
+        const ward = document.getElementById('wardSelect').value;
         if (!ward) {
             document.getElementById('wardError').textContent = 'Bạn chưa chọn phường.';
             hasError = true;
         }
 
         // Validate District
-        const district = document.getElementById('inputDistrict').value;
+        const district = document.getElementById('districtSelect').value;
         if (!district) {
             document.getElementById('districtError').textContent = 'Bạn chưa chọn khu.';
             hasError = true;
@@ -456,11 +375,7 @@
             hasError = true;
         }
         // Validate Price
-        const price = document.getElementById('inputPrice').value;
-        if (!price || price <= 0) {
-            document.getElementById('priceError').textContent = 'Giá phải lớn hơn 0.';
-            hasError = true;
-        }
+
 
         // Validate Images
         if (document.getElementById('inputImage').files.length === 0) {
