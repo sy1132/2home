@@ -282,6 +282,8 @@
     <Content Include="Views\Home\Profile_user.cshtml" />
     <Content Include="Views\Home\Kiemduyet.cshtml" />
     <Content Include="Views\Home\ForgotPassword.cshtml" />
+    <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\Home\ConfirmPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
