@@ -1,28 +1,78 @@
-﻿@{
+﻿@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
+@using PagedList.Mvc;
+@{
     ViewBag.Title = "JoinRental";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>JoinRental</h2>
+<style>
+    .card {
+        width: 100%;
+        margin-bottom: 20px;
+        height: 100%; 
+    }
 
-<div class="d-flex justify-content-center mb-3">
-    <form method="get" action="@Url.Action("JoinRental")" class="d-flex">
+    .form-control {
+        width: auto; 
+        max-width: 300px;
+    }
+
+    .pagination {
+        margin-top: 20px; 
+    }
+</style>
+
+<h2 class="text-center">JoinRental</h2>
+
+<div class="d-flex justify-content-center mb-4">
+    <form method="post" action="@Url.Action("JoinRental")" class="d-flex">
         <input type="text" class="form-control me-2" placeholder="Nhập mã phòng trọ (MotelIDrRoomID)" name="searchString" required />
         <button type="submit" class="btn btn-primary">Tìm kiếm</button>
     </form>
 </div>
 
-@if (ViewBag.SearchResult != null)
+@if (Model != null && Model.Any())
 {
     <div>
         <h4>Kết quả tìm kiếm:</h4>
-        <!-- Hiển thị kết quả tìm kiếm ở đây -->
-        <!-- Giả sử bạn đã có ViewBag.SearchResult là danh sách phòng -->
-        foreach (var room in ViewBag.SearchResult)
-        {
-        <div>
-            <!-- Thay thế với các thuộc tính thực tế của phòng -->
+
+        <div class="row">
+            @foreach (var room in Model)
+            {
+                
+                
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@room.MotelName</h5>
+                            <p class="card-text">
+                                <strong>Địa chỉ:</strong> @room.Location<br />
+                                <strong>Giá:</strong> @room.Price
+                            </p>
+
+                            @using (Html.BeginForm("Join", "Home", FormMethod.Get))
+                            {
+                                @Html.Hidden("Motel_ID", room.Motel_ID)
+                                @Html.Hidden("Room_ID", room.room_ID)
+                                <button type="submit" class="btn btn-primary">Xin vào</button>
+                            }
+                        </div>
+                    </div>
+            }
         </div>
-        }
+
+        <div class="pagination justify-content-center">
+            @Html.PagedListPager(Model, page => Url.Action("JoinRental", new { page, size = ViewBag.size }))
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-center">Không tìm thấy kết quả phù hợp.</p>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage as string))
+{
+    <div class="alert alert-danger text-center">
+        @ViewBag.ErrorMessage
     </div>
 }
