@@ -9,40 +9,82 @@
 </head>
 
 <div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem;">
-    <form method="post" action="@Url.Action("Settings", "Home")" class="row g-3">
-        <h2 class="card-title text-center mb-4">Chào mừng bạn đến tới website Second Home</h2>
-        <h2 class="card-title text-center mb-4">Cài đặt tài khoản</h2>
+    <h2 class="card-title text-center mb-4">Chào mừng bạn đến tới website Second Home</h2>
+    <h2 class="card-title text-center mb-4">Cài đặt tài khoản</h2>
 
-        @if (ViewBag.Message != null)
-        {
-            <div class="alert alert-success">@ViewBag.Message</div>
-        }
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
 
-        <div class="col-md-6">
-            <label for="fullname" class="form-label">Họ và tên</label>
-            <input type="text" class="form-control" id="fullname" name="fullname" value="@user.fullname" required />
+    <div class="col-md-12 mb-3">
+        <label for="fullname" class="form-label">Họ và tên</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="fullname" name="fullname" value="@user.fullname" readonly />
+            <button class="btn btn-primary" type="button" id="edit-fullname" onclick="editField('fullname')">Sửa</button>
         </div>
+    </div>
 
-        <div class="col-md-6">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="@user.Email" required />
+    <div class="col-md-12 mb-3">
+        <label for="email" class="form-label">Email</label>
+        <div class="input-group">
+            <input type="email" class="form-control" id="email" name="email" value="@user.Email" readonly />
+            <button class="btn btn-primary" type="button" id="edit-email" onclick="editField('email')">Sửa</button>
         </div>
+    </div>
 
-        <div class="col-md-6">
-            <label for="phone" class="form-label">Số điện thoại</label>
-            <input type="text" class="form-control" id="phone" name="phone" value="@user.PhoneNumber" required />
+    <div class="col-md-12 mb-3">
+        <label for="phone" class="form-label">Số điện thoại</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="phone" name="phone" value="@user.PhoneNumber" readonly />
+            <button class="btn btn-primary" type="button" id="edit-phone" onclick="editField('phone')">Sửa</button>
         </div>
+    </div>
 
-        <div class="col-md-6">
-            <label for="gender" class="form-label">Giới tính</label>
-            <select id="gender" class="form-select" name="gender" required>
-                <option value="Male" @(user.gender == "Male" ? "selected" : "")>Nam</option>
-                <option value="Female" @(user.gender == "Female" ? "selected" : "")>Nữ</option>
-            </select>
+    <div class="col-md-12 mb-3">
+        <label for="gender" class="form-label">Giới tính</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="gender" name="gender" value="@user.gender" readonly />
+            <button class="btn btn-primary" type="button" id="edit-gender" onclick="editField('gender')">Sửa</button>
         </div>
-
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary w-100">Cập nhật</button>
-        </div>
-    </form>
+    </div>
 </div>
+
+<script>
+    function editField(fieldId) {
+        var field = document.getElementById(fieldId);
+        var editButton = document.getElementById('edit-' + fieldId);
+        field.readOnly = false;
+        field.focus();
+        editButton.style.display = 'none';
+        field.insertAdjacentHTML('afterend', '<button class="btn btn-success" type="button" id="save-' + fieldId + '" onclick="saveField(\'' + fieldId + '\')">Xác nhận</button>');
+    }
+
+    function saveField(fieldId) {
+        var field = document.getElementById(fieldId);
+        var value = field.value;
+        var saveButton = document.getElementById('save-' + fieldId);
+        field.readOnly = true;
+
+        // Gửi yêu cầu AJAX để cập nhật thông tin
+        $.ajax({
+            url: '@Url.Action("UpdateField", "Home")',
+            type: 'POST',
+            data: { field: fieldId, value: value },
+            success: function (response) {
+                if (response.success) {
+                    alert('Cập nhật thành công');
+                    saveButton.remove();
+                    var editButton = document.getElementById('edit-' + fieldId);
+                    editButton.style.display = 'inline-block';
+                } else {
+                    alert('Cập nhật thất bại: ' + response.message);
+                }
+            },
+            error: function () {
+                alert('Cập nhật thất bại');
+            }
+        });
+    }
+</script>
+

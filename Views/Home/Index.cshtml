@@ -1,4 +1,8 @@
-﻿@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
 @using PagedList.Mvc;
 @{
     var itemsList = Model.ToList();

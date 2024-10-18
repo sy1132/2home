@@ -6,8 +6,8 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
+            <div class="card shadow-sm rounded">
+                <div class="card-header bg-light text-dark">
                     <h2 class="card-title">Thông tin người dùng</h2>
                 </div>
                 <div class="card-body">
@@ -16,22 +16,22 @@
                     <p><strong>Số điện thoại:</strong> @ViewBag.PhoneNumber</p>
                     <p><strong>Giới tính:</strong> @ViewBag.Gender</p>
                 </div>
-                <a class="dropdown-item" href="@Url.Action("Settings", "Home")">
-                    <i class="fas fa-cog"></i> Settings
+                <a class="dropdown-item text-dark" href="@Url.Action("Settings", "Home")">
+                    <i class="fas fa-cog"></i> Cài đặt
                 </a>
             </div>
         </div>
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <div class="card shadow-sm rounded">
+                <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-outline-light" id="btnMotel">Số trọ đã đăng ký</button>
-                        <button type="button" class="btn btn-outline-light" id="btnRoom">Số phòng đã đăng cho thuê</button>
+                        <button type="button" class="btn btn-outline-secondary" id="btnMotel">Số trọ đã đăng ký</button>
+                        <button type="button" class="btn btn-outline-secondary" id="btnRoom">Số phòng đã đăng cho thuê</button>
                     </div>
                 </div>
                 <div class="card-body">
                     <table class="table table-hover mt-3" id="motelTable">
-                        <thead class="thead-dark">
+                        <thead class="thead-light">
                             <tr>
                                 <th>Tên trọ</th>
                                 <th>Địa điểm</th>
@@ -52,7 +52,7 @@
                         </tbody>
                     </table>
                     <table class="table table-hover mt-3" id="roomTable" style="display:none;">
-                        <thead class="thead-dark">
+                        <thead class="thead-light">
                             <tr>
                                 <th>Tên phòng</th>
                                 <th>Địa điểm</th>
@@ -90,3 +90,27 @@
     });
 </script>
 
+<style>
+    .card {
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .btn-outline-secondary {
+        border-radius: 20px;
+        transition: background-color 0.2s ease;
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: #f0f0f0;
+        }
+
+    .table-hover tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+</style>
