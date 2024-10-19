@@ -13,6 +13,7 @@
         .nav-link-custom {
             font-weight: bold;
         }
+
         .dropdown-menu {
             z-index: 1050;
         }
@@ -76,7 +77,11 @@
                                 }
                                 else
                                 {
-
+                                    <li>
+                                        <a class="dropdown-item text-bg-success" href="@Url.Action("TopUp", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
+                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">@user.blance</span> VND
+                                        </a>
+                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
                                             <i class="fas fa-clipboard-list"></i> Đăng ký thuê
@@ -116,7 +121,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="@Url.Action("Settings", "Home")">
                                         <i class="fas fa-cog"></i> Settings
                                     </a>
                                 </li>
@@ -190,10 +195,60 @@
     <div class="d-flex flex-column justify-content-center align-items-center">
         @RenderBody()
         <hr />
-        <footer class="text-center">
-            <p>&copy; @DateTime.Now.Year - Phòng chuyên môn Devmaster</p>
-        </footer>
     </div>
+    <footer class="bg-dark text-white py-3">
+        <div class="container w-auto">
+            <div class="row justify-content-between">
+                <!-- CSKH Section -->
+                <div class="col-md-3 mb-3 text-center">
+                    <h6 class="text-uppercase">CSKH</h6>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-phone"></i> Hotline: 123-456-789</li>
+                        <li><i class="fas fa-envelope"></i> Email: support@secondhome.com</li>
+                    </ul>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="col-md-3 mb-3 text-center">
+                    <h6 class="text-uppercase">Liên lạc với chúng tôi</h6>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-map-marker-alt"></i> Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM</li>
+                        <li><i class="fas fa-phone"></i> Điện thoại: 987-654-321</li>
+                    </ul>
+                </div>
+
+                <!-- Team Section -->
+                <div class="col-md-3 mb-3 text-center">
+                    <h6 class="text-uppercase">Người làm</h6>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-user"></i> Nguyễn Văn A</li>
+                        <li><i class="fas fa-user"></i> Trần Thị B</li>
+                        <li><i class="fas fa-user"></i> Lê Văn C</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Social Icons Section -->
+            <div class="row">
+                <div class="col-12 text-center">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <a href="#" class="text-white"><i class="fab fa-facebook fa-lg"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr class="bg-light">
+        <p class="text-center small mb-0">&copy; 2024 - Phòng chuyên môn Devmaster. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>
 <style>

@@ -904,5 +904,109 @@ namespace _2home.Controllers
             return View();
 
         }
+        [HttpGet]
+        public ActionResult ConfirmPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmPassword(string password)
+        {
+            var user = Session["User"] as _2home.ViewModels.User;
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            if (user.password == password)
+            {
+                return RedirectToAction("Settings");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Mật khẩu không chính xác.";
+                return View();
+            }
+        }
+        public ActionResult Settings()
+    {
+        var user = Session["User"] as _2home.ViewModels.User;
+        if (user == null)
+        {
+            return RedirectToAction("Login");
+        }
+
+        ViewBag.User = user;
+        return View();
+    }
+
+    [HttpPost]
+    public ActionResult Settings(_2home.ViewModels.User updatedUser)
+    {
+        var user = Session["User"] as _2home.ViewModels.User;
+        if (user == null)
+        {
+            return RedirectToAction("Login");
+        }
+
+        // Update user information in the database
+        var dbUser = db.users.SingleOrDefault(u => u.ID_user == user.ID_user);
+        if (dbUser != null)
+        {
+            dbUser.fullname = updatedUser.fullname;
+            dbUser.Email = updatedUser.Email;
+            dbUser.PhoneNumber = updatedUser.PhoneNumber;
+            dbUser.gender = updatedUser.gender;
+            db.SubmitChanges();
+        }
+
+        // Update session
+        Session["User"] = dbUser;
+
+        ViewBag.User = dbUser;
+        ViewBag.Message = "Thông tin đã được cập nhật thành công.";
+        return View();
+    }
+
+        [HttpPost]
+        public JsonResult UpdateField(string field, string value)
+        {
+            var user = Session["User"] as _2home.ViewModels.User;
+            if (user == null)
+            {
+                return Json(new { success = false, message = "User not logged in" });
+            }
+
+            var dbUser = db.users.SingleOrDefault(u => u.ID_user == user.ID_user);
+            if (dbUser == null)
+            {
+                return Json(new { success = false, message = "User not found" });
+            }
+
+            switch (field)
+            {
+                case "fullname":
+                    dbUser.fullname = value;
+                    break;
+                case "email":
+                    dbUser.Email = value;
+                    break;
+                case "phone":
+                    dbUser.PhoneNumber = value;
+                    break;
+                case "gender":
+                    dbUser.gender = value;
+                    break;
+                default:
+                    return Json(new { success = false, message = "Invalid field" });
+            }
+
+            db.SubmitChanges();
+            Session["User"] = dbUser;
+
+            return Json(new { success = true, message = "Update successful" });
+        }
+
     }
 }
