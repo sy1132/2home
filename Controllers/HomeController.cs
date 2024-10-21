@@ -35,7 +35,7 @@ namespace _2home.Controllers
 
             var query = from img in db.imgs
                         join motel in db.Motels on img.Motel_ID equals motel.Motel_ID
-                        where motel.is_available == "Còn trống" && motel.Debt==0
+                        where motel.is_available == "Còn trống" && motel.Debt== 0
                         group img by new
                         {
                             motel.Name_motel,
@@ -104,16 +104,19 @@ namespace _2home.Controllers
             var motelDetails = (from img in db.imgs
                                 join motel in db.Motels on img.Motel_ID equals motel.Motel_ID
                                 join vid in db.Videos on motel.Motel_ID equals vid.Motel_ID
+                                join user in db.users on motel.ID_user equals user.ID_user
                                 where motel.Motel_ID == Motel_ID.Value
                                 select new pic
                                 {
-
+                                    phonenumber=user.PhoneNumber,
+                                    fullname=user.fullname,
                                     MotelName = motel.Name_motel,
                                     Location = motel.location,
                                     Price = motel.price,
                                     is_available = motel.is_available,
                                     ID_user = motel.ID_user,
                                     Link = vid.Link,
+                                    Details=motel.Details,
                                     ImgLinks = (from img in db.imgs
                                                 where img.Motel_ID == motel.Motel_ID
                                                 select img.Link).ToList()
@@ -167,6 +170,9 @@ namespace _2home.Controllers
                         fullname = user.fullname,
                         userrole = user.userrole,
                         blance = user.blance,
+                        PhoneNumber=user.PhoneNumber,
+                        gender = user.gender,
+                        MotelID=user.MotelID,
                     };
                     ViewBag.Message = "Đăng nhập thành công!";
                     return RedirectToAction("Index", "Home");
@@ -603,7 +609,11 @@ namespace _2home.Controllers
                             }
 
                             room.ID_user = senderUser.ID_user;
-
+                            room.Room_Status = "Đã thuê";
+                            room.Previous_Electricity_Usage = 0;
+                            room.Electricity_Unit_Price = 0;
+                            room.Water_Unit_Price=0;
+                            room.Previous_Water_Meter = 0;
                             db.SubmitChanges();
                         }
                     }
@@ -619,6 +629,7 @@ namespace _2home.Controllers
             ViewBag.message = "Quản lý đăng ký cho thuê";
             var query = from img in db.imgs
                         join motel in db.Motels on img.Motel_ID equals motel.Motel_ID
+                        where motel.is_available == "Còn trống"  || motel.is_available == "Hết phòng" || motel.is_available == "Đang chờ duyệt"
                         group img by new
                         {
                             motel.Name_motel,
@@ -714,9 +725,24 @@ namespace _2home.Controllers
         public ActionResult togher()
 
         {
+            var id_save = Session["User"] as _2home.ViewModels.User;
+            if (id_save == null)
+            {
+                return RedirectToAction("Login");
+            }
 
-
-            ViewBag.message = "Ghép phòng";
+            var q = from m in db.Motels
+                         join u in db.users on m.Motel_ID equals u.MotelID
+                         join p in db.imgs on m.Motel_ID equals p.Motel_ID
+                         where u.ID_user == id_save.ID_user
+                         select new _2home.ViewModels.index_Viewmodel
+                         { 
+                             MotelName=m.Name_motel,
+                             Location=m.location,
+                             fullname=u.fullname,
+                             ImgLink=p.Link,
+                         };
+                         
 
             return View();
 
@@ -798,15 +824,14 @@ namespace _2home.Controllers
                 return HttpNotFound();
             }
 
-            // Tạo mô hình cần thiết cho view
             var model = new _2home.ViewModels.Motel
             {
                 MotelName = motel.Name_motel,
                 Debt = motel.Debt,
-                Motel_ID = motel.Motel_ID // Giả sử bạn có thuộc tính này
+                Motel_ID = motel.Motel_ID 
             };
 
-            return View(model); // Truyền mô hình vào view
+            return View(model); 
         }
 
 
@@ -847,10 +872,7 @@ namespace _2home.Controllers
 
             return RedirectToAction("motel_manager"); 
         }
-
-
-        public ActionResult QL_room(int? Motel_ID, int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
-
+        public ActionResult QL_room(int? Motel_ID, int? size, int? page)
         {
             var id_save = Session["User"] as _2home.ViewModels.User;
             if (id_save == null)
@@ -859,62 +881,184 @@ namespace _2home.Controllers
             }
 
             var user_save = id_save.ID_user;
+
+            var currentRoom = db.Rooms.FirstOrDefault(r => r.Motel_ID == Motel_ID);
+            if (currentRoom != null)
+            {
+                ViewBag.MotelName = currentRoom.Electricity_Unit_Price;
+                ViewBag.Location = currentRoom.Water_Unit_Price;
+            }
+            else
+            {
+                ViewBag.MotelName = 0;
+                ViewBag.Location = 0;
+            }
+
             var query = from r in db.Rooms
                         join m in db.Motels on r.Motel_ID equals m.Motel_ID
-                        join u in db.users on m.ID_user equals u.ID_user
-                        where u.ID_user == user_save && r.Motel_ID== Motel_ID
+                        where m.ID_user == user_save && (Motel_ID == null || r.Motel_ID == Motel_ID)
                         select new room
                         {
-                            Price = m.price,
                             Room_ID = r.room_ID,
                             Motel_ID = r.Motel_ID,
-                            ID_User = r.ID_user,
-                            fullname = (from user in db.users
-                                        where user.ID_user == r.ID_user
-                                        select user.fullname).FirstOrDefault(),
+                            fullname = (from u in db.users where u.ID_user == r.ID_user select u.fullname).FirstOrDefault(),
                             Date_of_Issue = r.Date_of_Issue,
-                            Electricity_Meter = r.Electricity_Meter,
-                            Water_Meter = r.Water_Meter,
-                            Previous_Water_Meter=r.Previous_Water_Meter,
-                            Previous_Electricity_Usage=r.Previous_Electricity_Usage,
-                            Water_Unit_Price = r.Water_Unit_Price,
-                            Electricity_Unit_Price=r.Electricity_Unit_Price,
                             Electricity_Bill = r.Electricity_Bill,
                             Water_Bill = r.Water_Bill,
-                            Room_Status = r.Room_Status,
-                            Room_Rent = r.Room_Rent,
                             Additional_Charges = r.Additional_Charges,
-                            Total_Amount_Due = r.Total_Amount_Due
+                            Price = m.price,
+                            Total_Amount_Due = r.Total_Amount_Due,
+                            Room_Status = r.Room_Status
+
                         };
-            var firstRecord = query.FirstOrDefault();
-            if (firstRecord != null)
-            {
-                ViewBag.MotelName = firstRecord.Electricity_Unit_Price;
-                ViewBag.Location = firstRecord.Water_Unit_Price;
-            }
-            ViewBag.Page = page;
-            List<SelectListItem> items = new List<SelectListItem>();
-            items.Add(new SelectListItem { Text = "10", Value = "10" });
-            items.Add(new SelectListItem { Text = "20", Value = "20" });
-            items.Add(new SelectListItem { Text = "25", Value = "25" });
-            items.Add(new SelectListItem { Text = "50", Value = "50" });
-            items.Add(new SelectListItem { Text = "100", Value = "100" });
-            items.Add(new SelectListItem { Text = "200", Value = "200" });
-            foreach (var item in items)
-            {
-                if (item.Value == size.ToString()) item.Selected = true;
-            }
-            ViewBag.size = items;
-            ViewBag.currentSize = size;
 
             page = page ?? 1;
-            int pageSize = (size ?? 10);
+            int pageSize = size ?? 10;
+            var model = query.ToPagedList(page.Value, pageSize);
 
-            int pageNumber = (page ?? 1);
-            var model = query.ToList();
-            return View(model.ToPagedList(pageNumber, pageSize));
+            return View(model);
+        }
+        public ActionResult updatebill(int? Motel_ID, int? size, int? page)
+        {
+            var id_save = Session["User"] as _2home.ViewModels.User;
+            if (id_save == null)
+            {
+                return RedirectToAction("Login");
+            }
 
+            var user_save = id_save.ID_user;
 
+            var currentRoom = db.Rooms.FirstOrDefault(r => r.Motel_ID == Motel_ID);
+            if (currentRoom != null)
+            {
+                ViewBag.MotelName = currentRoom.Electricity_Unit_Price;
+                ViewBag.Location = currentRoom.Water_Unit_Price;
+            }
+            else
+            {
+                ViewBag.MotelName = 0; 
+                ViewBag.Location = 0;
+            }
+
+            var query = from r in db.Rooms
+                        join m in db.Motels on r.Motel_ID equals m.Motel_ID
+                        where m.ID_user == user_save && (Motel_ID == null || r.Motel_ID == Motel_ID)
+                        select new room
+                        {
+                            Room_ID = r.room_ID,
+                            Motel_ID = r.Motel_ID,
+                            fullname = (from u in db.users where u.ID_user == r.ID_user select u.fullname).FirstOrDefault(),
+                            Date_of_Issue = r.Date_of_Issue,
+                            Electricity_Bill = r.Electricity_Bill,
+                            Water_Bill = r.Water_Bill,
+                            Electricity_Meter = r.Electricity_Meter,
+                            Water_Meter = r.Water_Meter,
+                            Additional_Charges = r.Additional_Charges,
+                            Price = m.price,
+                            Total_Amount_Due = r.Total_Amount_Due,
+                            Room_Status = r.Room_Status,
+                            Previous_Electricity_Usage=r.Previous_Electricity_Usage,
+                            Previous_Water_Meter = r.Previous_Water_Meter,
+                        };
+
+            page = page ?? 1;
+            int pageSize = size ?? 10;
+            var model = query.ToPagedList(page.Value, pageSize);
+
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult updatebill(int Motel_ID, decimal Electricity_Usage, decimal Water_Usage, int Room_ID, decimal Previous_Electricity_Usage, decimal Electricity_Meter, decimal Previous_Water_Meter, decimal Water_Meter, decimal Additional_Charges, decimal Price)
+        {
+            var id_save = Session["User"] as _2home.ViewModels.User;
+            if (id_save == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            bool updateSuccessful = false;
+
+            var roomsToUpdate = db.Rooms.Where(r => r.Motel_ID == Motel_ID && r.room_ID == Room_ID).ToList();
+            if (roomsToUpdate.Any())
+            {
+                foreach (var room in roomsToUpdate)
+                {
+                    room.Electricity_Unit_Price = Electricity_Usage;
+                    room.Water_Unit_Price = Water_Usage;
+                    room.Previous_Electricity_Usage = room.Electricity_Meter; 
+                    room.Previous_Water_Meter = room.Water_Meter; 
+
+                    var updatedElectricityUsage = room.Previous_Electricity_Usage;
+                    var updatedWaterUsage = room.Previous_Water_Meter;
+
+                    var roomBill = new _2home.Models.RoomBill
+                    {
+                        Room_ID = room.room_ID,
+                        Previous_Electricity_Usage = Previous_Electricity_Usage,
+                        Electricity_Meter = Electricity_Meter,
+                        Previous_Water_Meter = Previous_Water_Meter,
+                        Water_Meter = Water_Meter,
+                        Additional_Charges = Additional_Charges,
+                        Price = Price,
+                        Electricity_Bill = Electricity_Meter * Electricity_Usage,
+                        Water_Bill = Water_Meter * Water_Usage,
+                        Total_Amount_Due = (Electricity_Meter * Electricity_Usage) + (Water_Meter * Water_Usage) + Additional_Charges,
+                        Room_Status = room.Room_Status,
+                        Date_of_Issue = DateTime.Now
+                    };
+
+                    db.RoomBills.InsertOnSubmit(roomBill);
+                }
+
+                try
+                {
+                    db.SubmitChanges(); 
+                    updateSuccessful = true;
+                }
+                catch (Exception ex)
+                {
+                    TempData["UpdateMessage"] = "Đã xảy ra lỗi trong quá trình cập nhật: " + ex.Message;
+                }
+            }
+
+            if (updateSuccessful)
+            {
+                TempData["UpdateMessage"] = "Cập nhật đơn giá điện và nước thành công.";
+            }
+            else
+            {
+                TempData["UpdateMessage"] = "Không tìm thấy phòng để cập nhật.";
+            }
+
+            return RedirectToAction("updatebill", new { Motel_ID = Motel_ID });
+        }
+
+        private decimal CalculateElectricityBill(_2home.Models.Room room)
+        {
+            if (room.Electricity_Meter != null && room.Previous_Electricity_Usage != null && room.Electricity_Unit_Price != null)
+            {
+                decimal electricityUsage = (decimal)(room.Electricity_Meter - room.Previous_Electricity_Usage);
+
+                if (electricityUsage < 0) return 0;
+
+                return electricityUsage * (decimal)room.Electricity_Unit_Price;
+            }
+
+            return 0;
+        }
+
+        private decimal CalculateWaterBill(_2home.Models.Room room)
+        {
+            if (room.Water_Meter != null && room.Previous_Water_Meter != null && room.Water_Unit_Price != null)
+            {
+                decimal waterUsage = (decimal)(room.Water_Meter - room.Previous_Water_Meter);
+
+                if (waterUsage < 0) return 0;
+
+                return waterUsage * (decimal)room.Water_Unit_Price;
+            }
+
+            return 0;
         }
 
         public ActionResult rent_check(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
@@ -927,30 +1071,11 @@ namespace _2home.Controllers
             }
 
             var user_save = id_save.ID_user;
-            var query = from r in db.Rooms
-                        join m in db.Motels on r.Motel_ID equals m.Motel_ID
-                        join u in db.users on m.ID_user equals u.ID_user
-                        where u.ID_user == user_save
-                        select new room
-                        {
-                            Price = m.price,
-                            Room_ID = r.room_ID,
-                            Motel_ID = r.Motel_ID,
-                            ID_User = r.ID_user,
-                            fullname = (from user in db.users
-                                        where u.ID_user == r.ID_user
-                                        select u.fullname).FirstOrDefault(),
-                            Date_of_Issue = r.Date_of_Issue,
-                            Electricity_Meter = r.Electricity_Meter,
-                            Water_Meter = r.Water_Meter,
+            var query = from rb in db.RoomBills
+                        join r in db.Rooms on rb.Room_ID equals r.room_ID
+                        where r.ID_user == id_save.ID_user 
+                        select rb;
 
-                            Electricity_Bill = r.Electricity_Bill,
-                            Water_Bill = r.Water_Bill,
-                            Room_Status = r.Room_Status,
-                            Room_Rent = r.Room_Rent,
-                            Additional_Charges = r.Additional_Charges,
-                            Total_Amount_Due = r.Total_Amount_Due
-                        };
 
             ViewBag.Page = page;
             List<SelectListItem> items = new List<SelectListItem>();
@@ -980,20 +1105,46 @@ namespace _2home.Controllers
         {
             using (var db = new DataClasses1DataContext())
             {
-                var user = db.users.FirstOrDefault(u => u.ID_user == ID_user);
-                if (user != null)
-                {
-                    ViewBag.Fullname = user.fullname;
-                    ViewBag.Email = user.Email;
-                    ViewBag.PhoneNumber = user.PhoneNumber;
-                    ViewBag.Gender = user.gender;
+                var user = Session["User"] as _2home.ViewModels.User;
 
-                    var rooms = db.Motels.Where(m => m.ID_user == ID_user).ToList();
-                    ViewBag.Rooms = rooms;
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Home"); 
                 }
+                ViewBag.Fullname = user.fullname;
+                ViewBag.Email = user.Email; 
+                ViewBag.PhoneNumber = user.PhoneNumber; 
+                ViewBag.Gender = user.gender;
+                var motels = from m in db.Motels
+                             where m.ID_user == user.ID_user
+                             select new _2home.ViewModels.Motel
+                             {
+                                 MotelName = m.Name_motel,
+                                 Location = m.location,
+                                 Price = m.price,
+                                 Debt = m.Debt,
+                                 Motel_ID = m.Motel_ID
+                             };
+
+                var rooms = from r in db.Rooms
+                            join m in db.Motels on r.Motel_ID equals m.Motel_ID
+                            where m.ID_user == user.ID_user
+                            select new _2home.ViewModels.Motel
+                            {
+                                room_ID = r.room_ID,
+                                Room_Status = r.Room_Status,
+                                fullname = (from u in db.users where u.ID_user == r.ID_user select u.fullname).FirstOrDefault()
+                            };
+
+                var motelList = motels.ToList();
+                var roomList = rooms.ToList();
+
+                var model = Tuple.Create(motelList, roomList);
+                return View(model);
             }
-            return View();
         }
+
+
         [HttpGet]
         public ActionResult JoinRental()
         {
@@ -1179,76 +1330,101 @@ namespace _2home.Controllers
             return RedirectToAction("Login");
         }
 
-        ViewBag.User = user;
-        return View();
-    }
-
-    [HttpPost]
-    public ActionResult Settings(_2home.ViewModels.User updatedUser)
-    {
-        var user = Session["User"] as _2home.ViewModels.User;
-        if (user == null)
-        {
-            return RedirectToAction("Login");
-        }
-
-        // Update user information in the database
-        var dbUser = db.users.SingleOrDefault(u => u.ID_user == user.ID_user);
-        if (dbUser != null)
-        {
-            dbUser.fullname = updatedUser.fullname;
-            dbUser.Email = updatedUser.Email;
-            dbUser.PhoneNumber = updatedUser.PhoneNumber;
-            dbUser.gender = updatedUser.gender;
-            db.SubmitChanges();
-        }
-
-        // Update session
-        Session["User"] = dbUser;
-
-        ViewBag.User = dbUser;
-        ViewBag.Message = "Thông tin đã được cập nhật thành công.";
-        return View();
+        return View(user);
     }
 
         [HttpPost]
-        public JsonResult UpdateField(string field, string value)
+        public ActionResult UpdateSettings(_2home.ViewModels.User model, string password, string password1, string password2)
         {
             var user = Session["User"] as _2home.ViewModels.User;
             if (user == null)
             {
-                return Json(new { success = false, message = "User not logged in" });
+                return RedirectToAction("Login");
             }
 
-            var dbUser = db.users.SingleOrDefault(u => u.ID_user == user.ID_user);
-            if (dbUser == null)
+            bool isPasswordChangeRequested = !string.IsNullOrEmpty(password) ||
+                                             !string.IsNullOrEmpty(password1) ||
+                                             !string.IsNullOrEmpty(password2);
+
+            if (isPasswordChangeRequested)
             {
-                return Json(new { success = false, message = "User not found" });
+                if (password1 != password2)
+                {
+                    ViewBag.PasswordError = "Mật khẩu mới và mật khẩu xác nhận không khớp.";
+                    return View("Settings", model);
+                }
+
+                if (password != user.password)
+                {
+                    ViewBag.PasswordError = "Mật khẩu cũ không đúng.";
+                    return View("Settings", model);
+                }
+
+                user.password = password1; 
             }
 
-            switch (field)
+            using (var db = new DataClasses1DataContext())
             {
-                case "fullname":
-                    dbUser.fullname = value;
-                    break;
-                case "email":
-                    dbUser.Email = value;
-                    break;
-                case "phone":
-                    dbUser.PhoneNumber = value;
-                    break;
-                case "gender":
-                    dbUser.gender = value;
-                    break;
-                default:
-                    return Json(new { success = false, message = "Invalid field" });
+                var userInDb = db.users.SingleOrDefault(u => u.ID_user == user.ID_user);
+                if (userInDb != null)
+                {
+                    bool isUpdated = false;
+
+                    if (model.fullname != userInDb.fullname)
+                    {
+                        userInDb.fullname = model.fullname;
+                        user.fullname = model.fullname; 
+                        isUpdated = true;
+                    }
+
+                    if (model.Email != userInDb.Email)
+                    {
+                        userInDb.Email = model.Email;
+                        user.Email = model.Email; 
+                        isUpdated = true;
+                    }
+
+                    if (model.PhoneNumber != userInDb.PhoneNumber)
+                    {
+                        userInDb.PhoneNumber = model.PhoneNumber;
+                        user.PhoneNumber = model.PhoneNumber; 
+                        isUpdated = true;
+                    }
+
+                    if (model.gender != userInDb.gender)
+                    {
+                        userInDb.gender = model.gender;
+                        user.gender = model.gender; 
+                        isUpdated = true;
+                    }
+
+                    if (isPasswordChangeRequested && !string.IsNullOrEmpty(password1))
+                    {
+                        userInDb.password = password1; 
+                        user.password = password1; 
+                        isUpdated = true;
+                    }
+
+                    db.SubmitChanges();
+
+                    if (isUpdated)
+                    {
+                        ViewBag.Message = "Cập nhật thông tin thành công!";
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Không có thay đổi nào.";
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = "Không tìm thấy người dùng.";
+                }
             }
 
-            db.SubmitChanges();
-            Session["User"] = dbUser;
-
-            return Json(new { success = true, message = "Update successful" });
+            return View("Settings", model);
         }
+
 
     }
 }

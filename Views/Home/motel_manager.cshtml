@@ -16,7 +16,8 @@
             <th>Giá</th>
             <th>Tình trạng</th>
             <th>Số phòng</th>
-            <th></th>
+            <th>Xem phòng</th>
+            <th>Cập nhật tiền trọ</th>
         </tr>
     </thead>
     <tbody>
@@ -28,7 +29,7 @@
                 <td>@item.price</td>
                 <td>@item.rooms</td>
 
-                @if (item.Debt == 0) 
+                @if (item.Debt == 0)
                 {
                     <td>
                         @using (Html.BeginForm("UpdateAvailability1", "Home", FormMethod.Post))
@@ -50,8 +51,17 @@
                             </p>
                         }
                     </td>
+                    <td>
+                        @using (Html.BeginForm("updatebill", "Home", FormMethod.Get))
+                        {
+                            @Html.Hidden("Motel_ID", item.Motel_ID)
+                            <p class="class-submit">
+                                <input type="submit" value="Cập nhật" />
+                            </p>
+                        }
+                    </td>
                 }
-                else 
+                else
                 {
                     <td>Phòng trọ chưa đóng tiền</td>
                     <td>
@@ -63,7 +73,7 @@
                             </p>
                         }
                     </td>
-                } 
+                }
             </tr>
         } 
     </tbody>

@@ -285,6 +285,8 @@
     <Content Include="Views\Home\mail.cshtml" />
     <Content Include="Views\Home\motel_manager.cshtml" />
     <Content Include="Views\Home\pay.cshtml" />
+    <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\Home\updatebill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

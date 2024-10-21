@@ -1,5 +1,5 @@
 ﻿
-@model PagedList.IPagedList<_2home.ViewModels.room>
+@model PagedList.IPagedList<_2home.Models.RoomBill>
 @using PagedList.Mvc;
 
 @{
@@ -20,7 +20,6 @@
             <th>Chi phí phát sinh</th>
             <th>Tiền trọ</th>
             <th>Tổng tiền </th>
-            <th>Tình Trạng</th>
             <th>chi tiết</th>
         </tr>
     </thead>
@@ -35,7 +34,6 @@
                 <td>@items.Additional_Charges</td>
                 <td>@items.Price</td>
                 <td>@items.Total_Amount_Due</td>
-                <td>@items.Room_Status</td>
                 <td>
                     <a href="@Url.Action("Capnhat", "Home", new { id = items.Room_ID })" class="btn btn-info">Xem chi tiết</a>
                 </td>
@@ -45,8 +43,5 @@
     </tbody>
 </table>
 
-<div class="pagination-container">
-    @Html.PagedListPager(Model, page => Url.Action("rental_management", new { page }), PagedListRenderOptions.Classic)
-</div>
-<h2>rent_check</h2>
+
 

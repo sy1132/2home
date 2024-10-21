@@ -19,6 +19,8 @@ namespace _2home.ViewModels
             public string userrole { get; set; }
             public int? MotelID { get; set; }
         public int? blance { get; set; }
+        public string password1 { get; set; } 
+        public string password2 { get; set; }
 
     }
     }

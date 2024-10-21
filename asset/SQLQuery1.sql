@@ -83,10 +83,27 @@ CREATE TABLE Mail (
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user) 
 );
 
+CREATE TABLE RoomBills (
+    Bill_ID INT PRIMARY KEY IDENTITY(1,1), -- Khóa chính tự động tăng
+    Room_ID INT NOT NULL,                   -- ID phòng
+    Previous_Electricity_Usage DECIMAL(10, 2) NOT NULL, -- Số điện tháng trước
+    Electricity_Meter DECIMAL(10, 2) NOT NULL, -- Số điện hiện tại
+    Previous_Water_Meter DECIMAL(10, 2) NOT NULL, -- Số nước tháng trước
+    Water_Meter DECIMAL(10, 2) NOT NULL, -- Số nước hiện tại
+    Additional_Charges DECIMAL(10, 2) NOT NULL, -- Chi phí phát sinh
+    Price DECIMAL(10, 2) NOT NULL, -- Giá thuê
+    Electricity_Bill DECIMAL(10, 2) NOT NULL, -- Tổng tiền điện
+    Water_Bill DECIMAL(10, 2) NOT NULL, -- Tổng tiền nước
+    Total_Amount_Due DECIMAL(10, 2) NOT NULL, -- Tổng tiền phải trả
+    Room_Status VARCHAR(50), -- Tình trạng phòng
+    Date_of_Issue DATETIME DEFAULT GETDATE(), -- Ngày cập nhật
+    FOREIGN KEY (Room_ID) REFERENCES Rooms(room_ID) -- Khóa ngoại đến bảng Rooms
+);
 
-SELECT * FROM Rooms
+	SELECT * FROM Rooms
 SELECT * FROM Motel
 SELECT * FROM img
 SELECT * FROM Video
 SELECT * FROM [user]
 SELECT * FROM Mail
+SELECT * FROM RoomBills

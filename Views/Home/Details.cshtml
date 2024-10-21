@@ -43,7 +43,7 @@
                 <p><strong>Vị trí:</strong> @Model.Location</p>
                 <p><strong>Giá:</strong> @Model.Price</p>
                 <p><strong>Tình trạng:</strong> @Model.is_available </p>
-            </div>
+                <p><strong>Chi tiết:</strong> @Model.Details </p>            </div>
         </div>
     </div>
 
@@ -52,8 +52,8 @@
             <div class="card-body text-center">
                 <img src="path_to_profile_image" class="rounded-circle mb-3" alt="Profile Image" style="width: 100px; height: 100px;">
                 <h5>Thông tin chủ nhà</h5>
-                <p>Tên chủ nhà</p>
-                <p>Số điện thoại: 0123456789</p>
+                <p>@Model.fullname</p>
+                <p>Số điện thoại:@Model.phonenumber</p>
                 <button class="btn btn-primary">Liên hệ</button>
             </div>
         </div>

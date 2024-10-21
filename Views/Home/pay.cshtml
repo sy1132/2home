@@ -7,13 +7,12 @@
 
 @if (Model == null)
 {
-    <p>Không có thông tin nhà trọ để hiển thị.</p>
+    <p>Số tiền không đủ để đóng.</p>
 }
 else
 {
     <h2>Đóng tiền cho @Model.MotelName</h2>
-    <p>Hiện tại bạn có nợ: @Model.Debt</p>
-    <p>Hiện tại bạn có nợ: @Model.Motel_ID</p>
+    <p>Hiện tại bạn có nợ: @(Convert.ToDecimal(Model.Debt).ToString("N0"))</p>
 
     <form method="post" action="@Url.Action("pay")">
         @Html.Hidden("Motel_ID", Model.Motel_ID)
