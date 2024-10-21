@@ -21,6 +21,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Web.Security;
 using System.IO;
+using System.Net;
 
 namespace _2home.Controllers
 {
@@ -101,13 +102,17 @@ namespace _2home.Controllers
 
         public ActionResult Details(int? Motel_ID)
         {
+            if (Motel_ID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var motelDetails = (from img in db.imgs
                                 join motel in db.Motels on img.Motel_ID equals motel.Motel_ID
                                 join vid in db.Videos on motel.Motel_ID equals vid.Motel_ID
                                 where motel.Motel_ID == Motel_ID.Value
                                 select new pic
                                 {
-
                                     MotelName = motel.Name_motel,
                                     Location = motel.location,
                                     Price = motel.price,
@@ -119,8 +124,21 @@ namespace _2home.Controllers
                                                 select img.Link).ToList()
                                 }).FirstOrDefault();
 
+            if (motelDetails == null)
+            {
+                return HttpNotFound();
+            }
+
+            var landlord = db.users.FirstOrDefault(u => u.ID_user == motelDetails.ID_user);
+            if (landlord != null)
+            {
+                motelDetails.LandlordName = landlord.fullname;
+                motelDetails.LandlordPhone = landlord.PhoneNumber;
+            }
+
             return View(motelDetails);
         }
+
 
 
         public ActionResult Selectlocation()
@@ -281,7 +299,7 @@ namespace _2home.Controllers
 
                     var motelVideo = new _2home.Models.Video
                     {
-                        Link = $"/asset/videos/{Path.GetFileName(Videos.FileName)}",  // Lưu đường dẫn video
+                        Link = $"/asset/videos/{Path.GetFileName(Videos.FileName)}",
                         createdAt = DateTime.Now,
                         updatedAt = DateTime.Now,
                         Motel_ID = motelId,  
@@ -306,7 +324,7 @@ namespace _2home.Controllers
                             motel.location,
                             motel.price,
                             motel.is_available,
-                            motel.Motel_ID, // Đảm bảo trường này được chọn
+                            motel.Motel_ID,
                             motel.rooms
                         } into grouped
                         select new index_Viewmodel
@@ -316,7 +334,7 @@ namespace _2home.Controllers
                             Location = grouped.Key.location,
                             Price = grouped.Key.price,
                             is_available = grouped.Key.is_available,
-                            Motel_ID = grouped.Key.Motel_ID, // Đảm bảo sử dụng trường này
+                            Motel_ID = grouped.Key.Motel_ID,
                             rooms = grouped.Key.rooms
                         };
 
@@ -930,83 +948,55 @@ namespace _2home.Controllers
             }
         }
         public ActionResult Settings()
-    {
-        var user = Session["User"] as _2home.ViewModels.User;
-        if (user == null)
-        {
-            return RedirectToAction("Login");
-        }
-
-        ViewBag.User = user;
-        return View();
-    }
-
-    [HttpPost]
-    public ActionResult Settings(_2home.ViewModels.User updatedUser)
-    {
-        var user = Session["User"] as _2home.ViewModels.User;
-        if (user == null)
-        {
-            return RedirectToAction("Login");
-        }
-
-        // Update user information in the database
-        var dbUser = db.users.SingleOrDefault(u => u.ID_user == user.ID_user);
-        if (dbUser != null)
-        {
-            dbUser.fullname = updatedUser.fullname;
-            dbUser.Email = updatedUser.Email;
-            dbUser.PhoneNumber = updatedUser.PhoneNumber;
-            dbUser.gender = updatedUser.gender;
-            db.SubmitChanges();
-        }
-
-        // Update session
-        Session["User"] = dbUser;
-
-        ViewBag.User = dbUser;
-        ViewBag.Message = "Thông tin đã được cập nhật thành công.";
-        return View();
-    }
-
-        [HttpPost]
-        public JsonResult UpdateField(string field, string value)
         {
             var user = Session["User"] as _2home.ViewModels.User;
             if (user == null)
             {
-                return Json(new { success = false, message = "User not logged in" });
+                return RedirectToAction("Login");
             }
 
-            var dbUser = db.users.SingleOrDefault(u => u.ID_user == user.ID_user);
-            if (dbUser == null)
-            {
-                return Json(new { success = false, message = "User not found" });
-            }
-
-            switch (field)
-            {
-                case "fullname":
-                    dbUser.fullname = value;
-                    break;
-                case "email":
-                    dbUser.Email = value;
-                    break;
-                case "phone":
-                    dbUser.PhoneNumber = value;
-                    break;
-                case "gender":
-                    dbUser.gender = value;
-                    break;
-                default:
-                    return Json(new { success = false, message = "Invalid field" });
-            }
-
-            db.SubmitChanges();
-            Session["User"] = dbUser;
-
-            return Json(new { success = true, message = "Update successful" });
+            ViewBag.User = user;
+            return View();
         }
 
+        [HttpPost]
+        public ActionResult UpdateUser(_2home.ViewModels.User updatedUser)
+        {
+            var user = Session["User"] as _2home.ViewModels.User;
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Update user information in the database
+            var dbUser = db.users.SingleOrDefault(u => u.ID_user == user.ID_user);
+            if (dbUser != null)
+            {
+                dbUser.fullname = updatedUser.fullname;
+                dbUser.Email = updatedUser.Email;
+                dbUser.PhoneNumber = updatedUser.PhoneNumber;
+                dbUser.gender = updatedUser.gender;
+
+                try
+                {
+                    db.SubmitChanges();
+                    // Cập nhật lại session
+                    Session["User"] = dbUser;
+
+                    ViewBag.Message = "Thông tin đã được cập nhật thành công.";
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "Đã xảy ra lỗi khi cập nhật: " + ex.Message;
+                }
+            }
+            else
+            {
+                ViewBag.Message = "Người dùng không tồn tại.";
+            }
+
+            ViewBag.User = dbUser;
+            return View("Settings");
+        }
     }
 }
