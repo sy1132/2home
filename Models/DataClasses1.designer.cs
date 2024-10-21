@@ -30,24 +30,24 @@ namespace _2home.Models
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void Insertimg(img instance);
-    partial void Updateimg(img instance);
-    partial void Deleteimg(img instance);
     partial void InsertVideo(Video instance);
     partial void UpdateVideo(Video instance);
     partial void DeleteVideo(Video instance);
-    partial void InsertMail(Mail instance);
-    partial void UpdateMail(Mail instance);
-    partial void DeleteMail(Mail instance);
-    partial void InsertMotel(Motel instance);
-    partial void UpdateMotel(Motel instance);
-    partial void DeleteMotel(Motel instance);
-    partial void InsertRoom(Room instance);
-    partial void UpdateRoom(Room instance);
-    partial void DeleteRoom(Room instance);
     partial void Insertuser(user instance);
     partial void Updateuser(user instance);
     partial void Deleteuser(user instance);
+    partial void InsertRoom(Room instance);
+    partial void UpdateRoom(Room instance);
+    partial void DeleteRoom(Room instance);
+    partial void InsertMotel(Motel instance);
+    partial void UpdateMotel(Motel instance);
+    partial void DeleteMotel(Motel instance);
+    partial void InsertMail(Mail instance);
+    partial void UpdateMail(Mail instance);
+    partial void DeleteMail(Mail instance);
+    partial void Insertimg(img instance);
+    partial void Updateimg(img instance);
+    partial void Deleteimg(img instance);
     #endregion
 		
 		public DataClasses1DataContext(string connection) : 
@@ -55,18 +55,18 @@ namespace _2home.Models
 		{
 			OnCreated();
 		}
-        public DataClasses1DataContext() :
-        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString2"].ConnectionString, mappingSource)
-        {
-
-        }
-        public DataClasses1DataContext(System.Data.IDbConnection connection) : 
+		
+		public DataClasses1DataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
-		
-		public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+        public DataClasses1DataContext() :
+        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString3"].ConnectionString, mappingSource)
+        {
+
+        }
+        public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -78,14 +78,6 @@ namespace _2home.Models
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<img> imgs
-		{
-			get
-			{
-				return this.GetTable<img>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Video> Videos
 		{
 			get
@@ -94,19 +86,19 @@ namespace _2home.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Mail> Mails
+		public System.Data.Linq.Table<user> users
 		{
 			get
 			{
-				return this.GetTable<Mail>();
+				return this.GetTable<user>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Motel> Motels
+		public System.Data.Linq.Table<together> togethers
 		{
 			get
 			{
-				return this.GetTable<Motel>();
+				return this.GetTable<together>();
 			}
 		}
 		
@@ -118,210 +110,27 @@ namespace _2home.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<user> users
+		public System.Data.Linq.Table<Motel> Motels
 		{
 			get
 			{
-				return this.GetTable<user>();
+				return this.GetTable<Motel>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.img")]
-	public partial class img : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _img_ID;
-		
-		private System.Nullable<int> _Motel_ID;
-		
-		private System.Nullable<System.DateTime> _updatedAt;
-		
-		private System.Nullable<System.DateTime> _createdAt;
-		
-		private string _Link;
-		
-		private EntityRef<Motel> _Motel;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void Onimg_IDChanging(int value);
-    partial void Onimg_IDChanged();
-    partial void OnMotel_IDChanging(System.Nullable<int> value);
-    partial void OnMotel_IDChanged();
-    partial void OnupdatedAtChanging(System.Nullable<System.DateTime> value);
-    partial void OnupdatedAtChanged();
-    partial void OncreatedAtChanging(System.Nullable<System.DateTime> value);
-    partial void OncreatedAtChanged();
-    partial void OnLinkChanging(string value);
-    partial void OnLinkChanged();
-    #endregion
-		
-		public img()
-		{
-			this._Motel = default(EntityRef<Motel>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_img_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int img_ID
+		public System.Data.Linq.Table<Mail> Mails
 		{
 			get
 			{
-				return this._img_ID;
-			}
-			set
-			{
-				if ((this._img_ID != value))
-				{
-					this.Onimg_IDChanging(value);
-					this.SendPropertyChanging();
-					this._img_ID = value;
-					this.SendPropertyChanged("img_ID");
-					this.Onimg_IDChanged();
-				}
+				return this.GetTable<Mail>();
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", DbType="Int")]
-		public System.Nullable<int> Motel_ID
+		public System.Data.Linq.Table<img> imgs
 		{
 			get
 			{
-				return this._Motel_ID;
-			}
-			set
-			{
-				if ((this._Motel_ID != value))
-				{
-					if (this._Motel.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnMotel_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Motel_ID = value;
-					this.SendPropertyChanged("Motel_ID");
-					this.OnMotel_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_updatedAt", DbType="DateTime")]
-		public System.Nullable<System.DateTime> updatedAt
-		{
-			get
-			{
-				return this._updatedAt;
-			}
-			set
-			{
-				if ((this._updatedAt != value))
-				{
-					this.OnupdatedAtChanging(value);
-					this.SendPropertyChanging();
-					this._updatedAt = value;
-					this.SendPropertyChanged("updatedAt");
-					this.OnupdatedAtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_createdAt", DbType="DateTime")]
-		public System.Nullable<System.DateTime> createdAt
-		{
-			get
-			{
-				return this._createdAt;
-			}
-			set
-			{
-				if ((this._createdAt != value))
-				{
-					this.OncreatedAtChanging(value);
-					this.SendPropertyChanging();
-					this._createdAt = value;
-					this.SendPropertyChanged("createdAt");
-					this.OncreatedAtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(255)")]
-		public string Link
-		{
-			get
-			{
-				return this._Link;
-			}
-			set
-			{
-				if ((this._Link != value))
-				{
-					this.OnLinkChanging(value);
-					this.SendPropertyChanging();
-					this._Link = value;
-					this.SendPropertyChanged("Link");
-					this.OnLinkChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_img", Storage="_Motel", ThisKey="Motel_ID", OtherKey="Motel_ID", IsForeignKey=true)]
-		public Motel Motel
-		{
-			get
-			{
-				return this._Motel.Entity;
-			}
-			set
-			{
-				Motel previousValue = this._Motel.Entity;
-				if (((previousValue != value) 
-							|| (this._Motel.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Motel.Entity = null;
-						previousValue.imgs.Remove(this);
-					}
-					this._Motel.Entity = value;
-					if ((value != null))
-					{
-						value.imgs.Add(this);
-						this._Motel_ID = value.Motel_ID;
-					}
-					else
-					{
-						this._Motel_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Motel");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				return this.GetTable<img>();
 			}
 		}
 	}
@@ -525,92 +334,74 @@ namespace _2home.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Mail")]
-	public partial class Mail : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[user]")]
+	public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _Mail_ID;
+		private int _ID_user;
 		
-		private System.Nullable<int> _Sender;
+		private string _username;
 		
-		private System.Nullable<int> _ID_user;
+		private string _password;
 		
-		private System.Nullable<int> _Recipient;
+		private string _fullname;
 		
-		private System.DateTime _SendDate;
+		private System.Nullable<int> _MotelID;
 		
-		private string _Content;
+		private string _PhoneNumber;
 		
-		private EntityRef<user> _user;
+		private string _Email;
+		
+		private string _userrole;
+		
+		private string _gender;
+		
+		private System.Nullable<int> _blance;
+		
+		private EntitySet<Room> _Rooms;
+		
+		private EntitySet<Motel> _Motels;
+		
+		private EntitySet<Mail> _Mails;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnMail_IDChanging(int value);
-    partial void OnMail_IDChanged();
-    partial void OnSenderChanging(System.Nullable<int> value);
-    partial void OnSenderChanged();
-    partial void OnID_userChanging(System.Nullable<int> value);
+    partial void OnID_userChanging(int value);
     partial void OnID_userChanged();
-    partial void OnRecipientChanging(System.Nullable<int> value);
-    partial void OnRecipientChanged();
-    partial void OnSendDateChanging(System.DateTime value);
-    partial void OnSendDateChanged();
-    partial void OnContentChanging(string value);
-    partial void OnContentChanged();
+    partial void OnusernameChanging(string value);
+    partial void OnusernameChanged();
+    partial void OnpasswordChanging(string value);
+    partial void OnpasswordChanged();
+    partial void OnfullnameChanging(string value);
+    partial void OnfullnameChanged();
+    partial void OnMotelIDChanging(System.Nullable<int> value);
+    partial void OnMotelIDChanged();
+    partial void OnPhoneNumberChanging(string value);
+    partial void OnPhoneNumberChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnuserroleChanging(string value);
+    partial void OnuserroleChanged();
+    partial void OngenderChanging(string value);
+    partial void OngenderChanged();
+    partial void OnblanceChanging(System.Nullable<int> value);
+    partial void OnblanceChanged();
     #endregion
 		
-		public Mail()
+		public user()
 		{
-			this._user = default(EntityRef<user>);
+			this._Rooms = new EntitySet<Room>(new Action<Room>(this.attach_Rooms), new Action<Room>(this.detach_Rooms));
+			this._Motels = new EntitySet<Motel>(new Action<Motel>(this.attach_Motels), new Action<Motel>(this.detach_Motels));
+			this._Mails = new EntitySet<Mail>(new Action<Mail>(this.attach_Mails), new Action<Mail>(this.detach_Mails));
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Mail_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Mail_ID
-		{
-			get
-			{
-				return this._Mail_ID;
-			}
-			set
-			{
-				if ((this._Mail_ID != value))
-				{
-					this.OnMail_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Mail_ID = value;
-					this.SendPropertyChanged("Mail_ID");
-					this.OnMail_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sender", DbType="Int")]
-		public System.Nullable<int> Sender
-		{
-			get
-			{
-				return this._Sender;
-			}
-			set
-			{
-				if ((this._Sender != value))
-				{
-					this.OnSenderChanging(value);
-					this.SendPropertyChanging();
-					this._Sender = value;
-					this.SendPropertyChanged("Sender");
-					this.OnSenderChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int")]
-		public System.Nullable<int> ID_user
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID_user
 		{
 			get
 			{
@@ -620,10 +411,6 @@ namespace _2home.Models
 			{
 				if ((this._ID_user != value))
 				{
-					if (this._user.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnID_userChanging(value);
 					this.SendPropertyChanging();
 					this._ID_user = value;
@@ -633,97 +420,222 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Recipient", DbType="Int")]
-		public System.Nullable<int> Recipient
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_username", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string username
 		{
 			get
 			{
-				return this._Recipient;
+				return this._username;
 			}
 			set
 			{
-				if ((this._Recipient != value))
+				if ((this._username != value))
 				{
-					this.OnRecipientChanging(value);
+					this.OnusernameChanging(value);
 					this.SendPropertyChanging();
-					this._Recipient = value;
-					this.SendPropertyChanged("Recipient");
-					this.OnRecipientChanged();
+					this._username = value;
+					this.SendPropertyChanged("username");
+					this.OnusernameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendDate", DbType="DateTime NOT NULL")]
-		public System.DateTime SendDate
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string password
 		{
 			get
 			{
-				return this._SendDate;
+				return this._password;
 			}
 			set
 			{
-				if ((this._SendDate != value))
+				if ((this._password != value))
 				{
-					this.OnSendDateChanging(value);
+					this.OnpasswordChanging(value);
 					this.SendPropertyChanging();
-					this._SendDate = value;
-					this.SendPropertyChanged("SendDate");
-					this.OnSendDateChanged();
+					this._password = value;
+					this.SendPropertyChanged("password");
+					this.OnpasswordChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Content", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Content
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fullname", DbType="NVarChar(100)")]
+		public string fullname
 		{
 			get
 			{
-				return this._Content;
+				return this._fullname;
 			}
 			set
 			{
-				if ((this._Content != value))
+				if ((this._fullname != value))
 				{
-					this.OnContentChanging(value);
+					this.OnfullnameChanging(value);
 					this.SendPropertyChanging();
-					this._Content = value;
-					this.SendPropertyChanged("Content");
-					this.OnContentChanged();
+					this._fullname = value;
+					this.SendPropertyChanged("fullname");
+					this.OnfullnameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Mail", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
-		public user user
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MotelID", DbType="Int")]
+		public System.Nullable<int> MotelID
 		{
 			get
 			{
-				return this._user.Entity;
+				return this._MotelID;
 			}
 			set
 			{
-				user previousValue = this._user.Entity;
-				if (((previousValue != value) 
-							|| (this._user.HasLoadedOrAssignedValue == false)))
+				if ((this._MotelID != value))
 				{
+					this.OnMotelIDChanging(value);
 					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._user.Entity = null;
-						previousValue.Mails.Remove(this);
-					}
-					this._user.Entity = value;
-					if ((value != null))
-					{
-						value.Mails.Add(this);
-						this._ID_user = value.ID_user;
-					}
-					else
-					{
-						this._ID_user = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("user");
+					this._MotelID = value;
+					this.SendPropertyChanged("MotelID");
+					this.OnMotelIDChanged();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhoneNumber", DbType="NVarChar(15)")]
+		public string PhoneNumber
+		{
+			get
+			{
+				return this._PhoneNumber;
+			}
+			set
+			{
+				if ((this._PhoneNumber != value))
+				{
+					this.OnPhoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._PhoneNumber = value;
+					this.SendPropertyChanged("PhoneNumber");
+					this.OnPhoneNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(100)")]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_userrole", DbType="NVarChar(50)")]
+		public string userrole
+		{
+			get
+			{
+				return this._userrole;
+			}
+			set
+			{
+				if ((this._userrole != value))
+				{
+					this.OnuserroleChanging(value);
+					this.SendPropertyChanging();
+					this._userrole = value;
+					this.SendPropertyChanged("userrole");
+					this.OnuserroleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_gender", DbType="NVarChar(10)")]
+		public string gender
+		{
+			get
+			{
+				return this._gender;
+			}
+			set
+			{
+				if ((this._gender != value))
+				{
+					this.OngenderChanging(value);
+					this.SendPropertyChanging();
+					this._gender = value;
+					this.SendPropertyChanged("gender");
+					this.OngenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_blance", DbType="Int")]
+		public System.Nullable<int> blance
+		{
+			get
+			{
+				return this._blance;
+			}
+			set
+			{
+				if ((this._blance != value))
+				{
+					this.OnblanceChanging(value);
+					this.SendPropertyChanging();
+					this._blance = value;
+					this.SendPropertyChanged("blance");
+					this.OnblanceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Room", Storage="_Rooms", ThisKey="ID_user", OtherKey="ID_user")]
+		public EntitySet<Room> Rooms
+		{
+			get
+			{
+				return this._Rooms;
+			}
+			set
+			{
+				this._Rooms.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Motel", Storage="_Motels", ThisKey="ID_user", OtherKey="ID_user")]
+		public EntitySet<Motel> Motels
+		{
+			get
+			{
+				return this._Motels;
+			}
+			set
+			{
+				this._Motels.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Mail", Storage="_Mails", ThisKey="ID_user", OtherKey="ID_user")]
+		public EntitySet<Mail> Mails
+		{
+			get
+			{
+				return this._Mails;
+			}
+			set
+			{
+				this._Mails.Assign(value);
 			}
 		}
 		
@@ -746,142 +658,105 @@ namespace _2home.Models
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_Rooms(Room entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = this;
+		}
+		
+		private void detach_Rooms(Room entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = null;
+		}
+		
+		private void attach_Motels(Motel entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = this;
+		}
+		
+		private void detach_Motels(Motel entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = null;
+		}
+		
+		private void attach_Mails(Mail entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = this;
+		}
+		
+		private void detach_Mails(Mail entity)
+		{
+			this.SendPropertyChanging();
+			entity.user = null;
+		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Motel")]
-	public partial class Motel : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.together")]
+	public partial class together
 	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		private string _nameroom;
 		
-		private int _Motel_ID;
-		
-		private System.Nullable<int> _ID_user;
-		
-		private string _Name_motel;
+		private string _age;
 		
 		private string _location;
 		
 		private System.Nullable<decimal> _price;
 		
-		private string _is_available;
+		private string _room_details;
 		
-		private string _Details;
+		private string _request;
 		
-		private System.Nullable<int> _rooms;
+		private string _address;
 		
-		private System.Nullable<System.DateTime> _CreatedDate;
+		private System.Nullable<int> _img_ID;
 		
-		private System.Nullable<decimal> _Debt;
+		private System.Nullable<int> _ID_user;
 		
-		private EntitySet<img> _imgs;
+		private System.Nullable<int> _video_ID;
 		
-		private EntitySet<Video> _Videos;
-		
-		private EntitySet<Room> _Rooms1;
-		
-		private EntityRef<user> _user;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnMotel_IDChanging(int value);
-    partial void OnMotel_IDChanged();
-    partial void OnID_userChanging(System.Nullable<int> value);
-    partial void OnID_userChanged();
-    partial void OnName_motelChanging(string value);
-    partial void OnName_motelChanged();
-    partial void OnlocationChanging(string value);
-    partial void OnlocationChanged();
-    partial void OnpriceChanging(System.Nullable<decimal> value);
-    partial void OnpriceChanged();
-    partial void Onis_availableChanging(string value);
-    partial void Onis_availableChanged();
-    partial void OnDetailsChanging(string value);
-    partial void OnDetailsChanged();
-    partial void OnroomsChanging(System.Nullable<int> value);
-    partial void OnroomsChanged();
-    partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnCreatedDateChanged();
-    partial void OnDebtChanging(System.Nullable<decimal> value);
-    partial void OnDebtChanged();
-    #endregion
-		
-		public Motel()
+		public together()
 		{
-			this._imgs = new EntitySet<img>(new Action<img>(this.attach_imgs), new Action<img>(this.detach_imgs));
-			this._Videos = new EntitySet<Video>(new Action<Video>(this.attach_Videos), new Action<Video>(this.detach_Videos));
-			this._Rooms1 = new EntitySet<Room>(new Action<Room>(this.attach_Rooms1), new Action<Room>(this.detach_Rooms1));
-			this._user = default(EntityRef<user>);
-			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Motel_ID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_nameroom", DbType="NVarChar(250)")]
+		public string nameroom
 		{
 			get
 			{
-				return this._Motel_ID;
+				return this._nameroom;
 			}
 			set
 			{
-				if ((this._Motel_ID != value))
+				if ((this._nameroom != value))
 				{
-					this.OnMotel_IDChanging(value);
-					this.SendPropertyChanging();
-					this._Motel_ID = value;
-					this.SendPropertyChanged("Motel_ID");
-					this.OnMotel_IDChanged();
+					this._nameroom = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int")]
-		public System.Nullable<int> ID_user
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_age", DbType="NVarChar(15)")]
+		public string age
 		{
 			get
 			{
-				return this._ID_user;
+				return this._age;
 			}
 			set
 			{
-				if ((this._ID_user != value))
+				if ((this._age != value))
 				{
-					if (this._user.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnID_userChanging(value);
-					this.SendPropertyChanging();
-					this._ID_user = value;
-					this.SendPropertyChanged("ID_user");
-					this.OnID_userChanged();
+					this._age = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name_motel", DbType="NVarChar(100)")]
-		public string Name_motel
-		{
-			get
-			{
-				return this._Name_motel;
-			}
-			set
-			{
-				if ((this._Name_motel != value))
-				{
-					this.OnName_motelChanging(value);
-					this.SendPropertyChanging();
-					this._Name_motel = value;
-					this.SendPropertyChanged("Name_motel");
-					this.OnName_motelChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_location", DbType="NVarChar(255)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_location", DbType="NVarChar(250)")]
 		public string location
 		{
 			get
@@ -892,11 +767,7 @@ namespace _2home.Models
 			{
 				if ((this._location != value))
 				{
-					this.OnlocationChanging(value);
-					this.SendPropertyChanging();
 					this._location = value;
-					this.SendPropertyChanged("location");
-					this.OnlocationChanged();
 				}
 			}
 		}
@@ -912,242 +783,105 @@ namespace _2home.Models
 			{
 				if ((this._price != value))
 				{
-					this.OnpriceChanging(value);
-					this.SendPropertyChanging();
 					this._price = value;
-					this.SendPropertyChanged("price");
-					this.OnpriceChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_available", DbType="NVarChar(50)")]
-		public string is_available
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_room_details", DbType="NVarChar(MAX)")]
+		public string room_details
 		{
 			get
 			{
-				return this._is_available;
+				return this._room_details;
 			}
 			set
 			{
-				if ((this._is_available != value))
+				if ((this._room_details != value))
 				{
-					this.Onis_availableChanging(value);
-					this.SendPropertyChanging();
-					this._is_available = value;
-					this.SendPropertyChanged("is_available");
-					this.Onis_availableChanged();
+					this._room_details = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Details", DbType="NVarChar(MAX)")]
-		public string Details
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_request", DbType="NVarChar(MAX)")]
+		public string request
 		{
 			get
 			{
-				return this._Details;
+				return this._request;
 			}
 			set
 			{
-				if ((this._Details != value))
+				if ((this._request != value))
 				{
-					this.OnDetailsChanging(value);
-					this.SendPropertyChanging();
-					this._Details = value;
-					this.SendPropertyChanged("Details");
-					this.OnDetailsChanged();
+					this._request = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_rooms", DbType="Int")]
-		public System.Nullable<int> rooms
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_address", DbType="NChar(10)")]
+		public string address
 		{
 			get
 			{
-				return this._rooms;
+				return this._address;
 			}
 			set
 			{
-				if ((this._rooms != value))
+				if ((this._address != value))
 				{
-					this.OnroomsChanging(value);
-					this.SendPropertyChanging();
-					this._rooms = value;
-					this.SendPropertyChanged("rooms");
-					this.OnroomsChanged();
+					this._address = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="Date")]
-		public System.Nullable<System.DateTime> CreatedDate
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_img_ID", DbType="Int")]
+		public System.Nullable<int> img_ID
 		{
 			get
 			{
-				return this._CreatedDate;
+				return this._img_ID;
 			}
 			set
 			{
-				if ((this._CreatedDate != value))
+				if ((this._img_ID != value))
 				{
-					this.OnCreatedDateChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedDate = value;
-					this.SendPropertyChanged("CreatedDate");
-					this.OnCreatedDateChanged();
+					this._img_ID = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Debt", DbType="Decimal(10,2)")]
-		public System.Nullable<decimal> Debt
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int")]
+		public System.Nullable<int> ID_user
 		{
 			get
 			{
-				return this._Debt;
+				return this._ID_user;
 			}
 			set
 			{
-				if ((this._Debt != value))
+				if ((this._ID_user != value))
 				{
-					this.OnDebtChanging(value);
-					this.SendPropertyChanging();
-					this._Debt = value;
-					this.SendPropertyChanged("Debt");
-					this.OnDebtChanged();
+					this._ID_user = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_img", Storage="_imgs", ThisKey="Motel_ID", OtherKey="Motel_ID")]
-		public EntitySet<img> imgs
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_video_ID", DbType="Int")]
+		public System.Nullable<int> video_ID
 		{
 			get
 			{
-				return this._imgs;
+				return this._video_ID;
 			}
 			set
 			{
-				this._imgs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Video", Storage="_Videos", ThisKey="Motel_ID", OtherKey="Motel_ID")]
-		public EntitySet<Video> Videos
-		{
-			get
-			{
-				return this._Videos;
-			}
-			set
-			{
-				this._Videos.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Rooms1", ThisKey="Motel_ID", OtherKey="Motel_ID")]
-		public EntitySet<Room> Rooms1
-		{
-			get
-			{
-				return this._Rooms1;
-			}
-			set
-			{
-				this._Rooms1.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Motel", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
-		public user user
-		{
-			get
-			{
-				return this._user.Entity;
-			}
-			set
-			{
-				user previousValue = this._user.Entity;
-				if (((previousValue != value) 
-							|| (this._user.HasLoadedOrAssignedValue == false)))
+				if ((this._video_ID != value))
 				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._user.Entity = null;
-						previousValue.Motels.Remove(this);
-					}
-					this._user.Entity = value;
-					if ((value != null))
-					{
-						value.Motels.Add(this);
-						this._ID_user = value.ID_user;
-					}
-					else
-					{
-						this._ID_user = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("user");
+					this._video_ID = value;
 				}
 			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_imgs(img entity)
-		{
-			this.SendPropertyChanging();
-			entity.Motel = this;
-		}
-		
-		private void detach_imgs(img entity)
-		{
-			this.SendPropertyChanging();
-			entity.Motel = null;
-		}
-		
-		private void attach_Videos(Video entity)
-		{
-			this.SendPropertyChanging();
-			entity.Motel = this;
-		}
-		
-		private void detach_Videos(Video entity)
-		{
-			this.SendPropertyChanging();
-			entity.Motel = null;
-		}
-		
-		private void attach_Rooms1(Room entity)
-		{
-			this.SendPropertyChanging();
-			entity.Motel = this;
-		}
-		
-		private void detach_Rooms1(Room entity)
-		{
-			this.SendPropertyChanging();
-			entity.Motel = null;
 		}
 	}
 	
@@ -1189,9 +923,9 @@ namespace _2home.Models
 		
 		private System.Nullable<decimal> _Total_Amount_Due;
 		
-		private EntityRef<Motel> _Motel;
-		
 		private EntityRef<user> _user;
+		
+		private EntityRef<Motel> _Motel;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1233,8 +967,8 @@ namespace _2home.Models
 		
 		public Room()
 		{
-			this._Motel = default(EntityRef<Motel>);
 			this._user = default(EntityRef<user>);
+			this._Motel = default(EntityRef<Motel>);
 			OnCreated();
 		}
 		
@@ -1566,40 +1300,6 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Motel", ThisKey="Motel_ID", OtherKey="Motel_ID", IsForeignKey=true)]
-		public Motel Motel
-		{
-			get
-			{
-				return this._Motel.Entity;
-			}
-			set
-			{
-				Motel previousValue = this._Motel.Entity;
-				if (((previousValue != value) 
-							|| (this._Motel.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Motel.Entity = null;
-						previousValue.Rooms1.Remove(this);
-					}
-					this._Motel.Entity = value;
-					if ((value != null))
-					{
-						value.Rooms1.Add(this);
-						this._Motel_ID = value.Motel_ID;
-					}
-					else
-					{
-						this._Motel_ID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Motel");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Room", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
 		public user user
 		{
@@ -1634,6 +1334,666 @@ namespace _2home.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Motel", ThisKey="Motel_ID", OtherKey="Motel_ID", IsForeignKey=true)]
+		public Motel Motel
+		{
+			get
+			{
+				return this._Motel.Entity;
+			}
+			set
+			{
+				Motel previousValue = this._Motel.Entity;
+				if (((previousValue != value) 
+							|| (this._Motel.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Motel.Entity = null;
+						previousValue.Rooms1.Remove(this);
+					}
+					this._Motel.Entity = value;
+					if ((value != null))
+					{
+						value.Rooms1.Add(this);
+						this._Motel_ID = value.Motel_ID;
+					}
+					else
+					{
+						this._Motel_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Motel");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Motel")]
+	public partial class Motel : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Motel_ID;
+		
+		private System.Nullable<int> _ID_user;
+		
+		private string _Name_motel;
+		
+		private string _location;
+		
+		private System.Nullable<decimal> _price;
+		
+		private string _is_available;
+		
+		private string _Details;
+		
+		private System.Nullable<int> _rooms;
+		
+		private System.Nullable<System.DateTime> _CreatedDate;
+		
+		private System.Nullable<decimal> _Debt;
+		
+		private EntitySet<Video> _Videos;
+		
+		private EntitySet<Room> _Rooms1;
+		
+		private EntitySet<img> _imgs;
+		
+		private EntityRef<user> _user;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMotel_IDChanging(int value);
+    partial void OnMotel_IDChanged();
+    partial void OnID_userChanging(System.Nullable<int> value);
+    partial void OnID_userChanged();
+    partial void OnName_motelChanging(string value);
+    partial void OnName_motelChanged();
+    partial void OnlocationChanging(string value);
+    partial void OnlocationChanged();
+    partial void OnpriceChanging(System.Nullable<decimal> value);
+    partial void OnpriceChanged();
+    partial void Onis_availableChanging(string value);
+    partial void Onis_availableChanged();
+    partial void OnDetailsChanging(string value);
+    partial void OnDetailsChanged();
+    partial void OnroomsChanging(System.Nullable<int> value);
+    partial void OnroomsChanged();
+    partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedDateChanged();
+    partial void OnDebtChanging(System.Nullable<decimal> value);
+    partial void OnDebtChanged();
+    #endregion
+		
+		public Motel()
+		{
+			this._Videos = new EntitySet<Video>(new Action<Video>(this.attach_Videos), new Action<Video>(this.detach_Videos));
+			this._Rooms1 = new EntitySet<Room>(new Action<Room>(this.attach_Rooms1), new Action<Room>(this.detach_Rooms1));
+			this._imgs = new EntitySet<img>(new Action<img>(this.attach_imgs), new Action<img>(this.detach_imgs));
+			this._user = default(EntityRef<user>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Motel_ID
+		{
+			get
+			{
+				return this._Motel_ID;
+			}
+			set
+			{
+				if ((this._Motel_ID != value))
+				{
+					this.OnMotel_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Motel_ID = value;
+					this.SendPropertyChanged("Motel_ID");
+					this.OnMotel_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int")]
+		public System.Nullable<int> ID_user
+		{
+			get
+			{
+				return this._ID_user;
+			}
+			set
+			{
+				if ((this._ID_user != value))
+				{
+					if (this._user.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnID_userChanging(value);
+					this.SendPropertyChanging();
+					this._ID_user = value;
+					this.SendPropertyChanged("ID_user");
+					this.OnID_userChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name_motel", DbType="NVarChar(100)")]
+		public string Name_motel
+		{
+			get
+			{
+				return this._Name_motel;
+			}
+			set
+			{
+				if ((this._Name_motel != value))
+				{
+					this.OnName_motelChanging(value);
+					this.SendPropertyChanging();
+					this._Name_motel = value;
+					this.SendPropertyChanged("Name_motel");
+					this.OnName_motelChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_location", DbType="NVarChar(255)")]
+		public string location
+		{
+			get
+			{
+				return this._location;
+			}
+			set
+			{
+				if ((this._location != value))
+				{
+					this.OnlocationChanging(value);
+					this.SendPropertyChanging();
+					this._location = value;
+					this.SendPropertyChanged("location");
+					this.OnlocationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_price", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> price
+		{
+			get
+			{
+				return this._price;
+			}
+			set
+			{
+				if ((this._price != value))
+				{
+					this.OnpriceChanging(value);
+					this.SendPropertyChanging();
+					this._price = value;
+					this.SendPropertyChanged("price");
+					this.OnpriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_available", DbType="NVarChar(50)")]
+		public string is_available
+		{
+			get
+			{
+				return this._is_available;
+			}
+			set
+			{
+				if ((this._is_available != value))
+				{
+					this.Onis_availableChanging(value);
+					this.SendPropertyChanging();
+					this._is_available = value;
+					this.SendPropertyChanged("is_available");
+					this.Onis_availableChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Details", DbType="NVarChar(MAX)")]
+		public string Details
+		{
+			get
+			{
+				return this._Details;
+			}
+			set
+			{
+				if ((this._Details != value))
+				{
+					this.OnDetailsChanging(value);
+					this.SendPropertyChanging();
+					this._Details = value;
+					this.SendPropertyChanged("Details");
+					this.OnDetailsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_rooms", DbType="Int")]
+		public System.Nullable<int> rooms
+		{
+			get
+			{
+				return this._rooms;
+			}
+			set
+			{
+				if ((this._rooms != value))
+				{
+					this.OnroomsChanging(value);
+					this.SendPropertyChanging();
+					this._rooms = value;
+					this.SendPropertyChanged("rooms");
+					this.OnroomsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="Date")]
+		public System.Nullable<System.DateTime> CreatedDate
+		{
+			get
+			{
+				return this._CreatedDate;
+			}
+			set
+			{
+				if ((this._CreatedDate != value))
+				{
+					this.OnCreatedDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedDate = value;
+					this.SendPropertyChanged("CreatedDate");
+					this.OnCreatedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Debt", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Debt
+		{
+			get
+			{
+				return this._Debt;
+			}
+			set
+			{
+				if ((this._Debt != value))
+				{
+					this.OnDebtChanging(value);
+					this.SendPropertyChanging();
+					this._Debt = value;
+					this.SendPropertyChanged("Debt");
+					this.OnDebtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Video", Storage="_Videos", ThisKey="Motel_ID", OtherKey="Motel_ID")]
+		public EntitySet<Video> Videos
+		{
+			get
+			{
+				return this._Videos;
+			}
+			set
+			{
+				this._Videos.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_Room", Storage="_Rooms1", ThisKey="Motel_ID", OtherKey="Motel_ID")]
+		public EntitySet<Room> Rooms1
+		{
+			get
+			{
+				return this._Rooms1;
+			}
+			set
+			{
+				this._Rooms1.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_img", Storage="_imgs", ThisKey="Motel_ID", OtherKey="Motel_ID")]
+		public EntitySet<img> imgs
+		{
+			get
+			{
+				return this._imgs;
+			}
+			set
+			{
+				this._imgs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Motel", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
+		public user user
+		{
+			get
+			{
+				return this._user.Entity;
+			}
+			set
+			{
+				user previousValue = this._user.Entity;
+				if (((previousValue != value) 
+							|| (this._user.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._user.Entity = null;
+						previousValue.Motels.Remove(this);
+					}
+					this._user.Entity = value;
+					if ((value != null))
+					{
+						value.Motels.Add(this);
+						this._ID_user = value.ID_user;
+					}
+					else
+					{
+						this._ID_user = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("user");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Videos(Video entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = this;
+		}
+		
+		private void detach_Videos(Video entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = null;
+		}
+		
+		private void attach_Rooms1(Room entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = this;
+		}
+		
+		private void detach_Rooms1(Room entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = null;
+		}
+		
+		private void attach_imgs(img entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = this;
+		}
+		
+		private void detach_imgs(img entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Mail")]
+	public partial class Mail : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Mail_ID;
+		
+		private System.Nullable<int> _Sender;
+		
+		private System.Nullable<int> _ID_user;
+		
+		private System.Nullable<int> _Recipient;
+		
+		private System.DateTime _SendDate;
+		
+		private string _Content;
+		
+		private EntityRef<user> _user;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMail_IDChanging(int value);
+    partial void OnMail_IDChanged();
+    partial void OnSenderChanging(System.Nullable<int> value);
+    partial void OnSenderChanged();
+    partial void OnID_userChanging(System.Nullable<int> value);
+    partial void OnID_userChanged();
+    partial void OnRecipientChanging(System.Nullable<int> value);
+    partial void OnRecipientChanged();
+    partial void OnSendDateChanging(System.DateTime value);
+    partial void OnSendDateChanged();
+    partial void OnContentChanging(string value);
+    partial void OnContentChanged();
+    #endregion
+		
+		public Mail()
+		{
+			this._user = default(EntityRef<user>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Mail_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Mail_ID
+		{
+			get
+			{
+				return this._Mail_ID;
+			}
+			set
+			{
+				if ((this._Mail_ID != value))
+				{
+					this.OnMail_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Mail_ID = value;
+					this.SendPropertyChanged("Mail_ID");
+					this.OnMail_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sender", DbType="Int")]
+		public System.Nullable<int> Sender
+		{
+			get
+			{
+				return this._Sender;
+			}
+			set
+			{
+				if ((this._Sender != value))
+				{
+					this.OnSenderChanging(value);
+					this.SendPropertyChanging();
+					this._Sender = value;
+					this.SendPropertyChanged("Sender");
+					this.OnSenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int")]
+		public System.Nullable<int> ID_user
+		{
+			get
+			{
+				return this._ID_user;
+			}
+			set
+			{
+				if ((this._ID_user != value))
+				{
+					if (this._user.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnID_userChanging(value);
+					this.SendPropertyChanging();
+					this._ID_user = value;
+					this.SendPropertyChanged("ID_user");
+					this.OnID_userChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Recipient", DbType="Int")]
+		public System.Nullable<int> Recipient
+		{
+			get
+			{
+				return this._Recipient;
+			}
+			set
+			{
+				if ((this._Recipient != value))
+				{
+					this.OnRecipientChanging(value);
+					this.SendPropertyChanging();
+					this._Recipient = value;
+					this.SendPropertyChanged("Recipient");
+					this.OnRecipientChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendDate", DbType="DateTime NOT NULL")]
+		public System.DateTime SendDate
+		{
+			get
+			{
+				return this._SendDate;
+			}
+			set
+			{
+				if ((this._SendDate != value))
+				{
+					this.OnSendDateChanging(value);
+					this.SendPropertyChanging();
+					this._SendDate = value;
+					this.SendPropertyChanged("SendDate");
+					this.OnSendDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Content", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Content
+		{
+			get
+			{
+				return this._Content;
+			}
+			set
+			{
+				if ((this._Content != value))
+				{
+					this.OnContentChanging(value);
+					this.SendPropertyChanging();
+					this._Content = value;
+					this.SendPropertyChanged("Content");
+					this.OnContentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Mail", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
+		public user user
+		{
+			get
+			{
+				return this._user.Entity;
+			}
+			set
+			{
+				user previousValue = this._user.Entity;
+				if (((previousValue != value) 
+							|| (this._user.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._user.Entity = null;
+						previousValue.Mails.Remove(this);
+					}
+					this._user.Entity = value;
+					if ((value != null))
+					{
+						value.Mails.Add(this);
+						this._ID_user = value.ID_user;
+					}
+					else
+					{
+						this._ID_user = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("user");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1655,308 +2015,181 @@ namespace _2home.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[user]")]
-	public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.img")]
+	public partial class img : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _ID_user;
+		private int _img_ID;
 		
-		private string _username;
+		private System.Nullable<int> _Motel_ID;
 		
-		private string _password;
+		private System.Nullable<System.DateTime> _updatedAt;
 		
-		private string _fullname;
+		private System.Nullable<System.DateTime> _createdAt;
 		
-		private System.Nullable<int> _MotelID;
+		private string _Link;
 		
-		private string _PhoneNumber;
-		
-		private string _Email;
-		
-		private string _userrole;
-		
-		private string _gender;
-		
-		private System.Nullable<int> _blance;
-		
-		private EntitySet<Mail> _Mails;
-		
-		private EntitySet<Motel> _Motels;
-		
-		private EntitySet<Room> _Rooms;
+		private EntityRef<Motel> _Motel;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnID_userChanging(int value);
-    partial void OnID_userChanged();
-    partial void OnusernameChanging(string value);
-    partial void OnusernameChanged();
-    partial void OnpasswordChanging(string value);
-    partial void OnpasswordChanged();
-    partial void OnfullnameChanging(string value);
-    partial void OnfullnameChanged();
-    partial void OnMotelIDChanging(System.Nullable<int> value);
-    partial void OnMotelIDChanged();
-    partial void OnPhoneNumberChanging(string value);
-    partial void OnPhoneNumberChanged();
-    partial void OnEmailChanging(string value);
-    partial void OnEmailChanged();
-    partial void OnuserroleChanging(string value);
-    partial void OnuserroleChanged();
-    partial void OngenderChanging(string value);
-    partial void OngenderChanged();
-    partial void OnblanceChanging(System.Nullable<int> value);
-    partial void OnblanceChanged();
+    partial void Onimg_IDChanging(int value);
+    partial void Onimg_IDChanged();
+    partial void OnMotel_IDChanging(System.Nullable<int> value);
+    partial void OnMotel_IDChanged();
+    partial void OnupdatedAtChanging(System.Nullable<System.DateTime> value);
+    partial void OnupdatedAtChanged();
+    partial void OncreatedAtChanging(System.Nullable<System.DateTime> value);
+    partial void OncreatedAtChanged();
+    partial void OnLinkChanging(string value);
+    partial void OnLinkChanged();
     #endregion
 		
-		public user()
+		public img()
 		{
-			this._Mails = new EntitySet<Mail>(new Action<Mail>(this.attach_Mails), new Action<Mail>(this.detach_Mails));
-			this._Motels = new EntitySet<Motel>(new Action<Motel>(this.attach_Motels), new Action<Motel>(this.detach_Motels));
-			this._Rooms = new EntitySet<Room>(new Action<Room>(this.attach_Rooms), new Action<Room>(this.detach_Rooms));
+			this._Motel = default(EntityRef<Motel>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID_user
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_img_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int img_ID
 		{
 			get
 			{
-				return this._ID_user;
+				return this._img_ID;
 			}
 			set
 			{
-				if ((this._ID_user != value))
+				if ((this._img_ID != value))
 				{
-					this.OnID_userChanging(value);
+					this.Onimg_IDChanging(value);
 					this.SendPropertyChanging();
-					this._ID_user = value;
-					this.SendPropertyChanged("ID_user");
-					this.OnID_userChanged();
+					this._img_ID = value;
+					this.SendPropertyChanged("img_ID");
+					this.Onimg_IDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_username", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string username
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", DbType="Int")]
+		public System.Nullable<int> Motel_ID
 		{
 			get
 			{
-				return this._username;
+				return this._Motel_ID;
 			}
 			set
 			{
-				if ((this._username != value))
+				if ((this._Motel_ID != value))
 				{
-					this.OnusernameChanging(value);
+					if (this._Motel.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMotel_IDChanging(value);
 					this.SendPropertyChanging();
-					this._username = value;
-					this.SendPropertyChanged("username");
-					this.OnusernameChanged();
+					this._Motel_ID = value;
+					this.SendPropertyChanged("Motel_ID");
+					this.OnMotel_IDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string password
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_updatedAt", DbType="DateTime")]
+		public System.Nullable<System.DateTime> updatedAt
 		{
 			get
 			{
-				return this._password;
+				return this._updatedAt;
 			}
 			set
 			{
-				if ((this._password != value))
+				if ((this._updatedAt != value))
 				{
-					this.OnpasswordChanging(value);
+					this.OnupdatedAtChanging(value);
 					this.SendPropertyChanging();
-					this._password = value;
-					this.SendPropertyChanged("password");
-					this.OnpasswordChanged();
+					this._updatedAt = value;
+					this.SendPropertyChanged("updatedAt");
+					this.OnupdatedAtChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fullname", DbType="NVarChar(100)")]
-		public string fullname
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_createdAt", DbType="DateTime")]
+		public System.Nullable<System.DateTime> createdAt
 		{
 			get
 			{
-				return this._fullname;
+				return this._createdAt;
 			}
 			set
 			{
-				if ((this._fullname != value))
+				if ((this._createdAt != value))
 				{
-					this.OnfullnameChanging(value);
+					this.OncreatedAtChanging(value);
 					this.SendPropertyChanging();
-					this._fullname = value;
-					this.SendPropertyChanged("fullname");
-					this.OnfullnameChanged();
+					this._createdAt = value;
+					this.SendPropertyChanged("createdAt");
+					this.OncreatedAtChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MotelID", DbType="Int")]
-		public System.Nullable<int> MotelID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Link", DbType="NVarChar(255)")]
+		public string Link
 		{
 			get
 			{
-				return this._MotelID;
+				return this._Link;
 			}
 			set
 			{
-				if ((this._MotelID != value))
+				if ((this._Link != value))
 				{
-					this.OnMotelIDChanging(value);
+					this.OnLinkChanging(value);
 					this.SendPropertyChanging();
-					this._MotelID = value;
-					this.SendPropertyChanged("MotelID");
-					this.OnMotelIDChanged();
+					this._Link = value;
+					this.SendPropertyChanged("Link");
+					this.OnLinkChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhoneNumber", DbType="NVarChar(15)")]
-		public string PhoneNumber
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_img", Storage="_Motel", ThisKey="Motel_ID", OtherKey="Motel_ID", IsForeignKey=true)]
+		public Motel Motel
 		{
 			get
 			{
-				return this._PhoneNumber;
+				return this._Motel.Entity;
 			}
 			set
 			{
-				if ((this._PhoneNumber != value))
+				Motel previousValue = this._Motel.Entity;
+				if (((previousValue != value) 
+							|| (this._Motel.HasLoadedOrAssignedValue == false)))
 				{
-					this.OnPhoneNumberChanging(value);
 					this.SendPropertyChanging();
-					this._PhoneNumber = value;
-					this.SendPropertyChanged("PhoneNumber");
-					this.OnPhoneNumberChanged();
+					if ((previousValue != null))
+					{
+						this._Motel.Entity = null;
+						previousValue.imgs.Remove(this);
+					}
+					this._Motel.Entity = value;
+					if ((value != null))
+					{
+						value.imgs.Add(this);
+						this._Motel_ID = value.Motel_ID;
+					}
+					else
+					{
+						this._Motel_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Motel");
 				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(100)")]
-		public string Email
-		{
-			get
-			{
-				return this._Email;
-			}
-			set
-			{
-				if ((this._Email != value))
-				{
-					this.OnEmailChanging(value);
-					this.SendPropertyChanging();
-					this._Email = value;
-					this.SendPropertyChanged("Email");
-					this.OnEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_userrole", DbType="NVarChar(50)")]
-		public string userrole
-		{
-			get
-			{
-				return this._userrole;
-			}
-			set
-			{
-				if ((this._userrole != value))
-				{
-					this.OnuserroleChanging(value);
-					this.SendPropertyChanging();
-					this._userrole = value;
-					this.SendPropertyChanged("userrole");
-					this.OnuserroleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_gender", DbType="NVarChar(10)")]
-		public string gender
-		{
-			get
-			{
-				return this._gender;
-			}
-			set
-			{
-				if ((this._gender != value))
-				{
-					this.OngenderChanging(value);
-					this.SendPropertyChanging();
-					this._gender = value;
-					this.SendPropertyChanged("gender");
-					this.OngenderChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_blance", DbType="Int")]
-		public System.Nullable<int> blance
-		{
-			get
-			{
-				return this._blance;
-			}
-			set
-			{
-				if ((this._blance != value))
-				{
-					this.OnblanceChanging(value);
-					this.SendPropertyChanging();
-					this._blance = value;
-					this.SendPropertyChanged("blance");
-					this.OnblanceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Mail", Storage="_Mails", ThisKey="ID_user", OtherKey="ID_user")]
-		public EntitySet<Mail> Mails
-		{
-			get
-			{
-				return this._Mails;
-			}
-			set
-			{
-				this._Mails.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Motel", Storage="_Motels", ThisKey="ID_user", OtherKey="ID_user")]
-		public EntitySet<Motel> Motels
-		{
-			get
-			{
-				return this._Motels;
-			}
-			set
-			{
-				this._Motels.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Room", Storage="_Rooms", ThisKey="ID_user", OtherKey="ID_user")]
-		public EntitySet<Room> Rooms
-		{
-			get
-			{
-				return this._Rooms;
-			}
-			set
-			{
-				this._Rooms.Assign(value);
 			}
 		}
 		
@@ -1978,42 +2211,6 @@ namespace _2home.Models
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_Mails(Mail entity)
-		{
-			this.SendPropertyChanging();
-			entity.user = this;
-		}
-		
-		private void detach_Mails(Mail entity)
-		{
-			this.SendPropertyChanging();
-			entity.user = null;
-		}
-		
-		private void attach_Motels(Motel entity)
-		{
-			this.SendPropertyChanging();
-			entity.user = this;
-		}
-		
-		private void detach_Motels(Motel entity)
-		{
-			this.SendPropertyChanging();
-			entity.user = null;
-		}
-		
-		private void attach_Rooms(Room entity)
-		{
-			this.SendPropertyChanging();
-			entity.user = this;
-		}
-		
-		private void detach_Rooms(Room entity)
-		{
-			this.SendPropertyChanging();
-			entity.user = null;
 		}
 	}
 }

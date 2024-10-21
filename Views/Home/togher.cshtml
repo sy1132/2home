@@ -2,6 +2,335 @@
 @{
     ViewBag.Title = "togher";
 }
+<style>
+    .error-message {
+        color: red;
+        font-size: 0.9em;
+    }
+</style>
 
-<h2>togher</h2>
+
+<div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem;">
+    <form id="registrationForm" asp-action="RegisterDK" enctype="multipart/form-data" method="post" class="row g-3">
+        <h2 class="card-title text-center mb-4">Đăng ký tìm người ở chung</h2>
+        <div class="col-md-6">
+            <label for="inputRoomName" class="form-label">Tên phòng trọ</label>
+            <input type="text" class="form-control" id="inputRoomName" name="roomName">
+            <span class="error-message" id="roomNameError"></span>
+        </div>
+        <div class="col-md-6">
+            <label for="inputage" class="form-label">Tuổi</label>
+            <input type="number" class="form-control" id="inputage" name="Age">
+            <span class="error-message" id="AgeError"></span>
+        </div>
+        <div class="col-12">
+            <label for="inputLocation" class="form-label">Địa chỉ</label>
+            <input type="text" class="form-control" id="inputLocation" name="LocationName">
+            <span class="error-message" id="locationError"></span>
+        </div>
+        <div class="col-md-6">
+            <label for="citySelect" class="form-label">Chọn thành phố:</label>
+            <select id="citySelect" class="form-select" name="city">
+                <option value="">Chọn thành phố</option>
+                <option value="Dĩ An">Dĩ An</option>
+                <option value="Thuận An">Thuận An</option>
+                <option value="Thủ Dầu Một">Thủ Dầu Một</option>
+                <option value="Tân Uyên">Tân Uyên</option>
+                <option value="Bến Cát">Bến Cát</option>
+            </select>
+            <span class="error-message" id="cityError"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="wardSelect" class="form-label">Chọn phường:</label>
+            <select id="wardSelect" class="form-select" name="ward" disabled>
+                <option value="">Chọn phường</option>
+            </select>
+            <span class="error-message" id="wardError"></span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="districtSelect" class="form-label">Khu</label>
+            <select id="districtSelect" class="form-select" name="District" disabled>
+                <option value="">Chọn khu</option>
+            </select>
+            <span class="error-message" id="districtError"></span>
+        </div>
+        <div class="col-md-6">
+            <label for="inputPrice" class="form-label">Giá (VNĐ)</label>
+            <input type="number" class="form-control" id="inputPrice" name="Price">
+            <span class="error-message" id="priceError"></span>
+        </div>
+        <div class="col-md-6">
+            <label for="inputRoomImage" class="form-label">Hình ảnh Phòng</label>
+            <input type="file" class="form-control" id="inputRoomImage" name="RoomImages" accept="image/*" multiple>
+            <span class="error-message" id="roomImageError"></span>
+            <div class="preview-container" id="roomImagePreviewContainer"></div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputCCCDImage" class="form-label">Hình ảnh CCCD và ảnh chân dung</label>
+            <input type="file" class="form-control" id="inputCCCDImage" name="CCCDImages" accept="image/*" multiple>
+            <span class="error-message" id="cccdImageError"></span>
+            <div class="preview-container" id="cccdImagePreviewContainer"></div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="inputVideo" class="form-label">Video</label>
+            <input type="file" class="form-control" id="inputVideo" name="Videos" accept="video/*" multiple>
+            <span class="error-message" id="videoError"></span>
+            <div class="preview-container" id="videoPreviewContainer"></div>
+        </div>
+
+        <div class="col-12">
+            <label for="inputRoomDetails" class="form-label">Chi tiết phòng</label>
+            <textarea class="form-control" id="inputRoomDetails" name="RoomDetails" rows="4" placeholder="Nhập chi tiết phòng trọ..."></textarea>
+            <span class="error-message" id="roomDetailsError"></span>
+        </div>
+
+        <div class="col-12">
+            <label for="inputRequestDetails" class="form-label">Chi tiết yêu cầu người ở chung</label>
+            <textarea class="form-control" id="inputRequestDetails" name="RequestDetails" rows="4" placeholder="Nhập chi tiết yêu cầu..."></textarea>
+            <span class="error-message" id="requestDetailsError"></span>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">Đăng</button>
+        </div>
+        <div class="col-12 text-center">
+            <p id="message"></p>
+        </div>
+    </form>
+</div>
+
+<!-- Modal for full-screen view -->
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <span class="nav-button prev">&#10094;</span>
+    <span class="nav-button next">&#10095;</span>
+    <img class="modal-content" id="img01">
+    <video class="modal-content" id="vid01" controls></video>
+</div>
+
+<script>
+    const data2 = {
+        "Dĩ An": {
+            wards: {
+                "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
+                "Bình An": ["Bình Thung 1", "Bình Thung 2", "Nội Hóa 1", "Nội Hóa 2", "Châu Thới"],
+            }
+        },
+        "Thuận An": {
+            wards: {
+                "An Phú": ["1A", "1B", "2", "3", "4"],
+            }
+        },
+        "Thủ Dầu Một": {
+            wards: {
+                "Chánh Mỹ": ["Chánh Lộc 1", "Chánh Lộc 2"],
+            }
+        },
+        "Tân Uyên": {
+            wards: {
+                "Hội Nghĩa": ["1", "2", "3", "4"],
+            }
+        },
+        "Bến Cát": {
+            wards: {
+                "An Điền": ["An Mỹ", "An Sơn"],
+            }
+        }
+    };
+
+    document.getElementById('citySelect').addEventListener('change', function () {
+        const selectedCity = this.value;
+        const selectedWardSelect = document.getElementById('wardSelect');
+        const selectedDistrictSelect = document.getElementById('districtSelect');
+
+        selectedWardSelect.innerHTML = '<option value="">Chọn phường</option>';
+        selectedDistrictSelect.innerHTML = '<option value="">Chọn khu</option>';
+        selectedWardSelect.disabled = true;
+        selectedDistrictSelect.disabled = true;
+
+        if (selectedCity && data2[selectedCity]) {
+            const wards = data2[selectedCity].wards;
+            selectedWardSelect.disabled = false;
+
+            for (const selectedWard in wards) {
+                const option = document.createElement('option');
+                option.value = selectedWard;
+                option.textContent = selectedWard;
+                selectedWardSelect.add(option);
+            }
+        }
+    });
+
+    document.getElementById('wardSelect').addEventListener('change', function () {
+        const selectedCity = document.getElementById('citySelect').value;
+        const selectedWard = this.value;
+        const selectedDistrictSelect = document.getElementById('districtSelect');
+
+        selectedDistrictSelect.innerHTML = '<option value="">Chọn khu</option>';
+        selectedDistrictSelect.disabled = true;
+
+        if (selectedCity && selectedWard && data2[selectedCity].wards[selectedWard]) {
+            const selectedNeighborhoods = data2[selectedCity].wards[selectedWard];
+            selectedDistrictSelect.disabled = false;
+
+            selectedNeighborhoods.forEach(function (selectedNeighborhood) {
+                const option = document.createElement('option');
+                option.value = selectedNeighborhood;
+                option.textContent = selectedNeighborhood;
+                selectedDistrictSelect.add(option);
+            });
+        }
+    });
+
+    // JavaScript để xem trước ảnh và video
+    document.getElementById('inputRoomImage').addEventListener('change', function () {
+        const previewContainer = document.getElementById('roomImagePreviewContainer');
+        previewContainer.innerHTML = '';
+        const imageFiles = Array.from(this.files);
+        imageFiles.forEach((file, index) => {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.addEventListener('click', function () {
+                showModal(index, 'image');
+            });
+            previewContainer.appendChild(img);
+        });
+        files = files.concat(imageFiles);
+    });
+
+    document.getElementById('inputVideo').addEventListener('change', function () {
+        const previewContainer = document.getElementById('videoPreviewContainer');
+        previewContainer.innerHTML = '';
+        const videoFiles = Array.from(this.files);
+        videoFiles.forEach((file, index) => {
+            const video = document.createElement('video');
+            video.src = URL.createObjectURL(file);
+            video.addEventListener('click', function () {
+                showModal(index, 'video');
+            });
+            previewContainer.appendChild(video);
+        });
+        files = files.concat(videoFiles);
+    });
+
+    function showModal(index, type) {
+        currentIndex = index;
+        const modal = document.getElementById('myModal');
+        const img = document.getElementById('img01');
+        const video = document.getElementById('vid01');
+        if (type === 'image') {
+            img.src = URL.createObjectURL(files[index]);
+            img.style.display = 'block';
+            video.style.display = 'none';
+        } else {
+            video.src = URL.createObjectURL(files[index]);
+            video.style.display = 'block';
+            img.style.display = 'none';
+        }
+        modal.style.display = 'flex';
+    }
+
+    document.querySelector('.close').addEventListener('click', function () {
+        const modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+        const modal = document.getElementById('myModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    document.getElementById('registrationForm').addEventListener('submit', function (event) {
+        document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+        document.getElementById('message').textContent = '';
+
+        let hasError = false;
+
+        const roomName = document.getElementById('inputRoomName').value.trim();
+        if (!roomName) {
+            document.getElementById('roomNameError').textContent = 'Tên phòng trọ không được để trống.';
+            hasError = true;
+        }
+
+        const age = document.getElementById('inputage').value;
+        if (!age) {
+            document.getElementById('AgeError').textContent = 'Tuổi không được để trống.';
+            hasError = true;
+        }
+        const price = document.getElementById('inputPrice').value;
+        if (!price || price <= 0) {
+            document.getElementById('priceError').textContent = 'Giá phải lớn hơn 0.';
+            hasError = true;
+        }
+        const location = document.getElementById('inputLocation').value.trim();
+        if (!location) {
+            document.getElementById('locationError').textContent = 'Địa chỉ không được để trống.';
+            hasError = true;
+        }
+        const cccdImages = document.getElementById('inputCCCDImage').files;
+        if (cccdImages.length === 0) {
+            document.getElementById('cccdImageError').textContent = 'Vui lòng tải lên ít nhất một hình ảnh CCCD và chân dung.';
+            hasError = true;
+        }
+        const city = document.getElementById('citySelect').value;
+        if (!city) {
+            document.getElementById('cityError').textContent = 'Vui lòng chọn thành phố.';
+            hasError = true;
+        }
+
+        // Kiểm tra phường
+        const ward = document.getElementById('wardSelect').value;
+        if (!ward) {
+            document.getElementById('wardError').textContent = 'Vui lòng chọn phường.';
+            hasError = true;
+        }
+
+        // Kiểm tra khu
+        const district = document.getElementById('districtSelect').value;
+        if (!district) {
+            document.getElementById('districtError').textContent = 'Vui lòng chọn khu.';
+            hasError = true;
+        }
+
+        // Kiểm tra hình ảnh phòng
+        const roomImages = document.getElementById('inputRoomImage').files;
+        if (roomImages.length === 0) {
+            document.getElementById('roomImageError').textContent = 'Vui lòng tải lên ít nhất một hình ảnh phòng.';
+            hasError = true;
+        }
+
+        // Kiểm tra video
+        const videos = document.getElementById('inputVideo').files;
+        if (videos.length === 0) {
+            document.getElementById('videoError').textContent = 'Vui lòng tải lên ít nhất một video.';
+            hasError = true;
+        }
+
+
+        const roomDetails = document.getElementById('inputRoomDetails').value.trim();
+        if (!roomDetails) {
+            document.getElementById('roomDetailsError').textContent = 'Vui lòng nhập chi tiết phòng trọ.';
+            hasError = true;
+        }
+
+        const requestDetails = document.getElementById('inputRequestDetails').value.trim();
+        if (!requestDetails) {
+            document.getElementById('requestDetailsError').textContent = 'Vui lòng nhập yêu cầu về người ở chung.';
+            hasError = true;
+        }
+
+        if (hasError) {
+            event.preventDefault();
+        } else {
+            document.getElementById('message').textContent = 'Đăng ký thành công!';
+            document.getElementById('message').style.color = 'green';
+        }
+    });
+</script>
 

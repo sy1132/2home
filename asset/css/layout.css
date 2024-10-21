@@ -15,6 +15,7 @@ body {
 }
 
 
+
 .form-search {
     justify-content: center;
     width: 60%;
@@ -89,3 +90,13 @@ input[type="submit"] {
     .Logout:hover::before {
         transform: scale(1); /* Phóng to khi di chuột */
     }
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding-left: 21px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 12px;
+    gap: 8px;
+}
