@@ -1,0 +1,91 @@
+﻿@model PagedList.IPagedList<_2home.Models.Motel>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Motel Manager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Motel Manager</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Địa chỉ</th>
+            <th>Giá</th>
+            <th>Tình trạng</th>
+            <th>Số phòng</th>
+            <th>Xem phòng</th>
+            <th>Cập nhật tiền trọ</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name_motel</td>
+                <td>@item.location</td>
+                <td>@item.price</td>
+                <td>@item.rooms</td>
+
+                @if (item.Debt == 0)
+                {
+                    <td>
+                        @using (Html.BeginForm("UpdateAvailability1", "Home", FormMethod.Post))
+                        {
+                            @Html.Hidden("Motel_ID", item.Motel_ID)
+                            <select name="is_available" onchange="this.form.submit()">
+                                <option value="Còn trống" @(item.is_available == "Còn trống" ? "selected" : "")>Còn trống</option>
+                                <option value="Hết phòng" @(item.is_available == "Hết phòng" ? "selected" : "")>Hết phòng</option>
+                            </select>
+                        }
+                    </td>
+
+                    <td>
+                        @using (Html.BeginForm("QL_room", "Home", FormMethod.Get))
+                        {
+                            @Html.Hidden("Motel_ID", item.Motel_ID)
+                            <p class="class-submit">
+                                <input type="submit" value="Xem phòng" />
+                            </p>
+                        }
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("updatebill", "Home", FormMethod.Get))
+                        {
+                            @Html.Hidden("Motel_ID", item.Motel_ID)
+                            <p class="class-submit">
+                                <input type="submit" value="Cập nhật" />
+                            </p>
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td>Phòng trọ chưa đóng tiền</td>
+                    <td>
+                        @using (Html.BeginForm("pay", "Home", FormMethod.Get))
+                        {
+                            @Html.Hidden("Motel_ID", item.Motel_ID)
+                            <p class="class-submit">
+                                <input type="submit" value="Đóng tiền" />
+                            </p>
+                        }
+                    </td>
+                }
+            </tr>
+        } 
+    </tbody>
+</table>
+
+<form method="get" action="@Url.Action("motel_manager")">
+    <div>
+        <label>Số lượng mục hiển thị:</label>
+        @Html.DropDownList("size", (IEnumerable<SelectListItem>)ViewBag.size, new { @onchange = "this.form.submit();" })
+    </div>
+</form>
+
+<div>
+    @Html.PagedListPager(Model, page => Url.Action("motel_manager", new { page, size = ViewBag.currentSize }))
+</div>

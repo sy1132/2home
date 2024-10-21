@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Tuple<List<_2home.ViewModels.Motel>, List<_2home.ViewModels.Motel>>
+
+@{
     ViewBag.Title = "Thông tin người dùng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -40,13 +42,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in ViewBag.Rooms)
+                            @foreach (var item in Model.Item1) 
                             {
                                 <tr>
-                                    <td>@item.Name_motel</td>
-                                    <td>@item.location</td>
-                                    <td>@item.price</td>
-                                    <td>@item.is_available</td>
+                                    <td>@item.MotelName</td>
+                                    <td>@item.Location</td>
+                                    <td>@item.Price</td>
+                                    <td>@item.Debt</td>
                                 </tr>
                             }
                         </tbody>
@@ -55,19 +57,17 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Tên phòng</th>
-                                <th>Địa điểm</th>
-                                <th>Giá</th>
                                 <th>Trạng thái</th>
+                                <th>Người thuê</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in ViewBag.Rooms)
+                            @foreach (var item in Model.Item2) // Sử dụng Model.Item2 cho danh sách Room
                             {
                                 <tr>
-                                    <td>@item.Name_motel</td>
-                                    <td>@item.location</td>
-                                    <td>@item.price</td>
-                                    <td>@item.is_available</td>
+                                    <td>@item.room_ID</td>
+                                    <td>@item.Room_Status</td>
+                                    <td>@item.fullname</td>
                                 </tr>
                             }
                         </tbody>

@@ -1,0 +1,25 @@
+﻿@model _2home.ViewModels.Motel
+
+@{
+    ViewBag.Title = "Đóng tiền";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model == null)
+{
+    <p>Số tiền không đủ để đóng.</p>
+}
+else
+{
+    <h2>Đóng tiền cho @Model.MotelName</h2>
+    <p>Hiện tại bạn có nợ: @(Convert.ToDecimal(Model.Debt).ToString("N0"))</p>
+
+    <form method="post" action="@Url.Action("pay")">
+        @Html.Hidden("Motel_ID", Model.Motel_ID)
+
+        <label for="amount">Số tiền muốn đóng:</label>
+        <input type="number" name="amount" min="0" step="0.01" required />
+
+        <input type="submit" value="Xác nhận" />
+    </form>
+}
