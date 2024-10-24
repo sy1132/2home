@@ -1,20 +1,19 @@
-﻿
-
-
-@model PagedList.IPagedList<_2home.ViewModels.room>
+﻿@model PagedList.IPagedList<_2home.ViewModels.room>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "updatebill";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<form method="post" action="@Url.Action("updatebill")" class="form-inline">
+
+<form method="post" action="@Url.Action("UpdateElectricityAndWater")" class="form-inline">
     <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
     <div class="form-group mx-sm-3 mb-2">
         <label for="Electricity_Usage" class="mr-2">Đơn giá điện:</label>
-        <input type="text" class="form-control" id="Electricity_Usage" name="Electricity_Usage" value="@ViewBag.MotelName" placeholder="/ kWh">
+        <input type="text" class="form-control" id="Electricity_Usage" name="Electricity_Usage" value="@ViewBag.MotelName" placeholder="kWh">
     </div>
     <div class="form-group mx-sm-3 mb-2">
         <label for="Water_Usage" class="mr-2">Tiền nước mỗi m:</label>
@@ -23,79 +22,117 @@
     <button type="submit" class="btn btn-danger mb-2 mx-sm-3">Áp dụng</button>
 </form>
 
-<form method="post" action="@Url.Action("updatebill")">
-    <table class="table table-bordered">
-        <thead>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th><input type="checkbox" id="selectAll" /></th>
+            <th>Người thuê trọ</th>
+            <th>Số điện của tháng trước</th>
+            <th>Số nước của tháng trước</th>
+
+
+            <th>Tiền trọ</th>
+            <th>Tổng tiền điện</th>
+            <th>Tổng tiền nước</th>
+            <th>Tổng tiền</th>
+            <th>Tình Trạng</th>
+            <th>Số điện</th>
+            <th>Số nước</th>
+            <th>Chi phí phát sinh</th>
+            <th>Cập nhật</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var items in Model)
+        {
             <tr>
-                <th>Người thuê trọ</th>
-                <th>Số điện của tháng trước</th>
-                <th>Số điện</th>
-                <th>Số nước của tháng trước</th>
-                <th>Số nước</th>
-                <th>Chi phí phát sinh</th>
-                <th>Tiền trọ</th>
-                <th>Tổng tiền điện</th>
-                <th>Tổng tiền nước</th>
-                <th>Tổng tiền </th>
-                <th>Tình Trạng</th>
-                <th>Cập nhật</th>
+                <td>
+                    <input type="checkbox" class="room-checkbox" name="selectedRooms" value="@items.Room_ID" />
+                </td>
+                <td>
+                    @if (string.IsNullOrEmpty(items.fullname))
+                    {
+                        @($"{items.Motel_ID}r{items.Room_ID}")
+                    }
+                    else
+                    {
+                        @items.fullname
+                    }
+                </td>
+                <td>@items.Previous_Electricity_Usage</td>
+                <td>@items.Previous_Water_Meter</td>
+                <td>@items.Price</td>
+                <td class="total-electricity-bill"></td>
+                <td class="total-water-bill"></td>
+                <td class="total-amount-due"></td>
+                <td>@items.Room_Status</td>
+
+                <form method="post" action="@Url.Action("updatebill", "Home")">
+                <td>
+                    <input type="text" class="form-control electricity-input" name="Electricity_Meter" value="" />
+                </td>
+                <td>
+                    <input type="text" class="form-control water-input" name="Water_Meter" value="" />
+                </td>
+                <td>
+                    <input type="text" class="form-control additional-charges-input" name="Additional_Charges" value="@items.Additional_Charges" />
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-info">Cập nhật</button>
+                    <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
+                    <input type="hidden" name="Room_ID" value="@items.Room_ID" />
+                    <input type="hidden" name="Previous_Electricity_Usage" value="@items.Previous_Electricity_Usage" />
+                    <input type="hidden" name="Electricity_Meter" value="@items.Electricity_Meter" />
+                    <input type="hidden" name="Previous_Water_Meter" value="@items.Previous_Water_Meter" />
+                    <input type="hidden" name="Water_Meter" value="@items.Water_Meter" />
+                    <input type="hidden" name="Additional_Charges" value="@items.Additional_Charges" />
+                    <input type="hidden" name="Price" value="@items.Price" />
+                    <input type="hidden" name="Electricity_Usage" value="@ViewBag.MotelName" />
+                    <input type="hidden" name="Water_Usage" value="@ViewBag.Location" />
+                </td>
+                </form>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var items in Model)
-            {
-                <tr>
-                    <td>
-                        @if (string.IsNullOrEmpty(items.fullname))
-                        {
-                            @($"{items.Motel_ID}r{items.Room_ID}")
-                        }
-                        else
-                        {
-                            @items.fullname
-                        }
-                    </td>
-                    <td>@items.Previous_Electricity_Usage</td>
-                    <td>
-                        <input type="text" class="form-control" name="Electricity_Meter" value="@items.Electricity_Meter" />
-                    </td>
-                    <td>@items.Previous_Water_Meter</td>
-                    <td>
-                        <input type="text" class="form-control" name="Water_Meter" value="@items.Water_Meter" />
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" name="Additional_Charges" value="@items.Additional_Charges" />
-                    </td>
-                    <td>@items.Price</td>
-                    <td>@items.Electricity_Bill</td>
-                    <td>@items.Water_Bill</td>
-                    <td>@items.Total_Amount_Due</td>
-                    <td>@items.Room_Status</td>
-                    <td>
-                        <button type="submit" class="btn btn-info" formaction="@Url.Action("updatebill", "Home")" formmethod="post">
-                            Cập nhật
-                        </button>
-                        <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
-                        <input type="hidden" name="Room_ID" value="@items.Room_ID" />
-                        <input type="hidden" name="Previous_Electricity_Usage" value="@items.Previous_Electricity_Usage" />
-                        <input type="hidden" name="Electricity_Meter" value="@items.Electricity_Meter" />
-                        <input type="hidden" name="Previous_Water_Meter" value="@items.Previous_Water_Meter" />
-                        <input type="hidden" name="Water_Meter" value="@items.Water_Meter" />
-                        <input type="hidden" name="Additional_Charges" value="@items.Additional_Charges" />
-                        <input type="hidden" name="Price" value="@items.Price" />
-                        <!-- Thêm trường ẩn cho đơn giá điện và nước -->
-                        <input type="hidden" name="Electricity_Usage" value="@ViewBag.MotelName" />
-                        <input type="hidden" name="Water_Usage" value="@ViewBag.Location" />
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <button type="submit" class="btn btn-danger mb-2 mx-sm-3">Cập nhật tất cả</button>
-</form>
-
+        }
+    </tbody>
+</table>
 
 <div class="pagination-container">
     @Html.PagedListPager(Model, page => Url.Action("rental_management", new { page }), PagedListRenderOptions.Classic)
 </div>
+
+<script>
+    document.querySelectorAll('.electricity-input, .water-input, .additional-charges-input').forEach(input => {
+        input.addEventListener('input', calculateTotals);
+    });
+
+    function calculateTotals() {
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const electricityInput = row.querySelector('.electricity-input');
+            const waterInput = row.querySelector('.water-input');
+            const additionalChargesInput = row.querySelector('.additional-charges-input');
+            const previousElectricityUsage = parseFloat(row.querySelector('td:nth-child(3)').innerText) || 0;
+            const previousWaterUsage = parseFloat(row.querySelector('td:nth-child(5)').innerText) || 0;
+            const electricityRate = parseFloat(document.querySelector('input[name="Electricity_Usage"]').value) || 0;
+            const waterRate = parseFloat(document.querySelector('input[name="Water_Usage"]').value) || 0;
+
+            const currentElectricityUsage = parseFloat(electricityInput.value) || 0;
+            const currentWaterUsage = parseFloat(waterInput.value) || 0;
+            const additionalCharges = parseFloat(additionalChargesInput.value) || 0;
+
+            const electricityBill = (currentElectricityUsage - previousElectricityUsage) * electricityRate;
+            const waterBill = (currentWaterUsage - previousWaterUsage) * waterRate;
+
+            row.querySelector('.total-electricity-bill').innerText = electricityBill.toFixed(2);
+            row.querySelector('.total-water-bill').innerText = waterBill.toFixed(2);
+            row.querySelector('.total-amount-due').innerText = (electricityBill + waterBill + additionalCharges).toFixed(2);
+        });
+    }
+
+    document.getElementById('selectAll').addEventListener('change', function () {
+        const checkboxes = document.querySelectorAll('.room-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+</script>

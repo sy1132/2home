@@ -48,29 +48,6 @@
       <Association Name="user_Motel" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Rooms" Member="Rooms">
-    <Type Name="Room">
-      <Column Name="room_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Motel_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Date_of_Issue" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="Electricity_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Water_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Electricity_Unit_Price" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Water_Unit_Price" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Previous_Water_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Previous_Electricity_Usage" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Electricity_Bill" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Water_Bill" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Room_Status" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Room_Rent" Type="System.Decimal" DbType="Decimal(23,4)" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="Additional_Charges" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
-      <Column Name="Total_Amount_Due" Type="System.Decimal" DbType="Decimal(15,2)" CanBeNull="true" />
-      <Association Name="Room_RoomBill" Member="RoomBills" ThisKey="room_ID" OtherKey="Room_ID" Type="RoomBill" />
-      <Association Name="Motel_Room" Member="Motel" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Motel" IsForeignKey="true" />
-      <Association Name="user_Room" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.[user]" Member="users">
     <Type Name="user">
       <Column Name="ID_user" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -88,19 +65,41 @@
       <Association Name="user_Room" Member="Rooms" ThisKey="ID_user" OtherKey="ID_user" Type="Room" />
     </Type>
   </Table>
+  <Table Name="dbo.Rooms" Member="Rooms">
+    <Type Name="Room">
+      <Column Name="room_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Motel_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Date_of_Issue" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Electricity_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Water_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Electricity_Unit_Price" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Water_Unit_Price" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Previous_Water_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Previous_Electricity_Usage" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Electricity_Bill" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Water_Bill" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Room_Status" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Additional_Charges" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Room_Rent" Type="System.Decimal" DbType="Decimal(20,2)" CanBeNull="true" />
+      <Association Name="Room_RoomBill" Member="RoomBills" ThisKey="room_ID" OtherKey="Room_ID" Type="RoomBill" />
+      <Association Name="user_Room" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
+      <Association Name="Motel_Room" Member="Motel" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Motel" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.RoomBills" Member="RoomBills">
     <Type Name="RoomBill">
       <Column Name="Bill_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Room_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Previous_Electricity_Usage" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="Electricity_Meter" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="Previous_Water_Meter" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="Water_Meter" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="Additional_Charges" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="Price" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="Electricity_Bill" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="Water_Bill" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="Total_Amount_Due" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Electricity_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Previous_Water_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Water_Meter" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Additional_Charges" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Electricity_Bill" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Water_Bill" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Total_Amount_Due" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
       <Column Name="Room_Status" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="Date_of_Issue" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Room_RoomBill" Member="Room" ThisKey="Room_ID" OtherKey="room_ID" Type="Room" IsForeignKey="true" />

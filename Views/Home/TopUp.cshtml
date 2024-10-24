@@ -18,10 +18,14 @@
         <div class="col-md-4">
             <div class="card sticky-top shadow-sm rounded-lg">
                 <div class="card-body text-center">
-                    <img src="path_to_profile_image" class="rounded-circle mb-3 border border-secondary" alt="Profile Image" style="width: 100px; height: 100px;">
+                    <img src="~/asset/images/user.jpg" class="rounded-circle mb-3 border border-secondary" alt="Profile Image" style="width: 100px; height: 100px;">
                     <h5>Thông tin người dùng</h5>
                     <p><strong>Tên:</strong> @ViewBag.UserName</p>
-                    <p><strong>Số tiền hiện tại:</strong> <span class="text-success">@ViewBag.blance VND</span></p>
+                    <p>
+                        <strong>Số tiền hiện tại:</strong> <span class="text-success">
+                            @(ViewBag.Blance != null ? ViewBag.Blance.ToString("N0") : "0") VND
+                        </span>
+                    </p>
                     <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary btn-block mt-3">Quay lại trang chủ</a>
                 </div>
             </div>
