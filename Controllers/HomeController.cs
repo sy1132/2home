@@ -936,7 +936,7 @@ namespace _2home.Controllers
             }
             else
             {
-                ViewBag.MotelName = 0; 
+                ViewBag.MotelName = 0;
                 ViewBag.Location = 0;
             }
 
@@ -955,9 +955,8 @@ namespace _2home.Controllers
                             Water_Meter = r.Water_Meter,
                             Additional_Charges = r.Additional_Charges,
                             Price = m.price,
-                            Total_Amount_Due = r.Total_Amount_Due,
                             Room_Status = r.Room_Status,
-                            Previous_Electricity_Usage=r.Previous_Electricity_Usage,
+                            Previous_Electricity_Usage = r.Previous_Electricity_Usage,
                             Previous_Water_Meter = r.Previous_Water_Meter,
                         };
 
@@ -968,7 +967,7 @@ namespace _2home.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult updatebill(int Motel_ID, decimal Electricity_Usage, decimal Water_Usage, int Room_ID, decimal Previous_Electricity_Usage, decimal Electricity_Meter, decimal Previous_Water_Meter, decimal Water_Meter, decimal Additional_Charges, decimal Price)
+        public ActionResult UpdateElectricityAndWater(int? Motel_ID, decimal Electricity_Usage, decimal Water_Usage)
         {
             var id_save = Session["User"] as _2home.ViewModels.User;
             if (id_save == null)
@@ -978,41 +977,18 @@ namespace _2home.Controllers
 
             bool updateSuccessful = false;
 
-            var roomsToUpdate = db.Rooms.Where(r => r.Motel_ID == Motel_ID && r.room_ID == Room_ID).ToList();
+            var roomsToUpdate = db.Rooms.Where(r => r.Motel_ID == Motel_ID).ToList();
             if (roomsToUpdate.Any())
             {
                 foreach (var room in roomsToUpdate)
                 {
                     room.Electricity_Unit_Price = Electricity_Usage;
                     room.Water_Unit_Price = Water_Usage;
-                    room.Previous_Electricity_Usage = room.Electricity_Meter; 
-                    room.Previous_Water_Meter = room.Water_Meter; 
-
-                    var updatedElectricityUsage = room.Previous_Electricity_Usage;
-                    var updatedWaterUsage = room.Previous_Water_Meter;
-
-                    var roomBill = new _2home.Models.RoomBill
-                    {
-                        Room_ID = room.room_ID,
-                        Previous_Electricity_Usage = Previous_Electricity_Usage,
-                        Electricity_Meter = Electricity_Meter,
-                        Previous_Water_Meter = Previous_Water_Meter,
-                        Water_Meter = Water_Meter,
-                        Additional_Charges = Additional_Charges,
-                        Price = Price,
-                        Electricity_Bill = Electricity_Meter * Electricity_Usage,
-                        Water_Bill = Water_Meter * Water_Usage,
-                        Total_Amount_Due = (Electricity_Meter * Electricity_Usage) + (Water_Meter * Water_Usage) + Additional_Charges,
-                        Room_Status = room.Room_Status,
-                        Date_of_Issue = DateTime.Now
-                    };
-
-                    db.RoomBills.InsertOnSubmit(roomBill);
                 }
 
                 try
                 {
-                    db.SubmitChanges(); 
+                    db.SubmitChanges();
                     updateSuccessful = true;
                 }
                 catch (Exception ex)
@@ -1028,6 +1004,71 @@ namespace _2home.Controllers
             else
             {
                 TempData["UpdateMessage"] = "Không tìm thấy phòng để cập nhật.";
+            }
+
+            return RedirectToAction("updatebill", new { Motel_ID = Motel_ID });
+        }
+
+        [HttpPost]
+        public ActionResult updatebill(int Motel_ID, decimal Electricity_Usage, decimal Water_Usage, int Room_ID,
+    decimal Previous_Electricity_Usage, decimal? Electricity_Meter, decimal Previous_Water_Meter,
+    decimal? Water_Meter, decimal Additional_Charges, decimal Price)
+        {
+            var id_save = Session["User"] as _2home.ViewModels.User;
+            if (id_save == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            bool updateSuccessful = false;
+
+            var roomToUpdate = db.Rooms.FirstOrDefault(r => r.Motel_ID == Motel_ID && r.room_ID == Room_ID);
+            if (roomToUpdate != null)
+            {
+                // Kiểm tra xem các giá trị meter mới nhập có hợp lệ không
+                if (Electricity_Meter.HasValue && Water_Meter.HasValue)
+                {
+                    roomToUpdate.Previous_Electricity_Usage = Electricity_Meter.Value; // Cập nhật giá trị mới
+                    roomToUpdate.Previous_Water_Meter = Water_Meter.Value; // Cập nhật giá trị mới
+
+                    // Tạo hóa đơn phòng mới
+                    var roomBill = new _2home.Models.RoomBill
+                    {
+                        Room_ID = roomToUpdate.room_ID,
+                        Previous_Electricity_Usage = Previous_Electricity_Usage,
+                        Electricity_Meter = Electricity_Meter,
+                        Previous_Water_Meter = Previous_Water_Meter,
+                        Water_Meter = Water_Meter,
+                        Additional_Charges = Additional_Charges,
+                        Price = Price,
+                        Electricity_Bill = (Electricity_Meter.Value - Previous_Electricity_Usage) * Electricity_Usage,
+                        Water_Bill = (Water_Meter.Value - Previous_Water_Meter) * Water_Usage,
+                        Total_Amount_Due = ((Electricity_Meter.Value - Previous_Electricity_Usage) * Electricity_Usage) +
+                                           ((Water_Meter.Value - Previous_Water_Meter) * Water_Usage) + Additional_Charges,
+                        Room_Status = roomToUpdate.Room_Status,
+                        Date_of_Issue = DateTime.Now
+                    };
+
+                    db.RoomBills.InsertOnSubmit(roomBill);
+                    updateSuccessful = true;
+                }
+            }
+
+            if (updateSuccessful)
+            {
+                try
+                {
+                    db.SubmitChanges();
+                    TempData["UpdateMessage"] = "Cập nhật đơn giá điện và nước thành công.";
+                }
+                catch (Exception ex)
+                {
+                    TempData["UpdateMessage"] = "Đã xảy ra lỗi trong quá trình cập nhật: " + ex.Message;
+                }
+            }
+            else
+            {
+                TempData["UpdateMessage"] = "Không tìm thấy phòng để cập nhật hoặc các giá trị meter không hợp lệ.";
             }
 
             return RedirectToAction("updatebill", new { Motel_ID = Motel_ID });
@@ -1424,6 +1465,7 @@ namespace _2home.Controllers
 
             return View("Settings", model);
         }
+
 
 
     }
