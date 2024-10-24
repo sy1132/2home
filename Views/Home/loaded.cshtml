@@ -1,0 +1,48 @@
+﻿@model _2home.ViewModels.User
+
+@{
+    ViewBag.Title = "Nạp tiền";
+}
+
+<h2 class="text-center">Nạp tiền</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.Message
+    </div>
+}
+
+@using (Html.BeginForm("loaded", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="fullName">Họ và tên:</label>
+        <input type="text" name="fullName" class="form-control" value="@Model.fullname" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" name="email" class="form-control" value="@Model.Email" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="phoneNumber">Số điện thoại:</label>
+        <input type="text" name="phoneNumber" class="form-control" value="@Model.PhoneNumber" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="bankCode">Mã ngân hàng:</label>
+        <input type="text" name="bankCode" class="form-control" placeholder="Nhập mã ngân hàng" required />
+    </div>
+
+    <div class="form-group">
+        <label for="amount">Số tiền muốn nạp:</label>
+        <input type="number" name="amount" class="form-control" required min="1" step="0.01" />
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-success">Nạp tiền</button>
+    </div>
+}

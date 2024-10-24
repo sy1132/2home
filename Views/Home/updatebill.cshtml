@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
-<!-- Form for updating electricity and water rates -->
 <form method="post" action="@Url.Action("UpdateElectricityAndWater")" class="form-inline">
     <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
     <div class="form-group mx-sm-3 mb-2">
@@ -101,7 +100,8 @@
     @Html.PagedListPager(Model, page => Url.Action("rental_management", new { page }), PagedListRenderOptions.Classic)
 </div>
 
-<script>document.querySelectorAll('.electricity-input, .water-input, .additional-charges-input').forEach(input => {
+<script>
+    document.querySelectorAll('.electricity-input, .water-input, .additional-charges-input').forEach(input => {
         input.addEventListener('input', calculateTotals);
     });
 
@@ -121,7 +121,7 @@
             const additionalCharges = parseFloat(additionalChargesInput.value) || 0;
 
             const electricityBill = (currentElectricityUsage - previousElectricityUsage) * electricityRate;
-const waterBill = (currentWaterUsage - previousWaterUsage) * waterRate;
+            const waterBill = (currentWaterUsage - previousWaterUsage) * waterRate;
 
             row.querySelector('.total-electricity-bill').innerText = electricityBill.toFixed(2);
             row.querySelector('.total-water-bill').innerText = waterBill.toFixed(2);
@@ -134,4 +134,5 @@ const waterBill = (currentWaterUsage - previousWaterUsage) * waterRate;
         checkboxes.forEach(checkbox => {
             checkbox.checked = this.checked;
         });
-    });</script>
+    });
+</script>
