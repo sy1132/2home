@@ -7,108 +7,61 @@
         <div class="col-md-8">
             <div class="card shadow-lg rounded-lg mb-4">
                 <div class="card-body text-center">
-                    <h2 class="mb-4 text-primary font-weight-bold">Nạp tiền</h2>
-                    <p class="lead text-muted">Quét mã QR để nạp tiền:</p>
-                    <img src="@ViewBag.QrUrl" alt="QR Code" class="img-fluid mb-4" style="max-width: 250px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);" />
+                    <h2 class="mb-4">Nạp tiền</h2>
+                    <p class="lead">Quét mã QR để nạp tiền:</p>
+                    <img src="@ViewBag.QrUrl" alt="QR Code" class="img-fluid mb-4" style="max-width: 300px;" />
                     <p class="text-muted">Sử dụng ứng dụng ngân hàng của bạn để quét mã QR và hoàn tất giao dịch.</p>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card sticky-top shadow-sm rounded-lg mb-4">
+            <div class="card sticky-top shadow-sm rounded-lg">
                 <div class="card-body text-center">
-                    <h5 class="font-weight-bold text-primary">Thông tin người dùng</h5>
+                    <img src="~/asset/images/user.jpg" class="rounded-circle mb-3 border border-secondary" alt="Profile Image" style="width: 100px; height: 100px;">
+                    <h5>Thông tin người dùng</h5>
                     <p><strong>Tên:</strong> @ViewBag.UserName</p>
-                    <p><strong>Số tiền hiện tại:</strong> <span class="text-success font-weight-bold">@ViewBag.blance VND</span></p>
+                    <p>
+                        <strong>Số tiền hiện tại:</strong> <span class="text-success">
+                            @(ViewBag.Blance != null ? ViewBag.Blance.ToString("N0") : "0") VND
+                        </span>
+                    </p>
                     <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary btn-block mt-3">Quay lại trang chủ</a>
                 </div>
             </div>
-
-            <div class="card sticky-top shadow-sm rounded-lg">
-                <div class="card-body text-center">
-                    <h5 class="font-weight-bold text-primary">Thông tin tài khoản</h5>
-                    <p><strong>Tên:</strong> NGUYEN NGO VU HOANG GIA</p>
-                    <p>
-                        <strong>Số tài khoản:</strong>
-                        <span id="accountNumber">0363710624</span>
-                        <button class="btn btn-outline-secondary btn-sm" onclick="copyToClipboard()">Sao chép</button>
-                    </p>
-                    <span class="text-muted d-block mb-2">NỘI DUNG CHUYỂN KHOẢN</span>
-                    <p class="bg-light p-2 rounded" style="border: 1px dashed #007bff;">@ViewBag.ID_user</p>
-                </div>
-            </div>
         </div>
-
     </div>
 </div>
 
-<script>
-    function copyToClipboard() {
-        var accountNumber = document.getElementById("accountNumber").innerText;
-        var tempInput = document.createElement("input");
-        tempInput.value = accountNumber;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
-        alert("Đã sao chép số tài khoản: " + accountNumber);
-    }
-</script>
-
 <style>
-    body {
-        background-color: #f8f9fa;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
     .card {
         border-radius: 12px;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
-        border: none;
     }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
         }
 
-    .card-body h5, .card-body p {
-        font-size: 1.1rem;
-        margin-bottom: 10px;
+    .card-body p {
+        font-size: 1.15rem;
     }
 
-    .text-muted {
-        color: #6c757d !important;
+    .rounded-circle {
+        transition: border 0.3s ease;
     }
+
+        .rounded-circle:hover {
+            border-color: #007bff;
+        }
 
     .btn-outline-primary {
-        border-radius: 50px;
-        border-width: 2px;
-        transition: background-color 0.3s ease, color 0.3s ease;
+        border-radius: 20px;
     }
 
         .btn-outline-primary:hover {
             background-color: #007bff;
-            color: #fff;
-        }
-
-    .btn-outline-secondary {
-        margin-left: 10px;
-        transition: background-color 0.3s ease;
-    }
-
-        .btn-outline-secondary:hover {
-            background-color: #6c757d;
             color: white;
         }
-
-    .lead {
-        font-size: 1.25rem;
-        font-weight: 300;
-    }
-
-    .font-weight-bold {
-        font-weight: 600 !important;
-    }
 </style>

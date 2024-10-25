@@ -48,10 +48,8 @@ CREATE TABLE Rooms(
     Electricity_Bill DECIMAL(10, 2),
     Water_Bill DECIMAL(10, 2),
     Room_Status NVARCHAR(50),
-    Room_Rent AS ((Electricity_Meter - Previous_Electricity_Usage) * Electricity_Unit_Price + 
-                   (Water_Meter - Previous_Water_Meter) * Water_Unit_Price) PERSISTED,
+	Room_Rent DECIMAL(20, 2),
     Additional_Charges DECIMAL(10, 2),
-    Total_Amount_Due DECIMAL(15, 2),
     FOREIGN KEY (Motel_ID) REFERENCES Motel(Motel_ID),
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
 );
@@ -83,10 +81,30 @@ CREATE TABLE Mail (
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user) 
 );
 
+CREATE TABLE RoomBills (
+    Bill_ID INT PRIMARY KEY IDENTITY(1,1), 
+    Room_ID INT NOT NULL,                  
+    Previous_Electricity_Usage DECIMAL(10, 2) NOT NULL, 
+    Electricity_Meter DECIMAL(10, 2) NOT NULL, 
+    Previous_Water_Meter DECIMAL(10, 2) NOT NULL, 
+    Water_Meter DECIMAL(10, 2) NOT NULL, 
+    Additional_Charges DECIMAL(10, 2) NOT NULL, 
+    Price DECIMAL(10, 2) NOT NULL,
+    Electricity_Bill DECIMAL(10, 2) NOT NULL, 
+    Water_Bill DECIMAL(10, 2) NOT NULL, 
+    Total_Amount_Due DECIMAL(10, 2) NOT NULL, 
+    Room_Status VARCHAR(50), 
+    Date_of_Issue DATETIME DEFAULT GETDATE(), 
+    FOREIGN KEY (Room_ID) REFERENCES Rooms(room_ID) 
+);
 
-SELECT * FROM Rooms
 SELECT * FROM Motel
 SELECT * FROM img
 SELECT * FROM Video
 SELECT * FROM [user]
 SELECT * FROM Mail
+SELECT * FROM RoomBills
+SELECT * FROM Rooms
+SELECT TOP 1 * 
+FROM RoomBills 
+ORDER BY Date_of_Issue DESC;

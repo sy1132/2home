@@ -176,6 +176,7 @@
     <Content Include="asset\images\TH004.jpg" />
     <Content Include="asset\images\TH006.jpg" />
     <Content Include="asset\images\THCB.jpg" />
+    <Content Include="asset\images\user.jpg" />
     <Content Include="asset\images\website-background-templates.jpg" />
     <Content Include="asset\videos\video.mp4" />
     <Content Include="Content\AnyConv.com__licensed-image.jpg" />
@@ -282,10 +283,15 @@
     <Content Include="Views\Home\Profile_user.cshtml" />
     <Content Include="Views\Home\Kiemduyet.cshtml" />
     <Content Include="Views\Home\ForgotPassword.cshtml" />
+    <Content Include="Views\Home\mail.cshtml" />
+    <Content Include="Views\Home\motel_manager.cshtml" />
+    <Content Include="Views\Home\pay.cshtml" />
+    <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\Home\updatebill.cshtml" />
+    <Content Include="Views\Home\loaded.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Default\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
