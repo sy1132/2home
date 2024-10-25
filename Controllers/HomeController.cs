@@ -21,6 +21,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Web.Security;
 using System.IO;
+using System.Net;
 
 namespace _2home.Controllers
 {
@@ -1366,11 +1367,6 @@ namespace _2home.Controllers
         public ActionResult Settings()
     {
         var user = Session["User"] as _2home.ViewModels.User;
-        if (user == null)
-        {
-            return RedirectToAction("Login");
-        }
-
         return View(user);
     }
 
@@ -1466,6 +1462,103 @@ namespace _2home.Controllers
             return View("Settings", model);
         }
 
+        public ActionResult MotelSettings()
+        {
+            // Lấy thông tin phòng trọ theo ID
+            
+                return View(); // Trả về view với dữ liệu phòng trọ
+            
+        }
+        public ActionResult MotelSettings1()
+        {
+            // Lấy thông tin phòng trọ theo ID
+
+            return View("MotelSettings1"); // Trả về view với dữ liệu phòng trọ
+
+        }
+        [HttpPost]
+        public ActionResult UpdateMotel(_2home.ViewModels.Motel model)
+        {
+            // Kiểm tra phiên làm việc của người dùng
+            var user = Session["User"] as _2home.ViewModels.User;
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            using (var db = new DataClasses1DataContext())
+            {
+                // Tìm kiếm phòng trọ theo ID
+                var motelInDb = db.Motels.SingleOrDefault(m => m.Motel_ID == model.Motel_ID); 
+                if (motelInDb == null)
+                {
+                    ViewBag.ErrorMessage = "Không tìm thấy phòng trọ.";
+                    return View("MotelSettings", model);
+                }
+
+                // Cập nhật thông tin phòng trọ
+                bool isUpdated = false;
+
+                if (model.MotelName != motelInDb.Name_motel)
+                {
+                    motelInDb.Name_motel = model.MotelName;
+                    isUpdated = true;
+                }
+
+                if (model.Location != motelInDb.location)
+                {
+                    motelInDb.location = model.Location;
+                    isUpdated = true;
+                }
+
+                if (model.Price != motelInDb.price)
+                {
+                    motelInDb.price = model.Price;
+                    isUpdated = true;
+                }
+
+                if (model.Debt != motelInDb.Debt)
+                {
+                    motelInDb.Debt = model.Debt;
+                    isUpdated = true;
+                }
+
+                if (model.Debt != motelInDb.Debt)
+                {
+                    motelInDb.Debt = model.Debt;
+                    isUpdated = true;
+                }
+
+                if (model.is_available != motelInDb.is_available)
+                {
+                    motelInDb.is_available = model.is_available;
+                    isUpdated = true;
+                }
+
+
+
+                if (model.Details != motelInDb.Details)
+                {
+                    motelInDb.Details = model.Details;
+                    isUpdated = true;
+                }
+
+                // Lưu thay đổi vào cơ sở dữ liệu
+                db.SubmitChanges();
+
+                // Kiểm tra và hiển thị thông báo
+                if (isUpdated)
+                {
+                    ViewBag.Message = "Cập nhật thông tin phòng trọ thành công!";
+                }
+                else
+                {
+                    ViewBag.Message = "Không có thay đổi nào.";
+                }
+            }
+
+            return View("MotelSettings", model); // Trả về view với dữ liệu đã cập nhật
+        }
 
 
     }
