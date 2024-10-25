@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Tuple<List<_2home.ViewModels.Motel>, List<_2home.ViewModels.Motel>>
+
+@{
     ViewBag.Title = "Thông tin người dùng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -6,8 +8,8 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
+            <div class="card shadow-sm rounded">
+                <div class="card-header bg-light text-dark">
                     <h2 class="card-title">Thông tin người dùng</h2>
                 </div>
                 <div class="card-body">
@@ -16,59 +18,130 @@
                     <p><strong>Số điện thoại:</strong> @ViewBag.PhoneNumber</p>
                     <p><strong>Giới tính:</strong> @ViewBag.Gender</p>
                 </div>
+                <a class="btn-settings btn-xs" href="@Url.Action("Settings", "Home")">
+                    <i class="fas fa-cog"></i> Cài đặt
+                </a>
             </div>
         </div>
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <div class="card shadow-sm rounded">
+                <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-outline-light" id="btnMotel">Số trọ đã đăng ký</button>
-                        <button type="button" class="btn btn-outline-light" id="btnRoom">Số phòng đã đăng cho thuê</button>
+                        <button type="button" class="btn btn-outline-secondary" id="btnMotel">Số trọ đã đăng ký</button>
+                        <button type="button" class="btn btn-outline-secondary" id="btnRoom">Số phòng đã đăng cho thuê</button>
+                        <button type="button" class="btn btn-outline-secondary" id="btnRented">Phòng đã thuê</button>
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-hover mt-3" id="motelTable">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Tên trọ</th>
-                                <th>Địa điểm</th>
-                                <th>Giá</th>
-                                <th>Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in ViewBag.Rooms)
-                            {
-                                <tr>
-                                    <td>@item.Name_motel</td>
-                                    <td>@item.location</td>
-                                    <td>@item.price</td>
-                                    <td>@item.is_available</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <table class="table table-hover mt-3" id="roomTable" style="display:none;">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Tên phòng</th>
-                                <th>Địa điểm</th>
-                                <th>Giá</th>
-                                <th>Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in ViewBag.Rooms)
-                            {
-                                <tr>
-                                    <td>@item.Name_motel</td>
-                                    <td>@item.location</td>
-                                    <td>@item.price</td>
-                                    <td>@item.is_available</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                    <!-- Phần hiển thị danh sách trọ -->
+                    <div id="motelSection">
+                        @if (Model.Item1 == null || !Model.Item1.Any())
+                        {
+                            <div class="text-center mt-5">
+                                <img src="~/asset/images/logo traver bufflo.jpg" alt="No listings" class="img-fluid w-50" />
+                                <p class="mt-3">Bạn chưa đăng ký trọ nào</p>
+                                <a href="@Url.Action("MotelSettings", "Home")" class="btn btn-warning">Đăng ký ngay</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <table class="table table-hover mt-3" id="motelTable">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Tên trọ</th>
+                                        <th>Địa điểm</th>
+                                        <th>Giá</th>
+                                        <th>Trạng thái</th>
+                                        <th>Số phòng</th>
+                                        <th>Xem phòng</th>
+                                        <th>Cập nhật tiền trọ</th>
+                                        <th>Chỉnh sửa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Item1)
+                                    {
+                                        <tr>
+                                            <td>@item.MotelName</td>
+                                            <td>@item.Location</td>
+                                            <td>@item.Price</td>
+                                            <td>@item.is_available</td>
+                                            <td>@item.Room_Status</td>
+                                            <td>
+                                                @using (Html.BeginForm("QL_room", "Home", FormMethod.Get))
+                                                {
+                                                    @Html.Hidden("Motel_ID", item.Motel_ID)
+                                                    <p class="class-submit">
+                                                        <input type="submit" value="Xem phòng" class="btn btn-xs btn-primary" />
+                                                    </p>
+                                                }
+                                            </td>
+                                            <td>
+                                                @using (Html.BeginForm("updatebill", "Home", FormMethod.Get))
+                                                {
+                                                    @Html.Hidden("Motel_ID", item.Motel_ID)
+                                                    <p class="class-submit">
+                                                        <input type="submit" value="Cập nhật" class="btn btn-xs btn-secondary" />
+                                                    </p>
+                                                }
+                                            </td>
+                                            <td>
+                                                @using (Html.BeginForm("MotelSettings", "Home", FormMethod.Post))
+                                                {
+                                                    <p class="class-submit">
+                                                        <input type="submit" value="Chỉnh sửa" class="btn btn-xs btn-warning" />
+                                                    </p>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+
+                    <!-- Phần hiển thị danh sách phòng đã đăng cho thuê -->
+                    <div id="roomSection" style="display:none;">
+                        @if (Model.Item2 == null || !Model.Item2.Any())
+                        {
+                            <div class="text-center mt-5">
+                                <img src="~/asset/images/logo traver bufflo.jpg" alt="No rooms" class="img-fluid w-50" />
+                                <p class="mt-3">Bạn chưa đăng phòng nào cho thuê</p>
+                                <a href="@Url.Action("DangPhong", "Home")" class="btn btn-warning">Đăng phòng ngay</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <table class="table table-hover mt-3" id="roomTable">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Tên phòng</th>
+                                        <th>Trạng thái</th>
+                                        <th>Người thuê</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Item2)
+                                    {
+                                        <tr>
+                                            <td>@item.room_ID</td>
+                                            <td>@item.Room_Status</td>
+                                            <td>@item.fullname</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+
+                    <!-- Phần hiển thị danh sách phòng đã thuê -->
+                    <div id="rentedSection" style="display:none;">
+                        <div class="text-center mt-5">
+                            <img src="~/asset/images/logo traver bufflo.jpg" alt="No rooms" class="img-fluid w-50" />
+                            <p>Bạn chưa thuê phòng nào</p>
+                            <a href="@Url.Action("ThuePhong", "Home")" class="btn btn-warning">Tìm phòng ngay</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,13 +150,72 @@
 
 <script>
     document.getElementById('btnMotel').addEventListener('click', function () {
-        document.getElementById('motelTable').style.display = 'table';
-        document.getElementById('roomTable').style.display = 'none';
+        document.getElementById('motelSection').style.display = 'block';
+        document.getElementById('roomSection').style.display = 'none';
+        document.getElementById('rentedSection').style.display = 'none';
     });
 
     document.getElementById('btnRoom').addEventListener('click', function () {
-        document.getElementById('motelTable').style.display = 'none';
-        document.getElementById('roomTable').style.display = 'table';
+        document.getElementById('motelSection').style.display = 'none';
+        document.getElementById('roomSection').style.display = 'block';
+        document.getElementById('rentedSection').style.display = 'none';
+    });
+
+    document.getElementById('btnRented').addEventListener('click', function () {
+        document.getElementById('motelSection').style.display = 'none';
+        document.getElementById('roomSection').style.display = 'none';
+        document.getElementById('rentedSection').style.display = 'block';
     });
 </script>
 
+<style>
+    .card {
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .btn-outline-secondary {
+        border-radius: 20px;
+        transition: background-color 0.2s ease;
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: #f0f0f0;
+        }
+
+    .table-hover tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    .btn-settings {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 14px;
+        background-color: transparent;
+        border-radius: 30px;
+        border: 1px solid #ced4da;
+        color: #495057;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-settings:hover {
+            background-color: #f8f9fa;
+            border-color: #adb5bd;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            color: #212529;
+        }
+
+        .btn-settings i {
+            margin-right: 5px;
+            font-size: 14px;
+        }
+</style>
