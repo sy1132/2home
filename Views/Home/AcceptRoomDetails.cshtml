@@ -1,0 +1,18 @@
+﻿@model _2home.ViewModels.room
+
+<h2>Chi Tiết Phòng</h2>
+
+<p>
+    <strong>Tên Người Thuê:</strong> @Model.fullname <br />
+    <strong>Tiền Cọc:</strong> @Model.Deposit VND
+</p>
+
+<form method="post" action="@Url.Action("CreateContract")">
+    <div class="mb-3">
+        <label for="ContractDuration" class="form-label">Thời Gian Hợp Đồng (tháng):</label>
+        <input type="number" class="form-control" id="contract" name="contract" required min="1" />
+    </div>
+    @Html.Hidden("roomId", Model.Room_ID)
+    <button type="submit" class="btn btn-primary">Lưu Hợp Đồng</button>
+
+</form>

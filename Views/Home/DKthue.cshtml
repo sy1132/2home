@@ -101,9 +101,9 @@
             <span class="error-message" id="roomNameError"></span>
         </div>
         <div class="col-md-6">
-            <label for="inputRooms" class="form-label">Số phòng</label>
-            <input type="number" class="form-control" id="inputRooms" name="Rooms" min="0">
-            <span class="error-message" id="roomsError"></span>
+            <label for="inputDeposit" class="form-label">Tiền cọc</label>
+            <input type="number" class="form-control" id="inputDeposit" name="Deposit" min="0">
+            <span class="error-message" id="DepositError"></span>
         </div>
         <div class="col-12">
             <label for="inputLocation" class="form-label">Địa chỉ</label>
@@ -332,9 +332,9 @@
         }
 
         // Validate Number of Rooms
-        const rooms = document.getElementById('inputRooms').value;
-        if (!rooms || rooms <= 0) {
-            document.getElementById('roomsError').textContent = 'Số phòng phải lớn hơn 0.';
+        const rooms = document.getElementById('inputDeposit').value;
+        if (!rooms || rooms < price) {
+            document.getElementById('DepositError').textContent = 'Số phòng phải lớn hơn 0.';
             hasError = true;
         }
 
@@ -390,11 +390,10 @@
         }
 
         if (hasError) {
-            event.preventDefault(); // Prevent form submission if there are validation errors
+            event.preventDefault();
         } else {
-            // Show success message if no errors
             document.getElementById('message').textContent = 'Đăng ký thành công!';
-            document.getElementById('message').style.color = 'green'; // Optional: Change text color to green
+            document.getElementById('message').style.color = 'green';
         }
     });
 </script>

@@ -25,6 +25,7 @@ CREATE TABLE Motel (
 	Details NVARCHAR(MAX),
 	rooms int,
 	CreatedDate date,
+	Deposit DECIMAL(10, 2),
 	Debt decimal(10, 2),
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
 
@@ -48,12 +49,14 @@ CREATE TABLE Rooms(
     Electricity_Bill DECIMAL(10, 2),
     Water_Bill DECIMAL(10, 2),
     Room_Status NVARCHAR(50),
+	contract INT,
 	Room_Rent DECIMAL(20, 2),
+	Deposit DECIMAL(10, 2),
+	money_paid DECIMAL(10, 2),
     Additional_Charges DECIMAL(10, 2),
     FOREIGN KEY (Motel_ID) REFERENCES Motel(Motel_ID),
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
 );
-
 CREATE TABLE Video (
     video_ID int IDENTITY(1,1) PRIMARY KEY,
     Motel_ID INT,

@@ -18,6 +18,8 @@
             <th>Số phòng</th>
             <th>Xem phòng</th>
             <th>Cập nhật tiền trọ</th>
+            <th>Cập nhật hợp đồng</th>
+
         </tr>
     </thead>
     <tbody>
@@ -27,7 +29,7 @@
                 <td>@item.Name_motel</td>
                 <td>@item.location</td>
                 <td>@item.price</td>
-                <td>@item.rooms</td>
+                <td>@item.is_available</td>
 
                 @if (item.Debt == 0)
                 {
@@ -57,6 +59,15 @@
                             @Html.Hidden("Motel_ID", item.Motel_ID)
                             <p class="class-submit">
                                 <input type="submit" value="Cập nhật" />
+                            </p>
+                        }
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("viewContractinkeeper", "Home", FormMethod.Get))
+                        {
+                            @Html.Hidden("Motel_ID", item.Motel_ID)
+                            <p class="class-submit">
+                                <input type="submit" value="Xem hợp đồng" />
                             </p>
                         }
                     </td>

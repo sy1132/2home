@@ -1,0 +1,63 @@
+﻿@model IEnumerable<_2home.ViewModels.room>
+
+@{
+    ViewBag.Title = "Danh Sách Hợp Đồng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mt-4">Danh Sách Hợp Đồng Phòng Trọ</h2>
+
+<div class="container mt-4">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Mã Phòng</th>
+                <th>Tên Người Thuê</th>
+                <th>Tiền Cọc</th>
+                <th>Ngày Bắt Đầu</th>
+                <th>Tiền Thuê Phòng</th>
+                <th>Thời Hạn Hợp Đồng</th>
+                <th>Ngày Kết Thúc Hợp Đồng</th>
+                <th>Thời Gian Còn Lại (ngày)</th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var room in Model)
+            {
+                <tr>
+                    <td>@room.Room_ID</td>
+                    <td>@room.fullname</td>
+                    <td>@room.Deposit</td>
+                    <td>@room.Date_of_Issue</td>
+                    <td>@room.Room_Rent</td>
+                    <td>@room.contract tháng</td>
+                    <td>@room.ContractEndDate</td>
+                    <td>
+                        @if (room.RemainingTime.HasValue)
+                        {
+
+                            if (@room.RemainingTime >= 0)
+                            {
+                                <span>@room.RemainingTime ngày</span>
+                            }
+                            else
+                            {
+                                <span>Đã hết hạn hợp đồng quá @Math.Abs(room.RemainingTime.Value) ngày</span>
+
+                            }
+                        }
+                        else
+                        {
+                            <span>Chưa xác định</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sửa", "EditContract", "Home", new { roomId = room.Room_ID }, null) 
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
