@@ -30,7 +30,12 @@
         <button type="submit" class="btn btn-primary">Tìm kiếm</button>
     </form>
 </div>
-
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["error"]
+    </div>
+}
 @if (Model != null && Model.Any())
 {
     <div>
@@ -46,13 +51,16 @@
                             <h5 class="card-title">@room.MotelName</h5>
                             <p class="card-text">
                                 <strong>Địa chỉ:</strong> @room.Location<br />
-                                <strong>Giá:</strong> @room.Price
+                                <strong>Giá:</strong> @room.Price <br />
+                                <strong>Tiền cọc:</strong> @room.Deposit VND
+
                             </p>
 
                             @using (Html.BeginForm("Join", "Home", FormMethod.Get))
                             {
                                 @Html.Hidden("Motel_ID", room.Motel_ID)
                                 @Html.Hidden("Room_ID", room.room_ID)
+                                @Html.Hidden("Deposit", room.Deposit)
                                 <button type="submit" class="btn btn-primary">Xin vào</button>
                             }
                         </div>

@@ -21,6 +21,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Web.Security;
 using System.IO;
+using System.Diagnostics.Contracts;
 
 namespace _2home.Controllers
 {
@@ -116,12 +117,26 @@ namespace _2home.Controllers
                                     is_available = motel.is_available,
                                     ID_user = motel.ID_user,
                                     Link = vid.Link,
+                                    Deposit=motel.Deposit,
                                     Details = motel.Details,
                                     ImgLinks = (from img in db.imgs
                                                 where img.Motel_ID == motel.Motel_ID
                                                 select img.Link).ToList()
-                                }).FirstOrDefault();
 
+                                }).FirstOrDefault();
+            var randomMotels = (from m in db.Motels
+                                join p in db.imgs on m.Motel_ID equals p.Motel_ID
+                                where m.Motel_ID != Motel_ID 
+                                orderby Guid.NewGuid() 
+                                select new pic
+                                {
+                                    MotelName = m.Name_motel,
+                                    Location = m.location,
+                                    Link = p.Link,
+                                    Linkd = Url.Action("Details", new { Motel_ID = m.Motel_ID }) 
+                                }).Take(4).ToList(); 
+
+            motelDetails.RelatedMotels = randomMotels;
             return View(motelDetails);
         }
 
@@ -232,7 +247,7 @@ namespace _2home.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult DKthue(string roomName, string Details, int? Rooms, string LocationName, string city, string ward, string district, decimal Price, IEnumerable<HttpPostedFileBase> Images, HttpPostedFileBase Videos)
+        public ActionResult DKthue(string roomName, string Details,decimal? Deposit, string LocationName, string city, string ward, string district, decimal Price, IEnumerable<HttpPostedFileBase> Images, HttpPostedFileBase Videos)
         {
             using (var db = new DataClasses1DataContext())
             {
@@ -250,7 +265,8 @@ namespace _2home.Controllers
                     is_available = "Đang chờ duyệt",
                     ID_user = user.ID_user,
                     Details = Details,
-                    rooms = Rooms
+                    rooms = 1,
+                    Deposit= Deposit
                 };
 
                 db.Motels.InsertOnSubmit(motel);
@@ -529,6 +545,7 @@ namespace _2home.Controllers
             var user_save = id_save.ID_user;
             var query = from m in db.Mails
                         join u in db.users on m.ID_user equals u.ID_user
+                        orderby m.SendDate descending
                         where m.Recipient == user_save
                         select new
                         {
@@ -606,7 +623,11 @@ namespace _2home.Controllers
                             {
                                 senderUser.MotelID = parsedRoomId;
                             }
-
+                            var motel = db.Motels.FirstOrDefault(m => m.Motel_ID == room.Motel_ID);
+                            if (motel != null)
+                            {
+                                room.Deposit = motel.Deposit;
+                            }
                             room.ID_user = senderUser.ID_user;
                             room.Room_Status = "Đã thuê";
                             room.Previous_Electricity_Usage = 0;
@@ -619,7 +640,230 @@ namespace _2home.Controllers
                 }
             }
 
-            return RedirectToAction("mail");
+            return RedirectToAction("AcceptRoomDetails","Home", new { roomId = roomId });
+        }
+        [HttpGet]
+        public ActionResult AcceptRoomDetails(int roomId)
+        {
+            var room = db.Rooms.FirstOrDefault(r => r.room_ID == roomId);
+            if (room == null)
+            {
+                return HttpNotFound();
+            }
+
+            var motel = db.Motels.FirstOrDefault(m => m.Motel_ID == room.Motel_ID);
+            if (motel == null)
+            {
+                return HttpNotFound();
+            }
+
+            var tenant = db.users.FirstOrDefault(u => u.ID_user == room.ID_user);
+
+            var model = new _2home.ViewModels.room
+            {
+                fullname = tenant?.fullname,
+                Deposit = (int?)motel.Deposit,
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult CreateContract(int contract, int roomId)
+        {
+            if (contract > 0)
+            {
+                var existingContract = db.Rooms.FirstOrDefault(c => c.room_ID == roomId);
+
+                if (existingContract != null)
+                {
+                    existingContract.contract = contract;
+                }
+
+                db.SubmitChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+        public ActionResult viewContractinkeeper(int Motel_ID)
+        {
+            var id_save = Session["User"] as _2home.ViewModels.User;
+            if (id_save == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var viewModel = (from r in db.Rooms
+                             where r.Motel_ID == Motel_ID && r.ID_user != null
+                             select new _2home.ViewModels.room
+                             {
+                                 Room_ID = r.room_ID,
+                                 Motel_ID = r.Motel_ID,
+                                 fullname = (from u in db.users where u.ID_user == r.ID_user select u.fullname).FirstOrDefault(),
+                                 Deposit = (int?)r.Deposit ?? 0,
+                                 Date_of_Issue = r.Date_of_Issue,
+                                 Room_Rent = r.Room_Rent ?? 0,
+                                 contract = r.contract ?? 0
+                             }).ToList();
+
+            foreach (var room in viewModel)
+            {
+                room.ContractEndDate = room.Date_of_Issue?.AddMonths(room.contract ?? 0);
+                room.RemainingTime = room.ContractEndDate.HasValue
+                    ? (room.ContractEndDate.Value - DateTime.Now).Days
+                    : (int?)null;
+            }
+
+            return View(viewModel);
+        }
+        public ActionResult EditContract(int roomId)
+        {
+            var room = db.Rooms.FirstOrDefault(r => r.room_ID == roomId);
+            if (room == null)
+            {
+                return HttpNotFound();
+            }
+
+            var viewModel = new _2home.ViewModels.room
+            {
+                Room_ID = room.room_ID,
+                Deposit = (int?)(room.Deposit ?? 0),
+                contract= room.contract ?? 0,
+                fullname = (from u in db.users where u.ID_user == room.ID_user select u.fullname).FirstOrDefault(),
+                Date_of_Issue = room.Date_of_Issue,
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditContract(_2home.ViewModels.room model)
+        {
+            if (ModelState.IsValid)
+            {
+                var room = db.Rooms.FirstOrDefault(r => r.room_ID == model.Room_ID);
+                if (room != null)
+                {
+                    room.Deposit = model.Deposit;
+                    room.contract = model.contract;
+                    db.SubmitChanges();
+                    return RedirectToAction("viewContractinkeeper", new { Motel_ID = room.Motel_ID });
+                }
+            }
+
+            return View(model);
+        }
+
+        public ActionResult viewContract()
+        {
+            var id_save = Session["User"] as _2home.ViewModels.User;
+            if (id_save == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var room = db.Rooms.SingleOrDefault(r => r.ID_user == id_save.ID_user);
+            if (room == null)
+            {
+                return HttpNotFound();
+            }
+
+            var motelName = db.Motels.Where(m => m.Motel_ID == room.Motel_ID).Select(m => m.Name_motel).FirstOrDefault();
+            var userFullName = db.users.Where(u => u.ID_user == room.ID_user).Select(u => u.fullname).FirstOrDefault();
+
+            var contractEndDate = room.Date_of_Issue?.AddMonths(room.contract ?? 0);
+
+            var remainingTime = contractEndDate.HasValue
+                ? (contractEndDate.Value - DateTime.Now).Days
+                : (int?)null;
+
+            var viewModel = new _2home.ViewModels.room
+            {
+                Room_ID=room.ID_user,
+                Room_Status = room.Room_Status,
+                motelname = motelName,
+                fullname = userFullName,
+                Deposit = (int?)room.Deposit,
+                Date_of_Issue = room.Date_of_Issue,
+                Room_Rent = room.Room_Rent,
+                contract = room.contract,
+                ContractEndDate = contractEndDate,
+                RemainingTime = remainingTime 
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult CancelContract(int Room_ID)
+        {
+            var id_save = Session["User"] as _2home.ViewModels.User;
+            if (id_save == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            using (var db = new DataClasses1DataContext())
+            {
+                var room = db.Rooms.SingleOrDefault(r => r.room_ID == Room_ID);
+                if (room != null)
+                {
+                    var motelUserId = db.Motels.Where(m => m.Motel_ID == room.Motel_ID)
+                                                 .Select(m => m.ID_user)
+                                                 .FirstOrDefault();
+
+                    var mail = new Mail
+                    {
+                        Sender = id_save.ID_user,
+                        ID_user = id_save.ID_user,
+                        Recipient = motelUserId,
+                        Content = "Hủy hợp đồng phòng" + room.room_ID,
+                        SendDate = DateTime.Now
+                    };
+
+                    db.Mails.InsertOnSubmit(mail);
+                    db.SubmitChanges();
+                    TempData["Message"] = "Đơn hủy đã được gửi";
+                }
+            }
+
+            return RedirectToAction("viewContract");
+        }
+
+        [HttpPost]
+        public ActionResult CreateNewContract(int Room_ID)
+        {
+            var id_save = Session["User"] as _2home.ViewModels.User;
+            if (id_save == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            using (var db = new DataClasses1DataContext())
+            {
+                var room = db.Rooms.SingleOrDefault(r => r.room_ID == Room_ID);
+                if (room != null)
+                {
+                    var motelUserId = db.Motels.Where(m => m.Motel_ID == room.Motel_ID)
+                                                 .Select(m => m.ID_user)
+                                                 .FirstOrDefault();
+
+                    var mail = new Mail
+                    {
+                        Sender = id_save.ID_user,
+                        ID_user = id_save.ID_user,
+                        Recipient = motelUserId,
+                        Content = "Tạo mới hợp đồng phòng " + room.room_ID,
+                        SendDate = DateTime.Now
+                    };
+
+                    db.Mails.InsertOnSubmit(mail);
+                    db.SubmitChanges();
+                    TempData["Message"] = "Đơn tạo mới đã được gửi";
+                }
+            }
+
+            return RedirectToAction("viewContract"); 
         }
 
         public ActionResult rental_management(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
@@ -1105,9 +1349,8 @@ namespace _2home.Controllers
 
             return 0;
         }
-       
-        public ActionResult rent_check(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
 
+        public ActionResult rent_check(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
         {
             var id_save = Session["User"] as _2home.ViewModels.User;
             if (id_save == null)
@@ -1116,13 +1359,33 @@ namespace _2home.Controllers
             }
 
             var user_save = id_save.ID_user;
+
             var query = from rb in db.RoomBills
                         join r in db.Rooms on rb.Room_ID equals r.room_ID
-                        where r.ID_user == id_save.ID_user
+                        where r.ID_user == user_save
                         select rb;
 
+            var totalElectricity = query.Sum(rb => rb.Electricity_Bill);
+            var totalWater = query.Sum(rb => rb.Water_Bill);
+            var totalAdditionalCharges = query.Sum(rb => rb.Additional_Charges);
+            var totalRent = query.Sum(rb => rb.Price);
+            var totalAmountDue = query.Sum(rb => rb.Total_Amount_Due);
 
+            var totalPaid = db.Rooms
+                .Where(r => r.ID_user == user_save)
+                .Sum(r => (decimal?)r.money_paid) ?? 0;
+            
+
+            ViewBag.TotalElectricity = totalElectricity;
+            ViewBag.TotalWater = totalWater;
+            ViewBag.TotalAdditionalCharges = totalAdditionalCharges;
+            ViewBag.TotalAmountDue = totalAmountDue;
+            ViewBag.TotalRent = query.Sum(rb => rb.Price);
+            ViewBag.TotalPaid = totalPaid;
+
+            ViewBag.TotalDebt = totalAmountDue- totalPaid;
             ViewBag.Page = page;
+
             List<SelectListItem> items = new List<SelectListItem>();
             items.Add(new SelectListItem { Text = "10", Value = "10" });
             items.Add(new SelectListItem { Text = "20", Value = "20" });
@@ -1130,22 +1393,24 @@ namespace _2home.Controllers
             items.Add(new SelectListItem { Text = "50", Value = "50" });
             items.Add(new SelectListItem { Text = "100", Value = "100" });
             items.Add(new SelectListItem { Text = "200", Value = "200" });
+
             foreach (var item in items)
             {
                 if (item.Value == size.ToString()) item.Selected = true;
             }
+
             ViewBag.size = items;
             ViewBag.currentSize = size;
 
             page = page ?? 1;
             int pageSize = (size ?? 10);
-
             int pageNumber = (page ?? 1);
             var model = query.ToList();
+
             return View(model.ToPagedList(pageNumber, pageSize));
-
-
         }
+
+
         public ActionResult Profile_user(int ID_user)
         {
             using (var db = new DataClasses1DataContext())
@@ -1217,7 +1482,8 @@ namespace _2home.Controllers
                                   MotelName = m.Name_motel,
                                   Location = m.location,
                                   Price = m.price,
-                                  room_ID = r.room_ID
+                                  room_ID = r.room_ID,
+                                  Deposit=m.Deposit,
                               });
 
                 if (result.Any())
@@ -1258,7 +1524,7 @@ namespace _2home.Controllers
         }
 
         [HttpGet]
-        public ActionResult Join(int? Motel_ID, int? Room_ID)
+        public ActionResult Join(int? Motel_ID, int? Room_ID, decimal? Deposit)
         {
             if (Motel_ID.HasValue && Room_ID.HasValue)
             {
@@ -1271,7 +1537,11 @@ namespace _2home.Controllers
                     {
                         return RedirectToAction("Login");
                     }
-
+                    if (senderID.blance < motel.Deposit)
+                    {
+                        TempData["error"] = "Tiền tài khoản không đủ"; 
+                        return RedirectToAction("JoinRental");
+                    }
                     var recipientUser = db.users.FirstOrDefault(u => u.ID_user == motel.ID_user);
                     var recipientID = recipientUser?.ID_user;
 
