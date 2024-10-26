@@ -8,7 +8,17 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-
+<form method="get" action="@Url.Action("rental_management")" class="form-inline">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="fullname" class="mr-2">Đơn giá điện:</label>
+        <input type="text" class="form-control" id="MotelName" name="Electricity_Usage" value="@ViewBag.MotelName" placeholder="/ kWh">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="motelID" class="mr-2">Tiền nước mỗi m:</label>
+        <input type="text" class="form-control" id="Location" name="Water_Usage" value="@ViewBag.Location" placeholder="nhập tiền / m">
+    </div>
+    <button type="submit" class="btn btn-danger mb-2 mx-sm-3">áp dụng</button>
+</form>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -20,7 +30,7 @@
             <th>Tiền trọ</th>
             <th>Tổng tiền </th>
             <th>Tình Trạng</th>
-
+            <th>Cập nhật</th>
         </tr>
     </thead>
     <tbody>
@@ -45,7 +55,9 @@
                 <td>@items.Price</td>
                 <td>@items.Total_Amount_Due</td>
                 <td>@items.Room_Status</td>
-                
+                <td>
+                    <a href="@Url.Action("Capnhat", "Home", new { id = items.Room_ID })" class="btn btn-info">Cập nhật</a>
+                </td>
             </tr>
         }
 

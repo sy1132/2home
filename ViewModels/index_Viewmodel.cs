@@ -23,8 +23,5 @@ namespace _2home.ViewModels
         public string link_location { get; set; }
         public string Details { get; set; }
         public int? rooms { get; set; }
-        public int? room_ID { get; set; }
-        public string fullname { get; set; }
-
     }
 }
