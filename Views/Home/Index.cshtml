@@ -1,13 +1,17 @@
-﻿﻿@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
 @using PagedList.Mvc;
 @{
     var itemsList = Model.ToList();
 }
 
 <head>
-    <link href="~/asset/css/index.css" rel="stylesheet" />
+    <link href="~/asset/css/index.css" rel="stylesheet" />  
 </head>
-<body>
+<body >
     @for (int i = 0; i < itemsList.Count; i += 2)
     {
         <div class="row">
