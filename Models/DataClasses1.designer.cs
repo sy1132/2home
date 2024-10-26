@@ -1881,8 +1881,10 @@ namespace _2home.Models
 				}
 			}
 		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
+
+        public string Location { get; internal set; }
+
+        public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
 		

@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Web.Security;
 using System.IO;
 using System.Diagnostics.Contracts;
+using System.Net;
 
 namespace _2home.Controllers
 {
@@ -1793,6 +1794,65 @@ namespace _2home.Controllers
         }
 
 
+        [HttpGet]
+        public ActionResult UpdateMotel(int? Motel_ID)
+        {
+            if (Motel_ID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var motel = db.Motels.FirstOrDefault(m => m.Motel_ID == Motel_ID.ToString());
+            if (motel == null)
+            {
+                return HttpNotFound();
+            }
+
+            var model = new MotelViewModel
+            {
+                Motel_ID = int.Parse(motel.Motel_ID),
+                ID_user = motel.ID_user,
+                Name_motel = motel.Name_motel,
+                Location = motel.Location,
+                Price = motel.Price,
+                Is_available = motel.is_available,
+                Details = motel.Details,
+                Rooms = int.Parse(motel.Rooms),
+                CreatedDate = DateTime.Parse(motel.CreatedDate),
+                Deposit = decimal.Parse(motel.Deposit),
+                Debt = decimal.Parse(motel.Debt)
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateMotel(MotelViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var motel = db.Motels.FirstOrDefault(m => m.Motel_ID == model.Motel_ID);
+                if (motel == null)
+                {
+                    return HttpNotFound();
+                }
+
+                motel.Name_motel = model.Name_motel;
+                motel.Location = model.Location;
+                motel.Price = model.Price;
+                motel.is_available = model.Is_available;
+                motel.Details = model.Details;
+                motel.Rooms = model.Rooms.ToString();
+                motel.Deposit = model.Deposit.ToString();
+                motel.Debt = model.Debt.ToString();
+
+                db.SubmitChanges();
+
+                ViewBag.Message = "Motel information updated successfully.";
+            }
+
+            return View(model);
+        }
 
     }
 }

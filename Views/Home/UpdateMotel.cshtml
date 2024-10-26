@@ -1,0 +1,78 @@
+﻿@model _2home.ViewModels.Motel
+
+@{
+    ViewBag.Title = "UpdateMotel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link href="~/asset/css/login.css" rel="stylesheet" />
+</head>
+
+<form method="post" action="@Url.Action("UpdateMotel", "Home")">
+    <div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem;">
+        <h2 class="card-title text-center mb-4">Update Motel Information</h2>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success">@ViewBag.Message</div>
+        }
+
+        <div class="col-md-12 mb-3">
+            <label for="Name_motel" class="form-label">Motel Name</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="Name_motel" name="Name_motel" value="@Model.MotelName" />
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label for="Location" class="form-label">Location</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="Location" name="Location" value="@Model.Location" />
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label for="Price" class="form-label">Price</label>
+            <div class="input-group">
+                <input type="number" class="form-control" id="Price" name="Price" value="@Model.Price" />
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label for="Is_available" class="form-label">Availability</label>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label for="Details" class="form-label">Details</label>
+            <div class="input-group">
+                <textarea class="form-control" id="Details" name="Details">@Model.Details</textarea>
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label for="Rooms" class="form-label">Rooms</label>
+            <div class="input-group">
+                <input type="number" class="form-control" id="Rooms" name="Rooms" value="@Model.Rooms" />
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label for="Deposit" class="form-label">Deposit</label>
+            <div class="input-group">
+                <input type="number" class="form-control" id="Deposit" name="Deposit" value="@Model.Deposit" />
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label for="Debt" class="form-label">Debt</label>
+            <div class="input-group">
+                <input type="number" class="form-control" id="Debt" name="Debt" value="@Model.Debt" />
+            </div>
+        </div>
+
+        <div class="text-center mb-4">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </div>
+</form>
