@@ -151,7 +151,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\index_Viewmodel.cs" />
     <Compile Include="ViewModels\Motel.cs" />
-    <Compile Include="ViewModels\MotelViewModel.cs" />
     <Compile Include="ViewModels\pic.cs" />
     <Compile Include="ViewModels\room.cs" />
     <Compile Include="ViewModels\user.cs" />
@@ -282,7 +281,7 @@
     <Content Include="Views\Home\viewContract.cshtml" />
     <Content Include="Views\Home\viewContractinkeeper.cshtml" />
     <Content Include="Views\Home\EditContract.cshtml" />
-    <Content Include="Views\Home\UpdateMotel.cshtml" />
+    <Content Include="Views\Home\KiemduyetInkeeper.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

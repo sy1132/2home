@@ -51,6 +51,9 @@ namespace _2home.Models
     partial void InsertRoom(Room instance);
     partial void UpdateRoom(Room instance);
     partial void DeleteRoom(Room instance);
+    partial void Inserttogether(together instance);
+    partial void Updatetogether(together instance);
+    partial void Deletetogether(together instance);
     #endregion
 		
 		public DataClasses1DataContext(string connection) : 
@@ -58,8 +61,12 @@ namespace _2home.Models
 		{
 			OnCreated();
 		}
-		
-		public DataClasses1DataContext(System.Data.IDbConnection connection) : 
+        public DataClasses1DataContext() :
+        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString"].ConnectionString, mappingSource)
+        {
+
+        }
+        public DataClasses1DataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -70,12 +77,8 @@ namespace _2home.Models
 		{
 			OnCreated();
 		}
-        public DataClasses1DataContext() :
-        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString"].ConnectionString, mappingSource)
-        {
-
-        }
-        public DataClasses1DataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		
+		public DataClasses1DataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -134,6 +137,14 @@ namespace _2home.Models
 			get
 			{
 				return this.GetTable<Room>();
+			}
+		}
+		
+		public System.Data.Linq.Table<together> togethers
+		{
+			get
+			{
+				return this.GetTable<together>();
 			}
 		}
 	}
@@ -1546,6 +1557,8 @@ namespace _2home.Models
 		
 		private EntitySet<Room> _Rooms1;
 		
+		private EntitySet<together> _togethers;
+		
 		private EntityRef<user> _user;
 		
     #region Extensibility Method Definitions
@@ -1581,6 +1594,7 @@ namespace _2home.Models
 			this._imgs = new EntitySet<img>(new Action<img>(this.attach_imgs), new Action<img>(this.detach_imgs));
 			this._Videos = new EntitySet<Video>(new Action<Video>(this.attach_Videos), new Action<Video>(this.detach_Videos));
 			this._Rooms1 = new EntitySet<Room>(new Action<Room>(this.attach_Rooms1), new Action<Room>(this.detach_Rooms1));
+			this._togethers = new EntitySet<together>(new Action<together>(this.attach_togethers), new Action<together>(this.detach_togethers));
 			this._user = default(EntityRef<user>);
 			OnCreated();
 		}
@@ -1848,6 +1862,19 @@ namespace _2home.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_together", Storage="_togethers", ThisKey="Motel_ID", OtherKey="Motel_ID")]
+		public EntitySet<together> togethers
+		{
+			get
+			{
+				return this._togethers;
+			}
+			set
+			{
+				this._togethers.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Motel", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
 		public user user
 		{
@@ -1939,6 +1966,18 @@ namespace _2home.Models
 			this.SendPropertyChanging();
 			entity.Motel = null;
 		}
+		
+		private void attach_togethers(together entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = this;
+		}
+		
+		private void detach_togethers(together entity)
+		{
+			this.SendPropertyChanging();
+			entity.Motel = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Rooms")]
@@ -1984,6 +2023,8 @@ namespace _2home.Models
 		private System.Nullable<decimal> _money_paid;
 		
 		private EntitySet<RoomBill> _RoomBills;
+		
+		private EntitySet<together> _togethers;
 		
 		private EntityRef<user> _user;
 		
@@ -2034,6 +2075,7 @@ namespace _2home.Models
 		public Room()
 		{
 			this._RoomBills = new EntitySet<RoomBill>(new Action<RoomBill>(this.attach_RoomBills), new Action<RoomBill>(this.detach_RoomBills));
+			this._togethers = new EntitySet<together>(new Action<together>(this.attach_togethers), new Action<together>(this.detach_togethers));
 			this._user = default(EntityRef<user>);
 			this._Motel = default(EntityRef<Motel>);
 			OnCreated();
@@ -2420,6 +2462,19 @@ namespace _2home.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Room_together", Storage="_togethers", ThisKey="room_ID", OtherKey="room_ID")]
+		public EntitySet<together> togethers
+		{
+			get
+			{
+				return this._togethers;
+			}
+			set
+			{
+				this._togethers.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_Room", Storage="_user", ThisKey="ID_user", OtherKey="ID_user", IsForeignKey=true)]
 		public user user
 		{
@@ -2518,6 +2573,378 @@ namespace _2home.Models
 		{
 			this.SendPropertyChanging();
 			entity.Room = null;
+		}
+		
+		private void attach_togethers(together entity)
+		{
+			this.SendPropertyChanging();
+			entity.Room = this;
+		}
+		
+		private void detach_togethers(together entity)
+		{
+			this.SendPropertyChanging();
+			entity.Room = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.together")]
+	public partial class together : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _together_ID;
+		
+		private System.Nullable<int> _ID_user;
+		
+		private System.Nullable<int> _Motel_ID;
+		
+		private System.Nullable<int> _room_ID;
+		
+		private System.Nullable<decimal> _price;
+		
+		private string _location;
+		
+		private string _roomdetails;
+		
+		private string _is_available;
+		
+		private string _requestdetails;
+		
+		private System.DateTime _creation_date;
+		
+		private EntityRef<Motel> _Motel;
+		
+		private EntityRef<Room> _Room;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void Ontogether_IDChanging(int value);
+    partial void Ontogether_IDChanged();
+    partial void OnID_userChanging(System.Nullable<int> value);
+    partial void OnID_userChanged();
+    partial void OnMotel_IDChanging(System.Nullable<int> value);
+    partial void OnMotel_IDChanged();
+    partial void Onroom_IDChanging(System.Nullable<int> value);
+    partial void Onroom_IDChanged();
+    partial void OnpriceChanging(System.Nullable<decimal> value);
+    partial void OnpriceChanged();
+    partial void OnlocationChanging(string value);
+    partial void OnlocationChanged();
+    partial void OnroomdetailsChanging(string value);
+    partial void OnroomdetailsChanged();
+    partial void Onis_availableChanging(string value);
+    partial void Onis_availableChanged();
+    partial void OnrequestdetailsChanging(string value);
+    partial void OnrequestdetailsChanged();
+    partial void Oncreation_dateChanging(System.DateTime value);
+    partial void Oncreation_dateChanged();
+    #endregion
+		
+		public together()
+		{
+			this._Motel = default(EntityRef<Motel>);
+			this._Room = default(EntityRef<Room>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_together_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int together_ID
+		{
+			get
+			{
+				return this._together_ID;
+			}
+			set
+			{
+				if ((this._together_ID != value))
+				{
+					this.Ontogether_IDChanging(value);
+					this.SendPropertyChanging();
+					this._together_ID = value;
+					this.SendPropertyChanged("together_ID");
+					this.Ontogether_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_user", DbType="Int")]
+		public System.Nullable<int> ID_user
+		{
+			get
+			{
+				return this._ID_user;
+			}
+			set
+			{
+				if ((this._ID_user != value))
+				{
+					this.OnID_userChanging(value);
+					this.SendPropertyChanging();
+					this._ID_user = value;
+					this.SendPropertyChanged("ID_user");
+					this.OnID_userChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Motel_ID", DbType="Int")]
+		public System.Nullable<int> Motel_ID
+		{
+			get
+			{
+				return this._Motel_ID;
+			}
+			set
+			{
+				if ((this._Motel_ID != value))
+				{
+					if (this._Motel.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMotel_IDChanging(value);
+					this.SendPropertyChanging();
+					this._Motel_ID = value;
+					this.SendPropertyChanged("Motel_ID");
+					this.OnMotel_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_room_ID", DbType="Int")]
+		public System.Nullable<int> room_ID
+		{
+			get
+			{
+				return this._room_ID;
+			}
+			set
+			{
+				if ((this._room_ID != value))
+				{
+					if (this._Room.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.Onroom_IDChanging(value);
+					this.SendPropertyChanging();
+					this._room_ID = value;
+					this.SendPropertyChanged("room_ID");
+					this.Onroom_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_price", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> price
+		{
+			get
+			{
+				return this._price;
+			}
+			set
+			{
+				if ((this._price != value))
+				{
+					this.OnpriceChanging(value);
+					this.SendPropertyChanging();
+					this._price = value;
+					this.SendPropertyChanged("price");
+					this.OnpriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_location", DbType="NVarChar(MAX)")]
+		public string location
+		{
+			get
+			{
+				return this._location;
+			}
+			set
+			{
+				if ((this._location != value))
+				{
+					this.OnlocationChanging(value);
+					this.SendPropertyChanging();
+					this._location = value;
+					this.SendPropertyChanged("location");
+					this.OnlocationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_roomdetails", DbType="NVarChar(MAX)")]
+		public string roomdetails
+		{
+			get
+			{
+				return this._roomdetails;
+			}
+			set
+			{
+				if ((this._roomdetails != value))
+				{
+					this.OnroomdetailsChanging(value);
+					this.SendPropertyChanging();
+					this._roomdetails = value;
+					this.SendPropertyChanged("roomdetails");
+					this.OnroomdetailsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_is_available", DbType="NVarChar(25)")]
+		public string is_available
+		{
+			get
+			{
+				return this._is_available;
+			}
+			set
+			{
+				if ((this._is_available != value))
+				{
+					this.Onis_availableChanging(value);
+					this.SendPropertyChanging();
+					this._is_available = value;
+					this.SendPropertyChanged("is_available");
+					this.Onis_availableChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_requestdetails", DbType="NVarChar(MAX)")]
+		public string requestdetails
+		{
+			get
+			{
+				return this._requestdetails;
+			}
+			set
+			{
+				if ((this._requestdetails != value))
+				{
+					this.OnrequestdetailsChanging(value);
+					this.SendPropertyChanging();
+					this._requestdetails = value;
+					this.SendPropertyChanged("requestdetails");
+					this.OnrequestdetailsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_creation_date", DbType="DateTime NOT NULL")]
+		public System.DateTime creation_date
+		{
+			get
+			{
+				return this._creation_date;
+			}
+			set
+			{
+				if ((this._creation_date != value))
+				{
+					this.Oncreation_dateChanging(value);
+					this.SendPropertyChanging();
+					this._creation_date = value;
+					this.SendPropertyChanged("creation_date");
+					this.Oncreation_dateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Motel_together", Storage="_Motel", ThisKey="Motel_ID", OtherKey="Motel_ID", IsForeignKey=true)]
+		public Motel Motel
+		{
+			get
+			{
+				return this._Motel.Entity;
+			}
+			set
+			{
+				Motel previousValue = this._Motel.Entity;
+				if (((previousValue != value) 
+							|| (this._Motel.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Motel.Entity = null;
+						previousValue.togethers.Remove(this);
+					}
+					this._Motel.Entity = value;
+					if ((value != null))
+					{
+						value.togethers.Add(this);
+						this._Motel_ID = value.Motel_ID;
+					}
+					else
+					{
+						this._Motel_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Motel");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Room_together", Storage="_Room", ThisKey="room_ID", OtherKey="room_ID", IsForeignKey=true)]
+		public Room Room
+		{
+			get
+			{
+				return this._Room.Entity;
+			}
+			set
+			{
+				Room previousValue = this._Room.Entity;
+				if (((previousValue != value) 
+							|| (this._Room.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Room.Entity = null;
+						previousValue.togethers.Remove(this);
+					}
+					this._Room.Entity = value;
+					if ((value != null))
+					{
+						value.togethers.Add(this);
+						this._room_ID = value.room_ID;
+					}
+					else
+					{
+						this._room_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Room");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
