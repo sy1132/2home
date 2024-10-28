@@ -83,6 +83,20 @@ CREATE TABLE Mail (
     Content NVARCHAR(MAX) NOT NULL,        
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user) 
 );
+CREATE TABLE dbo.together(
+    together_ID INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    ID_user INT NULL,
+	Motel_ID INT,
+	room_ID INT,
+    price NUMERIC(18) NULL,
+    location NVARCHAR(MAX) NULL,
+    roomdetails NVARCHAR(MAX) NULL,
+	is_available NVARCHAR(25),
+	creation_date DATETIME DEFAULT GETDATE() NOT NULL,
+    requestdetails NVARCHAR(MAX) NULL,
+    FOREIGN KEY (Motel_ID) REFERENCES [Motel](Motel_ID),
+	FOREIGN KEY (room_ID) REFERENCES [Rooms](room_ID)
+);
 
 CREATE TABLE RoomBills (
     Bill_ID INT PRIMARY KEY IDENTITY(1,1), 
@@ -108,6 +122,8 @@ SELECT * FROM [user]
 SELECT * FROM Mail
 SELECT * FROM RoomBills
 SELECT * FROM Rooms
+SELECT * FROM together
+
 SELECT TOP 1 * 
 FROM RoomBills 
 ORDER BY Date_of_Issue DESC;

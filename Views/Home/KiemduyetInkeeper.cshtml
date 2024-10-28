@@ -1,0 +1,62 @@
+﻿@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "KiemduyetInkeeper";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<div class="container mt-4">
+    <h2 class="text-center">Danh Sách đơn xin ở chung</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên nhà trọ</th>
+                <th>Vị Trí</th>
+                <th>Giá</th>
+                <th>Chi Tiết Phòng</th> 
+                <th>Chi Tiết Yêu Cầu</th> 
+                <th>Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    
+                    <td>@item.MotelName</td>
+                    <td>@item.Location</td>
+                    <td>@item.Price</td> 
+                    <td>@item.roomdetails</td>
+                    <td>@item.requestdetails</td> 
+                    <td>
+                        <div class="btn-group">
+                            @using (Html.BeginForm("Accepti", "Home", FormMethod.Post))
+                            {
+                                @Html.Hidden("Motel_ID", item.Motel_ID)
+                                @Html.Hidden("room_ID", item.room_ID)
+                                @Html.Hidden("together_ID", item.together_ID)
+
+                                <input type="submit" value="Đồng ý" class="btn btn-success" />
+                            }
+                            @using (Html.BeginForm("Rejecti", "Home", FormMethod.Post))
+                            {
+                                @Html.Hidden("Motel_ID", item.Motel_ID)
+                                @Html.Hidden("room_ID", item.room_ID)
+                                @Html.Hidden("together_ID", item.together_ID)
+                                <input type="submit" value="Từ chối" class="btn btn-danger" />
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination-container">
+        @Html.PagedListPager(Model, page => Url.Action("Kiemduyet", new { page }), PagedListRenderOptions.Classic)
+    </div>
+</div>

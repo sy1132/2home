@@ -281,6 +281,7 @@
     <Content Include="Views\Home\viewContract.cshtml" />
     <Content Include="Views\Home\viewContractinkeeper.cshtml" />
     <Content Include="Views\Home\EditContract.cshtml" />
+    <Content Include="Views\Home\KiemduyetInkeeper.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

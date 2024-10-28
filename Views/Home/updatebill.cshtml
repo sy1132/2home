@@ -29,8 +29,6 @@
             <th>Người thuê trọ</th>
             <th>Số điện của tháng trước</th>
             <th>Số nước của tháng trước</th>
-
-
             <th>Tiền trọ</th>
             <th>Tổng tiền điện</th>
             <th>Tổng tiền nước</th>
@@ -39,7 +37,9 @@
             <th>Số điện</th>
             <th>Số nước</th>
             <th>Chi phí phát sinh</th>
-            <th>Cập nhật</th>
+            <th>Hành động</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -67,34 +67,65 @@
                 <td class="total-amount-due"></td>
                 <td>@items.Room_Status</td>
 
-                <form method="post" action="@Url.Action("updatebill", "Home")">
                 <td>
-                    <input type="text" class="form-control electricity-input" name="Electricity_Meter" value="" />
+                    <form method="post" action="@Url.Action("updatebill", "Home")" style="display:inline;">
+                        <input type="text" class="form-control electricity-input" name="Electricity_Meter" value="" />
+                    </form>
                 </td>
                 <td>
-                    <input type="text" class="form-control water-input" name="Water_Meter" value="" />
+                    <form method="post" action="@Url.Action("updatebill", "Home")" style="display:inline;">
+                        <input type="text" class="form-control water-input" name="Water_Meter" value="" />
+                    </form>
                 </td>
                 <td>
-                    <input type="text" class="form-control additional-charges-input" name="Additional_Charges" value="@items.Additional_Charges" />
+                    <form method="post" action="@Url.Action("updatebill", "Home")" style="display:inline;">
+                        <input type="text" class="form-control additional-charges-input" name="Additional_Charges" value="@items.Additional_Charges" />
+                    </form>
                 </td>
                 <td>
-                    <button type="submit" class="btn btn-info">Cập nhật</button>
-                    <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
-                    <input type="hidden" name="Room_ID" value="@items.Room_ID" />
-                    <input type="hidden" name="Previous_Electricity_Usage" value="@items.Previous_Electricity_Usage" />
-                    <input type="hidden" name="Electricity_Meter" value="@items.Electricity_Meter" />
-                    <input type="hidden" name="Previous_Water_Meter" value="@items.Previous_Water_Meter" />
-                    <input type="hidden" name="Water_Meter" value="@items.Water_Meter" />
-                    <input type="hidden" name="Additional_Charges" value="@items.Additional_Charges" />
-                    <input type="hidden" name="Price" value="@items.Price" />
-                    <input type="hidden" name="Electricity_Usage" value="@ViewBag.MotelName" />
-                    <input type="hidden" name="Water_Usage" value="@ViewBag.Location" />
+                    <form method="post" action="@Url.Action("updatebill", "Home")" style="display:inline;">
+                        <button type="submit" class="btn btn-info">Cập nhật</button>
+                        <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
+                        <input type="hidden" name="Room_ID" value="@items.Room_ID" />
+                        <input type="hidden" name="Previous_Electricity_Usage" value="@items.Previous_Electricity_Usage" />
+                        <input type="hidden" name="Electricity_Meter" value="@items.Electricity_Meter" />
+                        <input type="hidden" name="Previous_Water_Meter" value="@items.Previous_Water_Meter" />
+                        <input type="hidden" name="Water_Meter" value="@items.Water_Meter" />
+                        <input type="hidden" name="Additional_Charges" value="@items.Additional_Charges" />
+                        <input type="hidden" name="Price" value="@items.Price" />
+                        <input type="hidden" name="Electricity_Usage" value="@ViewBag.MotelName" />
+                        <input type="hidden" name="Water_Usage" value="@ViewBag.Location" />
+                    </form>
                 </td>
-                </form>
+
+                <td>
+                    <form method="post" action="@Url.Action("Delete")" class="form-inline" style="display:inline;">
+                        <input type="hidden" name="Room_ID" value="@items.Room_ID" />
+                        <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
+                        <button type="submit" class="btn btn-danger mb-2 mx-sm-3">Xóa phòng</button>
+                    </form>
+                </td>
+
+                <td>
+                    <form method="post" action="@Url.Action("Refresh")" class="form-inline" style="display:inline;">
+                        <input type="hidden" name="Room_ID" value="@items.Room_ID" />
+                        <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
+                        <button type="submit" class="btn btn-warning mb-2 mx-sm-3">Làm mới</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+<form method="post" action="@Url.Action("Create")" class="form-inline">
+    <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
+    <button type="submit" class="btn btn-success mb-2 mx-sm-3">Thêm</button>
+</form>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("rental_management", new { page }), PagedListRenderOptions.Classic)
+</div>
 
 <div class="pagination-container">
     @Html.PagedListPager(Model, page => Url.Action("rental_management", new { page }), PagedListRenderOptions.Classic)

@@ -10,9 +10,13 @@ namespace _2home.ViewModels
         public string ImgLink { get; set; }
         public string MotelName { get; set; }
         public int? Motel_ID { get; set; }
+        public int? together_ID { get; set; }
 
-
+        public int? Room_ID { get; set; }
         public string Location { get; set; }
+        public string requestdetails { get; set; }
+
+        public string roomdetails { get; set; }
         public Nullable<decimal> Price { get; set; }
         public decimal? Deposit { get; set; }
 

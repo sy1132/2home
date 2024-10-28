@@ -8,65 +8,63 @@
         color: red;
         font-size: 0.9em;
     }
+
+    .success-message {
+        color: green;
+        font-size: 1em;
+        margin-bottom: 1em;
+    }
 </style>
 
-
 <div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem;">
+    <h2 class="card-title text-center mb-4">Đăng ký tìm người ở chung</h2>
+
+    
+
     <form id="registrationForm" asp-action="RegisterDK" enctype="multipart/form-data" method="post" class="row g-3">
-        <h2 class="card-title text-center mb-4">Đăng ký tìm người ở chung</h2>
         <div class="col-md-6">
-            <label for="inputRoomName" class="form-label">@Model.MotelName</label>
-            <input type="text" class="form-control" id="inputRoomName" name="roomName">
-            <span class="error-message" id="roomNameError"></span>
+            <label class="form-label">Tên nhà trọ</label>
+            <input type="text" class="form-control" id="inputRoomName" name="roomName"
+                   value="@Model.MotelName" readonly>
+        </div>
+        <div class="col-md-6">
+            <label for="inputPrice" class="form-label">Giá phòng (VNĐ)</label>
+            <input type="number" class="form-control" id="inputPrice" name="Price"
+                   value="@Model.Price" readonly>
         </div>
         <div class="col-12">
-            <label for="inputLocation" class="form-label">@Model.Location</label>
-            <input type="text" class="form-control" id="inputLocation" name="LocationName">
-            <span class="error-message" id="locationError"></span>
+            <label for="inputLocation" class="form-label">Địa chỉ</label>
+            <input type="text" class="form-control" id="inputLocation" name="LocationName"
+                   value="@Model.Location" readonly>
         </div>
-        
-        <div class="col-md-6">
-            <label for="inputPrice" class="form-label">@Model.Price (VNĐ)</label>
-            <input type="number" class="form-control" id="inputPrice" name="Price">
-            <span class="error-message" id="priceError"></span>
+        <div class="col-12">
+            <label for="inputRoomDetails" class="form-label">Chi tiết phòng</label>
+            <textarea class="form-control" id="inputRoomDetails" name="RoomDetails" rows="4" placeholder="Nhập chi tiết phòng trọ..."></textarea>
+            <span class="error-message" id="roomDetailsError"></span>
         </div>
-        <div class="item">
-            <img class="img-trang" src="@Model.ImgLink" alt="Image" />
-            <div>
 
-                <div class="col-md-6">
-                    <label for="inputCCCDImage" class="form-label">Hình ảnh CCCD và ảnh chân dung</label>
-                    <input type="file" class="form-control" id="inputCCCDImage" name="CCCDImages" accept="image/*" multiple>
-                    <span class="error-message" id="cccdImageError"></span>
-                    <div class="preview-container" id="cccdImagePreviewContainer"></div>
-                </div>
-
-                <div class="col-md-6">
-                    <label for="inputVideo" class="form-label">Video</label>
-                    <input type="file" class="form-control" id="inputVideo" name="Videos" accept="video/*" multiple>
-                    <span class="error-message" id="videoError"></span>
-                    <div class="preview-container" id="videoPreviewContainer"></div>
-                </div>
-
-                <div class="col-12">
-                    <label for="inputRoomDetails" class="form-label">Chi tiết phòng</label>
-                    <textarea class="form-control" id="inputRoomDetails" name="RoomDetails" rows="4" placeholder="Nhập chi tiết phòng trọ..."></textarea>
-                    <span class="error-message" id="roomDetailsError"></span>
-                </div>
-
-                <div class="col-12">
-                    <label for="inputRequestDetails" class="form-label">Chi tiết yêu cầu người ở chung</label>
-                    <textarea class="form-control" id="inputRequestDetails" name="RequestDetails" rows="4" placeholder="Nhập chi tiết yêu cầu..."></textarea>
-                    <span class="error-message" id="requestDetailsError"></span>
-                </div>
-
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary w-100">Đăng</button>
-                </div>
-                <div class="col-12 text-center">
-                    <p id="message"></p>
-                </div>
-</form>
+        <div class="col-12">
+            <label for="inputRequestDetails" class="form-label">Chi tiết yêu cầu người ở chung</label>
+            <textarea class="form-control" id="inputRequestDetails" name="RequestDetails" rows="4" placeholder="Nhập chi tiết yêu cầu..."></textarea>
+            <span class="error-message" id="requestDetailsError"></span>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">Đăng</button>
+        </div>
+        <div class="col-12 text-center">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="success-message">@TempData["SuccessMessage"]</div>
+            }
+            else if (TempData["ErrorMessage"] != null)
+            {
+                <div class="error-message">@TempData["ErrorMessage"]</div>
+            }
+        </div>
+        <div class="col-12 text-center">
+            <p id="message"></p>
+        </div>
+    </form>
 </div>
 
 <div id="myModal" class="modal">

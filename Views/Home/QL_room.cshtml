@@ -1,5 +1,4 @@
-﻿
-@model PagedList.IPagedList<_2home.ViewModels.room>
+﻿@model PagedList.IPagedList<_2home.ViewModels.room>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "QL_room";
@@ -8,6 +7,8 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
+
 
 <table class="table table-bordered">
     <thead>
@@ -18,9 +19,8 @@
             <th>Tổng tiền nước</th>
             <th>Chi phí phát sinh</th>
             <th>Tiền trọ</th>
-            <th>Tổng tiền </th>
+            <th>Tổng tiền</th>
             <th>Tình Trạng</th>
-
         </tr>
     </thead>
     <tbody>
@@ -37,7 +37,6 @@
                         @items.fullname
                     }
                 </td>
-
                 <td>@items.Date_of_Issue</td>
                 <td>@items.Electricity_Bill</td>
                 <td>@items.Water_Bill</td>
@@ -45,11 +44,11 @@
                 <td>@items.Price</td>
                 <td>@items.Total_Amount_Due</td>
                 <td>@items.Room_Status</td>
-                
             </tr>
         }
-
     </tbody>
+    
+
 </table>
 
 <div class="pagination-container">

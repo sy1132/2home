@@ -81,6 +81,7 @@
       <Association Name="Motel_img" Member="imgs" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="img" />
       <Association Name="Motel_Video" Member="Videos" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Video" />
       <Association Name="Motel_Room" Member="Rooms1" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Room" />
+      <Association Name="Motel_together" Member="togethers" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="together" />
       <Association Name="user_Motel" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
     </Type>
   </Table>
@@ -105,8 +106,25 @@
       <Column Name="Deposit" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
       <Column Name="money_paid" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
       <Association Name="Room_RoomBill" Member="RoomBills" ThisKey="room_ID" OtherKey="Room_ID" Type="RoomBill" />
+      <Association Name="Room_together" Member="togethers" ThisKey="room_ID" OtherKey="room_ID" Type="together" />
       <Association Name="user_Room" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
       <Association Name="Motel_Room" Member="Motel" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Motel" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.together" Member="togethers">
+    <Type Name="together">
+      <Column Name="together_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Motel_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="room_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="location" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="roomdetails" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="is_available" Type="System.String" DbType="NVarChar(25)" CanBeNull="true" />
+      <Column Name="requestdetails" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="creation_date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Motel_together" Member="Motel" ThisKey="Motel_ID" OtherKey="Motel_ID" Type="Motel" IsForeignKey="true" />
+      <Association Name="Room_together" Member="Room" ThisKey="room_ID" OtherKey="room_ID" Type="Room" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
