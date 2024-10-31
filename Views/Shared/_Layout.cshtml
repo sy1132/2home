@@ -140,9 +140,6 @@
                                             <a class="dropdown-item" href="@Url.Action("rent_check", "Home")">
                                                 <i class="fas fa-clipboard-list"></i> Xem tiền trọ
                                             </a>
-                                            <a class="dropdown-item" href="@Url.Action("viewContract", "Home")">
-                                                <i class="fas fa-user-plus"></i> Xem thời hạn hợp đồng
-                                            </a>
                                         }
                                     </li>
 
@@ -166,6 +163,11 @@
                                 <li>
                                     <a class="dropdown-item" href="@Url.Action("Settings", "Home")">
                                         <i class="fas fa-cog"></i> Settings
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="@Url.Action("TogetherView", "Home")">
+                                        <i class="fas fa-cog"></i> Trang ở ghép
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
@@ -206,7 +208,7 @@
                         </button>
                     </div>
 
-                    <div class="d-flex justify-content-start align-items-center mb-2">
+                    <div class="d-flex justify-content-start">
                         <fieldset class="me-2">
                             <select class="rounded-2 p-2" style="font-weight: bold;" id="inputCity" name="City">
                                 <option selected value="">Chọn thành phố...</option>
@@ -224,30 +226,13 @@
                             </select>
                         </fieldset>
 
-                        <fieldset class="me-2">
+                        <fieldset>
                             <select class="rounded-2 p-2" style="font-weight: bold;" id="inputDistrict" name="District" disabled>
                                 <option selected value="">Chọn khu...</option>
                             </select>
                         </fieldset>
-
-                        <div class="form-check form-switch me-3">
-                            <input class="form-check-input" type="checkbox" id="roomTypeToggle1" name="roomType" value="NhaTro" checked onchange="toggleCheckbox('roomTypeToggle2', this)">
-                            <label class="form-check-label" for="roomTypeToggle1" style="font-weight: bold;">
-                                Nhà trọ
-                            </label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="roomTypeToggle2" name="roomType" value="OChung" onchange="toggleCheckbox('roomTypeToggle1', this)">
-                            <label class="form-check-label" for="roomTypeToggle2" style="font-weight: bold;">
-                                Ở chung
-                            </label>
-                        </div>
-
                     </div>
                 </div>
-
-
-
             </form>
         </div>
     </div>
@@ -278,9 +263,9 @@
                 <div class="col-md-3 mb-3 text-center">
                     <h6 class="text-uppercase">Người làm</h6>
                     <ul class="list-unstyled small">
-                        <li><i class="fas fa-user"></i> Nguyễn Văn Sỹ</li>
-                        <li><i class="fas fa-user"></i> Ngô Vũ Hoàng Gia</li>
-                        <li><i class="fas fa-user"></i> Nguyễn Trung Hải</li>
+                        <li><i class="fas fa-user"></i> Nguyễn Văn A</li>
+                        <li><i class="fas fa-user"></i> Trần Thị B</li>
+                        <li><i class="fas fa-user"></i> Lê Văn C</li>
                     </ul>
                 </div>
             </div>
@@ -324,19 +309,11 @@
     }
 
         .nav-link-custom:hover {
-            color: #ffcc00; 
+            color: #ffcc00; /* Example hover color */
         }
 </style>
 
 <script>
-    function toggleCheckbox(otherCheckboxId, currentCheckbox) {
-        const otherCheckbox = document.getElementById(otherCheckboxId);
-        if (currentCheckbox.checked) {
-            otherCheckbox.checked = false;
-        } else {
-            otherCheckbox.checked = true;
-        }
-    }
     const data1 = {
         "Dĩ An": {
             wards: {
@@ -371,6 +348,7 @@
         const wardSelect = document.getElementById('inputWard');
         const districtSelect = document.getElementById('inputDistrict');
 
+        // Reset ward and district selections
         wardSelect.innerHTML = '<option value="">Chọn phường</option>';
         districtSelect.innerHTML = '<option value="">Chọn khu</option>';
         wardSelect.disabled = true;

@@ -34,9 +34,6 @@
             <th>Tổng tiền nước</th>
             <th>Tổng tiền</th>
             <th>Tình Trạng</th>
-            <th>Số điện</th>
-            <th>Số nước</th>
-            <th>Chi phí phát sinh</th>
             <th>Hành động</th>
             <th></th>
             <th></th>
@@ -69,22 +66,19 @@
 
                 <td>
                     <form method="post" action="@Url.Action("updatebill", "Home")" style="display:inline;">
-                        <input type="text" class="form-control electricity-input" name="Electricity_Meter" value="" />
-                    </form>
-                </td>
-                <td>
-                    <form method="post" action="@Url.Action("updatebill", "Home")" style="display:inline;">
-                        <input type="text" class="form-control water-input" name="Water_Meter" value="" />
-                    </form>
-                </td>
-                <td>
-                    <form method="post" action="@Url.Action("updatebill", "Home")" style="display:inline;">
-                        <input type="text" class="form-control additional-charges-input" name="Additional_Charges" value="@items.Additional_Charges" />
-                    </form>
-                </td>
-                <td>
-                    <form method="post" action="@Url.Action("updatebill", "Home")" style="display:inline;">
-                        <button type="submit" class="btn btn-info">Cập nhật</button>
+                        <div class="form-group">
+                            <label for="Electricity_Meter">Điện</label>
+                            <input type="text" class="form-control electricity-input" name="Electricity_Meter" id="Electricity_Meter" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Water_Meter">Nước</label>
+                            <input type="text" class="form-control water-input" name="Water_Meter" id="Water_Meter" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Additional_Charges">Chi phí bổ sung</label>
+                            <input type="text" class="form-control additional-charges-input" name="Additional_Charges" id="Additional_Charges" value="@items.Additional_Charges" />
+                        </div>
+
                         <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
                         <input type="hidden" name="Room_ID" value="@items.Room_ID" />
                         <input type="hidden" name="Previous_Electricity_Usage" value="@items.Previous_Electricity_Usage" />
@@ -95,8 +89,12 @@
                         <input type="hidden" name="Price" value="@items.Price" />
                         <input type="hidden" name="Electricity_Usage" value="@ViewBag.MotelName" />
                         <input type="hidden" name="Water_Usage" value="@ViewBag.Location" />
+
+                        <button type="submit" class="btn btn-info">Cập nhật</button>
                     </form>
                 </td>
+
+
 
                 <td>
                     <form method="post" action="@Url.Action("Delete")" class="form-inline" style="display:inline;">
@@ -122,10 +120,6 @@
     <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
     <button type="submit" class="btn btn-success mb-2 mx-sm-3">Thêm</button>
 </form>
-
-<div class="pagination-container">
-    @Html.PagedListPager(Model, page => Url.Action("rental_management", new { page }), PagedListRenderOptions.Classic)
-</div>
 
 <div class="pagination-container">
     @Html.PagedListPager(Model, page => Url.Action("rental_management", new { page }), PagedListRenderOptions.Classic)

@@ -17,7 +17,6 @@
             <th>Tình trạng</th>
             <th>Xem phòng</th>
             <th>Cập nhật tiền trọ</th>
-            <th>Cập nhật hợp đồng</th>
 
         </tr>
     </thead>
@@ -29,8 +28,7 @@
                 <td>@item.location</td>
                 <td>@item.price</td>
 
-                @if (item.Debt == 0)
-                {
+                
                     <td>
                         @using (Html.BeginForm("UpdateAvailability1", "Home", FormMethod.Post))
                         {
@@ -60,29 +58,7 @@
                             </p>
                         }
                     </td>
-                    <td>
-                        @using (Html.BeginForm("viewContractinkeeper", "Home", FormMethod.Get))
-                        {
-                            @Html.Hidden("Motel_ID", item.Motel_ID)
-                            <p class="class-submit">
-                                <input type="submit" value="Xem hợp đồng" />
-                            </p>
-                        }
-                    </td>
-                }
-                else
-                {
-                    <td>Phòng trọ chưa đóng tiền</td>
-                    <td>
-                        @using (Html.BeginForm("pay", "Home", FormMethod.Get))
-                        {
-                            @Html.Hidden("Motel_ID", item.Motel_ID)
-                            <p class="class-submit">
-                                <input type="submit" value="Đóng tiền" />
-                            </p>
-                        }
-                    </td>
-                }
+               
             </tr>
         } 
     </tbody>

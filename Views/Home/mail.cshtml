@@ -27,6 +27,7 @@
                 <td>@mail.SendDate</td>
                 <td>@mail.Content</td>
                 <td>
+                <td>
                     @if (mail.Content.Contains("Xin vào phòng trọ với mã phòng: "))
                     {
                         var roomId = mail.Content.Split(new[] { "mã phòng: " }, StringSplitOptions.None).LastOrDefault()?.Trim();
@@ -36,8 +37,13 @@
                                 <input type="hidden" name="roomId" value="@roomId" />
                                 <button type="submit" class="btn btn-success">Đồng ý</button>
                             </form>
+                            <form method="post" action="@Url.Action("RejectRoom", "Home")">
+                                <input type="hidden" name="roomId" value="@roomId" />
+                                <button type="submit" class="btn btn-danger">Từ chối</button>
+                            </form>
                         }
                     }
+                </td>
                 </td>
             </tr>
         }
