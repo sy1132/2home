@@ -6,6 +6,12 @@
 }
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function toggleReasonField(motelId) {
+            var reasonField = document.getElementById("reasonField_" + motelId);
+            reasonField.style.display = reasonField.style.display === "none" ? "block" : "none";
+        }
+    </script>
 </head>
 <table class="table table-bordered">
     <thead>
@@ -17,6 +23,8 @@
             <th>Tình Trạng</th>
             <th>Chi Tiết</th>
             <th>Hành Động</th>
+            <th>Hành Động</th>
+
         </tr>
     </thead>
     <tbody>
@@ -46,13 +54,18 @@
                     }
                 </td>
                 <td>
-                    @using (Html.BeginForm("Reject", "Home", FormMethod.Post))
-                    {
-                        @Html.Hidden("Motel_ID", items.Motel_ID)
-                        <input type="submit" value="Từ chối" class="btn btn-danger" />
-                    }
+                    <input type="button" value="Từ chối" class="btn btn-danger" onclick="toggleReasonField('@items.Motel_ID')" />
+                    <div id="reasonField_@items.Motel_ID" style="display: none; margin-top: 10px;">
+                        @using (Html.BeginForm("Reject", "Home", FormMethod.Post))
+                        {
+                            @Html.Hidden("Motel_ID", items.Motel_ID)
+                            <label for="reasonInput_@items.Motel_ID">Lý do hủy:</label>
+                            <textarea id="reasonInput_@items.Motel_ID" name="Reason" class="form-control" rows="2" required></textarea>
+                            <br />
+                            <input type="submit" value="Gửi lý do" class="btn btn-primary" />
+                        }
+                    </div>
                 </td>
-
             </tr>
         }
     </tbody>

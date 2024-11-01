@@ -153,6 +153,7 @@
     <Compile Include="ViewModels\Motel.cs" />
     <Compile Include="ViewModels\pic.cs" />
     <Compile Include="ViewModels\room.cs" />
+    <Compile Include="ViewModels\TogetherDto.cs" />
     <Compile Include="ViewModels\user.cs" />
     <Compile Include="ViewModels\viewmail.cs" />
   </ItemGroup>
@@ -277,11 +278,10 @@
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Home\updatebill.cshtml" />
     <Content Include="Views\Home\loaded.cshtml" />
-    <Content Include="Views\Home\AcceptRoomDetails.cshtml" />
-    <Content Include="Views\Home\viewContract.cshtml" />
     <Content Include="Views\Home\viewContractinkeeper.cshtml" />
     <Content Include="Views\Home\EditContract.cshtml" />
     <Content Include="Views\Home\KiemduyetInkeeper.cshtml" />
+    <Content Include="Views\Home\TogetherView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

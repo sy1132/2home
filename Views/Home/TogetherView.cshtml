@@ -1,0 +1,82 @@
+﻿@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
+@using PagedList.Mvc;
+@{
+    var itemsList = Model.ToList();
+}
+
+@{
+    ViewBag.Title = "TogetherView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link href="~/asset/css/index.css" rel="stylesheet" />
+</head>
+<body>
+    @for (int i = 0; i < itemsList.Count; i += 2)
+    {
+        <div class="row">
+            <div class="item">
+                <img class="img-trang" src="@itemsList[i].ImgLink" alt="Image" />
+                <div>
+                    <strong>Tên:</strong> @itemsList[i].MotelName<br />
+                    <strong>Địa chỉ:</strong> @itemsList[i].Location<br />
+                    <strong>Giá:</strong> @itemsList[i].Price<br />
+                    <strong>chi tiết phòng:</strong> @itemsList[i ].roomdetails<br />
+
+                    <strong>Yêu cầu:</strong> @itemsList[i].requestdetails<br />
+                    <strong>Tình trạng:</strong> @itemsList[i].is_available
+                    <strong>chi tiết phòng:</strong> @itemsList[i].roomdetails<br />
+                    @using (Html.BeginForm("Details", "Home", FormMethod.Get))
+                    {
+                        @Html.Hidden("Motel_ID", itemsList[i].Motel_ID)
+                        <p class="class-submit">
+                            <input type="submit" value="Xem chi tiết" />
+                        </p>
+                    }
+
+                </div>
+            </div>
+
+            @if (i + 1 < itemsList.Count)
+            {
+                <div class="item">
+                    <img class="img-trang" src="@itemsList[i + 1].ImgLink" alt="Image" />
+                    <div>
+                        <strong>Tên trọ:</strong> @itemsList[i + 1].MotelName<br />
+                        <strong>Vị trí:</strong> @itemsList[i + 1].Location<br />
+                        <strong>Giá:</strong> @itemsList[i + 1].Price<br />
+                        <strong>chi tiết phòng:</strong> @itemsList[i + 1].roomdetails<br />
+
+                        <strong>Yêu cầu:</strong> @itemsList[i + 1].requestdetails<br />
+
+                        @using (Html.BeginForm("Details", "Home", FormMethod.Get))
+                        {
+                            @Html.Hidden("Motel_ID", itemsList[i + 1].Motel_ID)
+                            <p class="class-submit">
+                                <input type="submit" value="Xem chi tiết" />
+                            </p>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+            @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+            {
+                <p>
+                    Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
+                </p>
+                @Html.Hidden("page", (object)ViewBag.Page)
+            }
+        </div>
+        <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+            Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+        </div>
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, size = ViewBag.CurrentSize }))
+    </div>
+</body>
+
+</table>

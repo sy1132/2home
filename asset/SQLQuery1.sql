@@ -24,18 +24,15 @@ CREATE TABLE Motel (
     is_available NVARCHAR(50),
 	Details NVARCHAR(MAX),
 	rooms int,
+	months int,
+	VIP int,
 	CreatedDate date,
-	Deposit DECIMAL(10, 2),
-	Debt decimal(10, 2),
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
 
 );
-UPDATE Motel
-SET debt = debt + DATEDIFF(MONTH, CreatedDate, GETDATE()) * price;
 
 
-
-CREATE TABLE Rooms(
+CREATE TABLE Rooms (
     room_ID INT IDENTITY(1,1) PRIMARY KEY,
     Motel_ID INT,
     ID_user INT,
@@ -49,14 +46,13 @@ CREATE TABLE Rooms(
     Electricity_Bill DECIMAL(10, 2),
     Water_Bill DECIMAL(10, 2),
     Room_Status NVARCHAR(50),
-	contract INT,
-	Room_Rent DECIMAL(20, 2),
-	Deposit DECIMAL(10, 2),
-	money_paid DECIMAL(10, 2),
+    Room_Rent DECIMAL(20, 2),
+    money_paid DECIMAL(10, 2),
     Additional_Charges DECIMAL(10, 2),
     FOREIGN KEY (Motel_ID) REFERENCES Motel(Motel_ID),
-    FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
+	FOREIGN KEY (ID_user) REFERENCES [user](ID_user)
 );
+
 CREATE TABLE Video (
     video_ID int IDENTITY(1,1) PRIMARY KEY,
     Motel_ID INT,
@@ -83,7 +79,7 @@ CREATE TABLE Mail (
     Content NVARCHAR(MAX) NOT NULL,        
     FOREIGN KEY (ID_user) REFERENCES [user](ID_user) 
 );
-CREATE TABLE dbo.together(
+CREATE TABLE together(
     together_ID INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
     ID_user INT NULL,
 	Motel_ID INT,
