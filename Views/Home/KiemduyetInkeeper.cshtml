@@ -7,6 +7,16 @@
 
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function toggleReasonField(motelId) {
+            var reasonField = document.getElementById("reasonField_" + motelId);
+            if (reasonField.style.display === "none") {
+                reasonField.style.display = "block";
+            } else {
+                reasonField.style.display = "none";
+            }
+        }
+    </script>
 </head>
 
 <div class="container mt-4">
@@ -17,8 +27,8 @@
                 <th>Tên nhà trọ</th>
                 <th>Vị Trí</th>
                 <th>Giá</th>
-                <th>Chi Tiết Phòng</th> 
-                <th>Chi Tiết Yêu Cầu</th> 
+                <th>Chi Tiết Phòng</th>
+                <th>Chi Tiết Yêu Cầu</th>
                 <th>Hành Động</th>
             </tr>
         </thead>
@@ -26,12 +36,11 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    
                     <td>@item.MotelName</td>
                     <td>@item.Location</td>
-                    <td>@item.Price</td> 
+                    <td>@item.Price</td>
                     <td>@item.roomdetails</td>
-                    <td>@item.requestdetails</td> 
+                    <td>@item.requestdetails</td>
                     <td>
                         <div class="btn-group">
                             @using (Html.BeginForm("Accepti", "Home", FormMethod.Post))
@@ -39,15 +48,20 @@
                                 @Html.Hidden("Motel_ID", item.Motel_ID)
                                 @Html.Hidden("room_ID", item.room_ID)
                                 @Html.Hidden("together_ID", item.together_ID)
-
                                 <input type="submit" value="Đồng ý" class="btn btn-success" />
                             }
+                            <input type="button" value="Từ chối" class="btn btn-danger" onclick="toggleReasonField('@item.Motel_ID')" />
+                        </div>
+                        <div id="reasonField_@item.Motel_ID" style="display: none; margin-top: 10px;">
                             @using (Html.BeginForm("Rejecti", "Home", FormMethod.Post))
                             {
                                 @Html.Hidden("Motel_ID", item.Motel_ID)
                                 @Html.Hidden("room_ID", item.room_ID)
                                 @Html.Hidden("together_ID", item.together_ID)
-                                <input type="submit" value="Từ chối" class="btn btn-danger" />
+                                <label for="reasonInput_@item.Motel_ID">Lý do từ chối:</label>
+                                <textarea id="reasonInput_@item.Motel_ID" name="Reason" class="form-control" rows="2" required></textarea>
+                                <br />
+                                <input type="submit" value="Gửi lý do" class="btn btn-primary" />
                             }
                         </div>
                     </td>

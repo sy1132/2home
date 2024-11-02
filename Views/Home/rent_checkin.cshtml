@@ -1,0 +1,128 @@
+﻿
+@model PagedList.IPagedList<_2home.Models.RoomBill>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "rent_checkin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        padding: 15px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .btn {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-info {
+        background-color: #007bff;
+    }
+
+        .btn-info:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h5>Tổng Kết Quá Trình Thanh Toán</h5>
+        </div>
+        <div class="card-body">
+            <p>Tổng tiền điện: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalElectricity ?? 0)</strong></p>
+            <p>Tổng tiền nước: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalWater ?? 0)</strong></p>
+            <p>Tổng chi phí phát sinh: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalAdditionalCharges ?? 0)</strong></p>
+            <p>Tổng tiền trọ: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalRent ?? 0)</strong></p>
+            <p>Tổng số tiền phải thanh toán: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalAmountDue ?? 0)</strong></p>
+            <p>Tổng tiền phòng đã trả: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalPaid ?? 0)</strong></p>
+            <p>Số tiền nợ: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalDebt ?? 0)</strong></p>
+            <form method="post" action="@Url.Action("UpdatePayment", "Home")">
+                <div class="form-group">
+                    <label for="paymentAmount">Nhập số tiền mà người thuê đã đóng:</label>
+                    <input type="number" name="paymentAmount" class="form-control" id="paymentAmount" placeholder="Số tiền" min="0" required />
+                    <input type="hidden" name="ID_User" value="@ViewBag.ID_User" />
+
+                </div>
+                <button type="submit" class="btn btn-info">Cập nhật</button>
+            </form>        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Ngày cập nhật</th>
+                <th>Tổng tiền điện</th>
+                <th>Tổng tiền nước</th>
+                <th>Chi phí phát sinh</th>
+                <th>Tiền trọ</th>
+                <th>Tổng tiền </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var items in Model)
+            {
+                <tr>
+
+                    <td>@items.Date_of_Issue</td>
+                    <td>@items.Electricity_Bill</td>
+                    <td>@items.Water_Bill</td>
+                    <td>@items.Additional_Charges</td>
+                    <td>@items.Price</td>
+                    <td>@items.Total_Amount_Due</td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+
+

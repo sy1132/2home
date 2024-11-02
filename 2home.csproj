@@ -282,6 +282,7 @@
     <Content Include="Views\Home\EditContract.cshtml" />
     <Content Include="Views\Home\KiemduyetInkeeper.cshtml" />
     <Content Include="Views\Home\TogetherView.cshtml" />
+    <Content Include="Views\Home\rent_checkin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

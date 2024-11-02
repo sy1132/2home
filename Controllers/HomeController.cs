@@ -478,7 +478,7 @@ namespace _2home.Controllers
         }
 
         [HttpPost]
-        public ActionResult Rejecti(int? Motel_ID, int? room_ID, int? together_ID)
+        public ActionResult Rejecti(int? Motel_ID, int? room_ID, int? together_ID, string Reason)
         {
             if (together_ID.HasValue)
             {
@@ -500,7 +500,8 @@ namespace _2home.Controllers
                     {
                         Sender = senderID.ID_user,
                         Recipient = recipientID.Value,
-                        Content = "Đơn đăng ký ở chung của bạn bị từ chối.",
+                        Content = $"Đơn đăng ký ở chung của bạn bị từ chối. Lý do: {Reason}",
+
                         SendDate = DateTime.Now,
                         ID_user = (int)t.ID_user
                     };
@@ -1181,27 +1182,26 @@ namespace _2home.Controllers
                 ViewBag.MotelName = 0;
                 ViewBag.Location = 0;
             }
+
             var query = from r in db.Rooms
-                        join rb in
-                            (from rb1 in db.RoomBills
-                             group rb1 by rb1.Room_ID into rbGroup
-                             let latestDate = rbGroup.Max(x => x.Date_of_Issue)
-                             select rbGroup.FirstOrDefault(x => x.Date_of_Issue == latestDate))
-                            on r.room_ID equals rb.Room_ID
                         join m in db.Motels on r.Motel_ID equals m.Motel_ID
                         where m.ID_user == user_save && (Motel_ID == null || r.Motel_ID == Motel_ID)
                         select new room
                         {
                             Room_ID = r.room_ID,
+                            ID_User=r.ID_user,
                             Motel_ID = r.Motel_ID,
                             fullname = (from u in db.users where u.ID_user == r.ID_user select u.fullname).FirstOrDefault(),
-                            Date_of_Issue = rb.Date_of_Issue,
-                            Electricity_Bill = rb.Electricity_Bill,
-                            Water_Bill = rb.Water_Bill,
-                            Additional_Charges = rb.Additional_Charges,
+                            Date_of_Issue = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID select rb1.Date_of_Issue).Max(),
+                            Electricity_Bill = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID select rb1.Electricity_Bill).FirstOrDefault(),
+                            Water_Bill = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID select rb1.Water_Bill).FirstOrDefault(),
+                            Additional_Charges = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID select rb1.Additional_Charges).FirstOrDefault(),
                             Price = m.price,
-                            Room_Status = rb.Room_Status,
-                            Total_Amount_Due = rb.Total_Amount_Due,
+                            moneypay = (int)r.money_paid,
+                            Room_Status = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID orderby rb1.Date_of_Issue descending select rb1.Room_Status).FirstOrDefault(),
+                            Total_Amount_Due = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID select rb1.Total_Amount_Due).Sum(),
+                            Latest_Total_Amount_Due = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID orderby rb1.Date_of_Issue descending select rb1.Total_Amount_Due).FirstOrDefault()
+
                         };
 
             page = page ?? 1;
@@ -1210,7 +1210,8 @@ namespace _2home.Controllers
 
             return View(model);
         }
-        public ActionResult updatebill(int? Motel_ID, int? size, int? page)
+        
+    public ActionResult updatebill(int? Motel_ID, int? size, int? page)
         {
             var id_save = Session["User"] as _2home.ViewModels.User;
             if (id_save == null)
@@ -1286,28 +1287,24 @@ namespace _2home.Controllers
                 var roomToDelete = db.Rooms.FirstOrDefault(r => r.room_ID == Room_ID.Value);
                 if (roomToDelete != null)
                 {
-                    // Xóa các bản ghi trong bảng `RoomBills` tham chiếu đến phòng này
                     var relatedRoomBills = db.RoomBills.Where(rb => rb.Room_ID == Room_ID.Value);
                     db.RoomBills.DeleteAllOnSubmit(relatedRoomBills);
 
-                    // Xóa các bản ghi trong bảng `together` tham chiếu đến phòng này
                     var relatedTogetherRecords = db.togethers.Where(t => t.room_ID == Room_ID.Value);
                     db.togethers.DeleteAllOnSubmit(relatedTogetherRecords);
 
-                    // Lấy ID_user từ phòng để tìm MotelID trong bảng Users
                     int? userId = roomToDelete.ID_user;
                     if (userId.HasValue)
                     {
                         var user = db.users.FirstOrDefault(u => u.ID_user == userId.Value);
                         if (user != null)
                         {
-                            user.MotelID = null; // Đảm bảo sử dụng tên đúng cho trường MotelID
+                            user.MotelID = null; 
                         }
                     }
 
-                    // Xóa phòng khỏi `Rooms`
                     db.Rooms.DeleteOnSubmit(roomToDelete);
-                    db.SubmitChanges(); // Lưu tất cả các thay đổi vào cơ sở dữ liệu
+                    db.SubmitChanges(); 
                 }
             }
 
@@ -1545,7 +1542,79 @@ namespace _2home.Controllers
 
             return View(model.ToPagedList(pageNumber, pageSize));
         }
+        [HttpGet]
+        public ActionResult rent_checkin(int? size, int? page,int ID_User)
+        {
+            
 
+            var query = from rb in db.RoomBills
+                        join r in db.Rooms on rb.Room_ID equals r.room_ID
+                        where r.ID_user == ID_User
+                        select rb;
+
+            var totalElectricity = query.Sum(rb => rb.Electricity_Bill);
+            var totalWater = query.Sum(rb => rb.Water_Bill);
+            var totalAdditionalCharges = query.Sum(rb => rb.Additional_Charges);
+            var totalRent = query.Sum(rb => rb.Price);
+            var totalAmountDue = query.Sum(rb => rb.Total_Amount_Due);
+
+            var totalPaid = db.Rooms
+                .Where(r => r.ID_user == ID_User)
+                .Sum(r => (decimal?)r.money_paid) ?? 0;
+
+            ViewBag.ID_User = ID_User;
+
+            ViewBag.TotalElectricity = totalElectricity;
+            ViewBag.TotalWater = totalWater;
+            ViewBag.TotalAdditionalCharges = totalAdditionalCharges;
+            ViewBag.TotalAmountDue = totalAmountDue;
+            ViewBag.TotalRent = query.Sum(rb => rb.Price);
+            ViewBag.TotalPaid = totalPaid;
+
+            ViewBag.TotalDebt = totalAmountDue - totalPaid;
+            ViewBag.Page = page;
+
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "10", Value = "10" });
+            items.Add(new SelectListItem { Text = "20", Value = "20" });
+            items.Add(new SelectListItem { Text = "25", Value = "25" });
+            items.Add(new SelectListItem { Text = "50", Value = "50" });
+            items.Add(new SelectListItem { Text = "100", Value = "100" });
+            items.Add(new SelectListItem { Text = "200", Value = "200" });
+
+            foreach (var item in items)
+            {
+                if (item.Value == size.ToString()) item.Selected = true;
+            }
+
+            ViewBag.size = items;
+            ViewBag.currentSize = size;
+
+            page = page ?? 1;
+            int pageSize = (size ?? 10);
+            int pageNumber = (page ?? 1);
+            var model = query.ToList();
+
+            return View(model.ToPagedList(pageNumber, pageSize));
+        }
+
+        [HttpPost]
+        public ActionResult UpdatePayment(decimal paymentAmount, int ID_User)
+        {
+            using (var context = new DataClasses1DataContext())
+            {
+                var room = context.Rooms.SingleOrDefault(r => r.ID_user == ID_User);
+
+                if (room != null)
+                {
+                    room.money_paid += paymentAmount;
+
+                    context.SubmitChanges();
+                }
+            }
+
+            return RedirectToAction("rent_checkin", new { ID_User = ID_User });
+        }
 
         public ActionResult Profile_user(int ID_user)
         {
