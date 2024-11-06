@@ -33,7 +33,7 @@ namespace _2home.Controllers
         public ActionResult Index(int? size, int? page, string searchString, string City, string Ward, string District)
         {
             ViewBag.Keyword = searchString;
-            
+
             var query = from img in db.imgs
                         join motel in db.Motels on img.Motel_ID equals motel.Motel_ID
                         where motel.is_available == "Còn trống"
@@ -57,6 +57,35 @@ namespace _2home.Controllers
                             Details = grouped.Key.Details,
                             Motel_ID = grouped.Key.Motel_ID,
                         };
+
+            var vipMotels = (from m in db.Motels
+                             join p in db.imgs on m.Motel_ID equals p.Motel_ID
+                             orderby Guid.NewGuid()
+                             select new index_Viewmodel
+                             {
+                                 Motel_ID=m.Motel_ID,
+                                 MotelName = m.Name_motel,
+                                 Location = m.location,
+                                 ImgLink = p.Link,
+                                 price=m.price,
+                             }).Take(4).ToList();
+
+            var sharedMotels = (from t in db.togethers
+                                join motel in db.Motels on t.Motel_ID equals motel.Motel_ID
+                                join img in db.imgs on motel.Motel_ID equals img.Motel_ID
+                                select new index_Viewmodel
+                                {
+                                    ID_user = t.ID_user,
+                                    Motel_ID = t.Motel_ID,
+                                    room_ID = t.room_ID,
+                                    price = t.price,
+                                    location = t.location,
+                                    roomdetails = t.roomdetails,
+                                    requestdetails = t.requestdetails,
+                                    MotelName = motel.Name_motel,
+                                    ImgLink = img.Link
+                                }).Take(4).ToList();
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 var keywords = searchString.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
@@ -66,7 +95,7 @@ namespace _2home.Controllers
                 foreach (var keyword in keywords)
                 {
                     query = query.Where(b => b.MotelName.Contains(keyword)
-                                          || b.Details.Contains(keyword));
+                                           || b.Details.Contains(keyword));
                 }
             }
             if (!String.IsNullOrEmpty(City))
@@ -77,14 +106,17 @@ namespace _2home.Controllers
 
             if (!String.IsNullOrEmpty(District))
                 query = query.Where(b => b.Location.Contains(District));
+
             ViewBag.Page = page;
-            List<SelectListItem> items = new List<SelectListItem>();
-            items.Add(new SelectListItem { Text = "10", Value = "10" });
-            items.Add(new SelectListItem { Text = "20", Value = "20" });
-            items.Add(new SelectListItem { Text = "25", Value = "25" });
-            items.Add(new SelectListItem { Text = "50", Value = "50" });
-            items.Add(new SelectListItem { Text = "100", Value = "100" });
-            items.Add(new SelectListItem { Text = "200", Value = "200" });
+            List<SelectListItem> items = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "10", Value = "10" },
+        new SelectListItem { Text = "20", Value = "20" },
+        new SelectListItem { Text = "25", Value = "25" },
+        new SelectListItem { Text = "50", Value = "50" },
+        new SelectListItem { Text = "100", Value = "100" },
+        new SelectListItem { Text = "200", Value = "200" }
+    };
             foreach (var item in items)
             {
                 if (item.Value == size.ToString()) item.Selected = true;
@@ -94,11 +126,18 @@ namespace _2home.Controllers
 
             page = page ?? 1;
             int pageSize = (size ?? 10);
-
             int pageNumber = (page ?? 1);
-            var model = query.ToList();
-            return View(model.ToPagedList(pageNumber, pageSize));
+
+            var model = new index_Viewmodel
+            {
+                Motels = query.ToPagedList(pageNumber, pageSize),
+                VipMotels = vipMotels,
+                SharedMotels = sharedMotels
+            };
+
+            return View(model);
         }
+
         public ActionResult TogetherView(string City, string Ward, string District, int? size, int? page)
         {
             var togetherQuery = from t in db.togethers
@@ -169,7 +208,7 @@ namespace _2home.Controllers
                                 }).FirstOrDefault();
             var randomMotels = (from m in db.Motels
                                 join p in db.imgs on m.Motel_ID equals p.Motel_ID
-                                where m.Motel_ID != Motel_ID 
+                                where m.Motel_ID != Motel_ID && m.VIP == 0 && m.is_available=="Còn trống"
                                 orderby Guid.NewGuid() 
                                 select new pic
                                 {
@@ -1182,27 +1221,30 @@ namespace _2home.Controllers
                 ViewBag.MotelName = 0;
                 ViewBag.Location = 0;
             }
-
             var query = from r in db.Rooms
                         join m in db.Motels on r.Motel_ID equals m.Motel_ID
                         where m.ID_user == user_save && (Motel_ID == null || r.Motel_ID == Motel_ID)
                         select new room
                         {
                             Room_ID = r.room_ID,
-                            ID_User=r.ID_user,
+                            ID_User = r.ID_user,
                             Motel_ID = r.Motel_ID,
-                            fullname = (from u in db.users where u.ID_user == r.ID_user select u.fullname).FirstOrDefault(),
-                            Date_of_Issue = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID select rb1.Date_of_Issue).Max(),
-                            Electricity_Bill = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID select rb1.Electricity_Bill).FirstOrDefault(),
-                            Water_Bill = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID select rb1.Water_Bill).FirstOrDefault(),
-                            Additional_Charges = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID select rb1.Additional_Charges).FirstOrDefault(),
-                            Price = m.price,
-                            moneypay = (int)r.money_paid,
-                            Room_Status = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID orderby rb1.Date_of_Issue descending select rb1.Room_Status).FirstOrDefault(),
-                            Total_Amount_Due = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID select rb1.Total_Amount_Due).Sum(),
-                            Latest_Total_Amount_Due = (from rb1 in db.RoomBills where rb1.Room_ID == r.room_ID orderby rb1.Date_of_Issue descending select rb1.Total_Amount_Due).FirstOrDefault()
-
+                            fullname = db.users.Where(u => u.ID_user == r.ID_user).Select(u => u.fullname).FirstOrDefault() ?? "N/A",
+                            Date_of_Issue = db.RoomBills.Where(rb1 => rb1.Room_ID == r.room_ID).Max(rb1 => (DateTime?)rb1.Date_of_Issue) ?? DateTime.Today,
+                            Electricity_Bill = db.RoomBills.Where(rb1 => rb1.Room_ID == r.room_ID).Select(rb1 => (decimal?)rb1.Electricity_Bill).FirstOrDefault() ?? 0m, // giá trị mặc định cho decimal
+                            Water_Bill = db.RoomBills.Where(rb1 => rb1.Room_ID == r.room_ID).Select(rb1 => (decimal?)rb1.Water_Bill).FirstOrDefault() ?? 0m, // giá trị mặc định cho decimal
+                            Additional_Charges = db.RoomBills.Where(rb1 => rb1.Room_ID == r.room_ID).Select(rb1 => (decimal?)rb1.Additional_Charges).FirstOrDefault() ?? 0m, // giá trị mặc định cho decimal
+                            Price = m.price ?? 0m, 
+                            moneypay = (int)(r.money_paid ?? 0m), 
+                            Room_Status = db.RoomBills
+                                .Where(rb1 => rb1.Room_ID == r.room_ID)
+                                .OrderByDescending(rb1 => rb1.Date_of_Issue)
+                                .Select(rb1 => rb1.Room_Status)
+                                .FirstOrDefault() ?? "Giá trị mặc định",
+                            Total_Amount_Due = db.RoomBills.Where(rb1 => rb1.Room_ID == r.room_ID).Sum(rb1 => (decimal?)rb1.Total_Amount_Due) ?? 0m, // giá trị mặc định cho decimal
+                            Latest_Total_Amount_Due = db.RoomBills.Where(rb1 => rb1.Room_ID == r.room_ID).OrderByDescending(rb1 => rb1.Date_of_Issue).Select(rb1 => (decimal?)rb1.Total_Amount_Due).FirstOrDefault() ?? 0m // giá trị mặc định cho decimal
                         };
+
 
             page = page ?? 1;
             int pageSize = size ?? 10;
@@ -1605,7 +1647,7 @@ namespace _2home.Controllers
             {
                 var room = context.Rooms.SingleOrDefault(r => r.ID_user == ID_User);
 
-                if (room != null)
+                if (room != null)   
                 {
                     room.money_paid += paymentAmount;
 

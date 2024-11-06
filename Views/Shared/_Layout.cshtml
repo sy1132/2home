@@ -10,6 +10,7 @@
     <link href="~/asset/css/layout.css" rel="stylesheet" />
 
     <style>
+
         .nav-link-custom {
             font-weight: bold;
         }
@@ -47,27 +48,84 @@
                 color: #ffffff;
                 border: none;
             }
+        .container-fluid {
+            position: relative;
+        }
 
+            .container-fluid::before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: #ffffff;
+                left: 0; 
+                z-index: -1;
+                transform: skewY(-5deg);
+            }
+        .bg-half-dark {
+            background: linear-gradient(135deg, #0a1a33 30%, #ffffff 30%);
+        }
+        .text-black {
+            color: #000000; 
+            font-size: 1.25rem; 
+        }
+
+        .nav-link {
+            color: #000000; 
+        }
+
+            .text-black:hover {
+                color: #ff6600; 
+            }
+        .nav-link {
+            color: #000000; 
+        }
+
+            .nav-link:hover {
+                color: #ff6600; 
+            }
+      
+        .slide__text {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 1;
+            transition: all 0.7s;
+            z-index: 3;
+        }
     </style>
 </head>
 
 <body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-half-dark w-100">
         <div class="container-fluid">
             <a href="@Url.Action("Index", "Home")" class="navbar-brand">
-                <img src="~/Content/logo 2 home ngang.png" alt="Alternate Text" class="rounded-2" style="width:100px;">
+                <img src="~/Content/2.png" alt="Alternate Text" class="rounded-2" style="width:70px;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav ms-auto d-flex align-items-center">
+                <ul class="navbar-nav ms-4 d-flex justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 mx-2" href="@Url.Action("Index", "Home")">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 mx-2" href="@Url.Action("AboutUs", "Home")">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 mx-2" href="@Url.Action("Index", "Home")">Phòng Trọ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 mx-2" href="@Url.Action("TogetherView", "Home")">Phòng Ở Chung</a>
+                    </li>
                     @if (Session["User"] != null)
                     {
                         var user = Session["User"] as _2home.ViewModels.User;
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white mx-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-black mx-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Xin chào, @user.fullname
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -117,7 +175,7 @@
                                 }
                                 else
                                 {
-                                   
+
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
                                             <i class="fas fa-clipboard-list"></i> Đăng ký thuê
@@ -188,107 +246,147 @@
             </div>
         </div>
     </nav>
-
-    <div class="d-flex justify-content-center">
-        <div class="card-header bg-warning gap-2 m-3 p-3 rounded-3 d-flex flex-column w-50">
-            <form class="d-flex flex-column mb-3" role="search" method="get" action="@Url.Action("Index")">
-                <button type="button" class="btn btn-success border-2 mb-2" style="font-weight: bold;" onclick="toggleSearch()">
-                    Tìm kiếm
-                </button>
-
-                <div id="search-container" class="search-container" style="display: none;">
-                    <div class="d-flex mb-2">
-                        <input class="form-control me-1 flex-grow-1" type="search" placeholder="Search" aria-label="Search" name="searchString" value="@ViewBag.Keyword">
-                        <button type="submit" class="btn btn-outline-primary border-2" style="font-weight: bold;">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-
-                    <div class="d-flex justify-content-start">
-                        <fieldset class="me-2">
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputCity" name="City">
-                                <option selected value="">Chọn thành phố...</option>
-                                <option value="Dĩ An">Dĩ An</option>
-                                <option value="Thuận An">Thuận An</option>
-                                <option value="Thủ Dầu Một">Thủ Dầu Một</option>
-                                <option value="Tân Uyên">Tân Uyên</option>
-                                <option value="Bến Cát">Bến Cát</option>
-                            </select>
-                        </fieldset>
-
-                        <fieldset class="me-2">
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputWard" name="Ward" disabled>
-                                <option selected value="">Chọn phường...</option>
-                            </select>
-                        </fieldset>
-
-                        <fieldset>
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputDistrict" name="District" disabled>
-                                <option selected value="">Chọn khu...</option>
-                            </select>
-                        </fieldset>
-                    </div>
-                </div>
-            </form>
+    <div class="position-relative text-center">
+        <img src="~/asset/images/2.jpg" alt="Mô tả ảnh" class="img-fluid" style="width: 100%; height: auto;">
+        <div class="slide__text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 3;">
+            <div style="font-size: 4rem; color: white; font-family: 'Roboto', sans-serif;">Chào mừng tới SecondHome</div>
+            <div style="font-size: 2.5rem; color: white; font-family: 'Roboto', sans-serif;">Nơi tìm kiếm nhà trọ và nơi ở một cách nhanh chóng</div>
         </div>
-    </div>
+        <div class="d-flex justify-content-center position-absolute" style="bottom: -50px; left: 50%; transform: translateX(-50%); width: 100%;">
+            <div class="card-header" style="background-color: white; gap: 2; margin: 0; padding: 3; border-radius: 0.3rem; display: flex; flex-direction: column; width: 90%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);">
+                <form class="d-flex flex-column mb-3" role="search" method="get" action="@Url.Action("Index")">
+                    <button type="button" class="btn border-2 mb-2" style="background-color: white; color: black; border: 2px solid black; font-weight: bold; margin-bottom: 2px;" onclick="toggleSearch()">
+                        Tìm kiếm
+                    </button>
 
+                    <div id="search-container" class="search-container" style="display: none;">
+                        <div class="d-flex mb-2">
+                            <input class="form-control me-1 flex-grow-1" type="search" placeholder="Nhập tên phòng trọ hoặc đặc điểm của trọ" aria-label="Search" name="searchString" value="@ViewBag.Keyword" style="font-size: 1.2rem; border: 2px solid black; border-radius: 0.3rem;">
+                            <button type="submit" class="btn btn-outline-primary border-0" style="font-weight: bold; font-size: 1.2rem; background-color: red; color: white; border: 2px solid black; border-radius: 0.3rem; margin-left: 2px;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+
+                        <div class="d-flex justify-content-start">
+                            <fieldset class="me-2">
+                                <select class="rounded-2 p-2" style="font-weight: bold; font-size: 1.2rem; background-color: white; border: 2px solid black;" id="inputCity" name="City">
+                                    <option selected value="">Chọn thành phố...</option>
+                                    <option value="Dĩ An">Dĩ An</option>
+                                    <option value="Thuận An">Thuận An</option>
+                                    <option value="Thủ Dầu Một">Thủ Dầu Một</option>
+                                    <option value="Tân Uyên">Tân Uyên</option>
+                                    <option value="Bến Cát">Bến Cát</option>
+                                </select>
+                            </fieldset>
+
+                            <fieldset class="me-2">
+                                <select class="rounded-2 p-2" style="font-weight: bold; font-size: 1.2rem; background-color: white; border: 2px solid black;" id="inputWard" name="Ward" disabled>
+                                    <option selected value="">Chọn phường...</option>
+                                </select>
+                            </fieldset>
+
+                            <fieldset>
+                                <select class="rounded-2 p-2" style="font-weight: bold; font-size: 1.2rem; background-color: white; border: 2px solid black;" id="inputDistrict" name="District" disabled>
+                                    <option selected value="">Chọn khu...</option>
+                                </select>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div style="background-color: white; height: 50px; width: 100%; margin-bottom:30px">
+    </div>
     <div class="d-flex flex-column justify-content-center align-items-center">
         @RenderBody()
         <hr />
     </div>
-    <footer class="bg-dark text-white py-3">
-        <div class="container w-auto">
-            <div class="row justify-content-between">
-                <div class="col-md-3 mb-3 text-center">
-                    <h6 class="text-uppercase">CSKH</h6>
-                    <ul class="list-unstyled small">
-                        <li><i class="fas fa-phone"></i> Hotline: 123-456-789</li>
-                        <li><i class="fas fa-envelope"></i> Email: support@secondhome.com</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-3 mb-3 text-center">
-                    <h6 class="text-uppercase">Liên lạc với chúng tôi</h6>
-                    <ul class="list-unstyled small">
-                        <li><i class="fas fa-map-marker-alt"></i> Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM</li>
-                        <li><i class="fas fa-phone"></i> Điện thoại: 987-654-321</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-3 mb-3 text-center">
-                    <h6 class="text-uppercase">Người làm</h6>
-                    <ul class="list-unstyled small">
-                        <li><i class="fas fa-user"></i> Nguyễn Văn A</li>
-                        <li><i class="fas fa-user"></i> Trần Thị B</li>
-                        <li><i class="fas fa-user"></i> Lê Văn C</li>
-                    </ul>
-                </div>
+    <footer class="custom-footer bg-dark text-white py-3">
+        <div class="footer-container">
+            <div class="footer-item">
+                <h6 class="text-uppercase">CSKH</h6>
+                <ul class="list-unstyled small">
+                    <li><i class="fas fa-phone"></i> Hotline: 123-456-789</li>
+                    <li><i class="fas fa-envelope"></i> Email: support@secondhome.com</li>
+                </ul>
             </div>
-
-            <div class="row">
-                <div class="col-12 text-center">
-                    <ul class="list-inline">
-                        <li class="list-inline-item">
-                            <a href="#" class="text-white"><i class="fab fa-facebook fa-lg"></i></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="footer-item">
+                <h6 class="text-uppercase">Liên lạc với chúng tôi</h6>
+                <ul class="list-unstyled small">
+                    <li><i class="fas fa-map-marker-alt"></i> Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM</li>
+                    <li><i class="fas fa-phone"></i> Điện thoại: 987-654-321</li>
+                </ul>
             </div>
+            <div class="footer-item">
+                <h6 class="text-uppercase">Người làm</h6>
+                <ul class="list-unstyled small">
+                    <li><i class="fas fa-user"></i> Nguyễn Văn A</li>
+                    <li><i class="fas fa-user"></i> Trần Thị B</li>
+                    <li><i class="fas fa-user"></i> Lê Văn C</li>
+                </ul>
+            </div>
+        </div>
+        <div class="social-icons">
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="#" class="text-white"><i class="fab fa-facebook fa-lg"></i></a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                </li>
+            </ul>
         </div>
         <hr class="bg-light">
         <p class="text-center small mb-0">&copy; 2024 - Phòng chuyên môn Devmaster. All rights reserved.</p>
     </footer>
 
+    <style>
+        .custom-footer {
+            text-align: center;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-item {
+            flex: 1 1 200px;
+            max-width: 300px;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+            .social-icons .list-inline-item {
+                margin: 0 10px;
+            }
+    </style>
+
+
 </body>
 </html>
 <style>
+ 
+    .custom-footer p {
+        margin: 0;
+        padding-top: 10px;
+    }
+
+
+    .custom-footer p {
+        margin: 0;
+        padding-top: 10px;
+    }
+
     .search-container {
         transition: width 0.5s ease;
         width: 0;
@@ -305,11 +403,34 @@
     }
 
         .nav-link-custom:hover {
-            color: #ffcc00; /* Example hover color */
+            color: #ffcc00;
         }
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        .btn-outline-danger:hover {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+    .btn-outline-primary {
+        color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-outline-primary:hover {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
 </style>
 
 <script>
+   
     const data1 = {
         "Dĩ An": {
             wards: {
@@ -344,7 +465,6 @@
         const wardSelect = document.getElementById('inputWard');
         const districtSelect = document.getElementById('inputDistrict');
 
-        // Reset ward and district selections
         wardSelect.innerHTML = '<option value="">Chọn phường</option>';
         districtSelect.innerHTML = '<option value="">Chọn khu</option>';
         wardSelect.disabled = true;

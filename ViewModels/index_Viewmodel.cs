@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using PagedList;
 
 namespace _2home.ViewModels
 {
     public class index_Viewmodel
 
     {
+        public IPagedList<index_Viewmodel> Motels { get; set; }
+        public List<index_Viewmodel> VipMotels { get; set; }
+        public List<index_Viewmodel> SharedMotels { get; set; }
+
         public decimal? price { get; set; }
         public string location { get; set; }
         public string ImgLink { get; set; }

@@ -163,6 +163,9 @@
     <Content Include="asset\css\DK.css" />
     <Content Include="asset\css\layout.css" />
     <Content Include="asset\css\login.css" />
+    <Content Include="asset\images\1.jpg" />
+    <Content Include="asset\images\2.jpg" />
+    <Content Include="asset\images\5.jpg" />
     <Content Include="asset\images\logo traver bufflo.jpg" />
     <Content Include="asset\images\user.jpg" />
     <Content Include="asset\images\video.png" />
@@ -313,7 +316,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63923</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44305/</IISUrl>
+          <IISUrl>https://localhost:44301</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -1,72 +1,217 @@
-﻿@{
+﻿@model _2home.ViewModels.index_Viewmodel
+
+@using PagedList.Mvc;
+@{
+    var itemsList = Model.Motels.ToList();
+}
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model PagedList.IPagedList<_2home.ViewModels.index_Viewmodel>
-@using PagedList.Mvc;
-@{
-    var itemsList = Model.ToList();
-}
-
 <head>
-    <link href="~/asset/css/index.css" rel="stylesheet" />  
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        h4 {
+            color: #333;
+            text-align: center;
+        }
+
+        .img-trang {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .item {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+            .item:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+
+        .info {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            text-align: left;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .item:hover .info {
+            display: block;
+        }
+
+        .class-submit input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .class-submit input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+
+        .card-body h5 {
+            font-size: 1.2rem;
+            color: #007bff;
+        }
+
+        .card-body p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .card-body strong {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .motel-section {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
-<body >
-    @for (int i = 0; i < itemsList.Count; i += 2)
-    {
+<body>
+    <div class="container-fluid">
         <div class="row">
-            <div class="item">
-                <img class="img-trang" src="@itemsList[i].ImgLink" alt="Image" />
-                <div>
-                    <strong>Tên:</strong> @itemsList[i].MotelName<br />
-                    <strong>Địa chỉ:</strong> @itemsList[i].Location<br />
-                    <strong>Giá:</strong> @itemsList[i].Price<br />
-                    <strong>Tình trạng:</strong> @itemsList[i].is_available
-                    @using (Html.BeginForm("Details", "Home", FormMethod.Get))
+            <div class="col-md-2">
+                <div class="motel-section">
+                    <div class="section-title">
+                        <h4>Phòng ghép</h4>
+                    </div>
+                    @if (Model.SharedMotels != null && Model.SharedMotels.Any())
                     {
-                        @Html.Hidden("Motel_ID", itemsList[i].Motel_ID)
-                        <p class="class-submit">
-                            <input type="submit" value="Xem chi tiết" />
-                        </p>
+                        foreach (var sharedMotel in Model.SharedMotels)
+                        {
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <a href="@Url.Action("Details", "Home", new { Motel_ID = sharedMotel.Motel_ID })">
+                                        <img class="img-fluid img-trang" src="@sharedMotel.ImgLink" alt="Image" />
+                                    </a>
+                                    <h5>@sharedMotel.MotelName</h5>
+
+                                    <p>@sharedMotel.Location</p>
+                                    <strong>Giá:</strong> @sharedMotel.price
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-center">Không có motel nào để hiển thị.</p>
                     }
                 </div>
             </div>
 
-            @if (i + 1 < itemsList.Count)
-            {
-                <div class="item">
-                    <img class="img-trang" src="@itemsList[i + 1].ImgLink" alt="Image" />
-                    <div>
-                        <strong>Tên:</strong> @itemsList[i + 1].MotelName<br />
-                        <strong>Vị trí:</strong> @itemsList[i + 1].Location<br />
-                        <strong>Giá:</strong> @itemsList[i + 1].Price<br />
-                        <strong>Tình trạng:</strong> @itemsList[i + 1].is_available
-                        @using (Html.BeginForm("Details", "Home", FormMethod.Get))
-                        {
-                            @Html.Hidden("Motel_ID", itemsList[i + 1].Motel_ID)
-                            <p class="class-submit">
-                                <input type="submit" value="Xem chi tiết" />
-                            </p>
-                        }
-                    </div>
+            <div class="col-md-8">
+                <h4>Danh sách nhà trọ</h4>
+                <div class="row">
+                    @for (int i = 0; i < itemsList.Count; i++)
+                    {
+                        <div class="col-md-6">
+                            <div class="item">
+                                <a href="@Url.Action("Details", "Home", new { Motel_ID = itemsList[i].Motel_ID })">
+                                    <img class="img-trang" src="@itemsList[i].ImgLink" alt="Image" />
+                                </a>
+                                <div>
+                                    <strong>@itemsList[i].MotelName</strong>
+                                </div>
+                                <div class="info">
+                                    <strong>Địa chỉ:</strong> @itemsList[i].Location<br />
+                                    <strong>Giá:</strong> @itemsList[i].Price<br />
+                                    <strong>Tình trạng:</strong> @itemsList[i].is_available
+                                    @using (Html.BeginForm("Details", "Home", FormMethod.Get))
+                                    {
+                                        @Html.Hidden("Motel_ID", itemsList[i].Motel_ID)
+                                        <p class="class-submit">
+                                            <input type="submit" value="Xem chi tiết" />
+                                        </p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
-            }
-        </div>
-    }
+            </div>
 
-    <div class="row">
-        <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
-            @using (Html.BeginForm("Index", "Home", FormMethod.Get))
-            {
-                <p>
-                    Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
-                </p>
-                @Html.Hidden("page", (object)ViewBag.Page)
-            }
+            <div class="col-md-2">
+                <div class="motel-section">
+                    <div class="section-title">
+                        <h4>Nhà trọ VIP</h4>
+                    </div>
+                    @if (Model.VipMotels != null && Model.VipMotels.Any())
+                    {
+                        foreach (var vipMotel in Model.VipMotels)
+                        {
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <a href="@Url.Action("Details", "Home", new { Motel_ID = vipMotel.Motel_ID })">
+                                        <img class="img-fluid img-trang" src="@vipMotel.ImgLink" alt="Image" />
+                                    </a>
+                                    <h5>@vipMotel.MotelName</h5>
+
+                                    <p>@vipMotel.Location</p>
+                                    <strong>Giá:</strong> @vipMotel.price
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-center">Không có motel nào để hiển thị.</p>
+                    }
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
-            Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+
+        <div class="row">
+            <div class="col-md-6">
+                @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+                {
+                    <p>
+                        Kích thước trang: @Html.DropDownList("size", (List<SelectListItem>)ViewBag.Size, new { @onchange = "this.form.submit();" })
+                    </p>
+                    @Html.Hidden("page", (object)ViewBag.Page)
+                }
+            </div>
+            <div class="col-md-6 text-right">
+                Trang: @(Model.Motels.PageCount < Model.Motels.PageNumber ? 0 : Model.Motels.PageNumber) / @Model.Motels.PageCount
+            </div>
+            @Html.PagedListPager(Model.Motels, page => Url.Action("Index", new { page, size = ViewBag.CurrentSize }))
         </div>
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, size = ViewBag.CurrentSize }))
     </div>
 </body>

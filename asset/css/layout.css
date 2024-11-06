@@ -1,6 +1,6 @@
 ﻿
 body {
-    background: url('../images/website-background-templates.jpg') fixed;
+    background: url('../images/1.jpg') fixed;
     background-repeat:no-repeat;
     background-size:cover;
 }
@@ -48,7 +48,7 @@ input[type="submit"] {
     input[type="submit"]:hover {
         background-color: #45a049;
     }
-}
+
 
 .search-container {
     transition: width 0.5s ease;
@@ -61,14 +61,14 @@ input[type="submit"] {
 }
 
 .Logout {
-    position: relative; /* Để sử dụng position: absolute trên ::before */
-    padding: 10px 20px; /* Khoảng cách trong nút */
-    color: white; /* Màu chữ */
-    background-color: #007bff; /* Màu nền của nút */
-    border: none; /* Không có viền */
-    border-radius: 5px; /* Góc bo tròn cho nút */
-    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua nút */
-    text-decoration: none; /* Xóa gạch chân */
+    position: relative;
+    padding: 10px 20px;
+    color: white; 
+    background-color: #007bff; 
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer; 
+    text-decoration: none; 
 }
 
     .Logout::before {
@@ -80,12 +80,12 @@ input[type="submit"] {
         left: 0;
         position: absolute;
         top: 0;
-        transform: scale(0); /* Bắt đầu không nhìn thấy */
-        transition: transform 200ms ease; /* Thay đổi tốc độ và kiểu chuyển tiếp */
+        transform: scale(0); 
+        transition: transform 200ms ease; 
         width: 100%;
         z-index: 2;
     }
 
     .Logout:hover::before {
-        transform: scale(1); /* Phóng to khi di chuột */
+        transform: scale(1); 
     }
