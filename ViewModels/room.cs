@@ -7,6 +7,9 @@ namespace _2home.ViewModels
 {
     public class room
     {
+        public int moneypay { get; set; }
+        public int? RemainingTime { get; set; }
+        public DateTime? ContractEndDate { get; set; }
         public int? Room_ID { get; set; }
 
         public int? Motel_ID { get; set; }
@@ -30,13 +33,19 @@ namespace _2home.ViewModels
         public decimal? Water_Bill { get; set; }
 
         public string Room_Status { get; set; }
+        public string motelname { get; set; }
+
 
         public decimal? Room_Rent { get; set; }
+        public int? Deposit { get; set; }
+
+        public int? contract { get; set; }
 
         public decimal? Additional_Charges { get; set; }
 
-
         public decimal? Total_Amount_Due { get; set; }
+
+        public decimal? Latest_Total_Amount_Due { get; set; }
         public string fullname { get; set; }
 
         public virtual Motel Motel { get; set; }

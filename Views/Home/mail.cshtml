@@ -4,7 +4,7 @@
     ViewBag.Title = "Mail List";
 }
 
-<h2>Mail List</h2>
+<h2>Hộp thư</h2>
 
 
 
@@ -15,18 +15,39 @@
             <th>người nhận</th>
             <th>ngày gửi</th>
             <th>nội dung</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var mail in Model)
         {
             <tr>
-                <td>@item.user1</td>
-                <td>@item.user2</td>
-                <td>@item.SendDate.ToString("dd/MM/yyyy")</td>
-                <td>@item.Content</td>
+                <td>@mail.user1</td>
+                <td>@mail.user2</td>
+                <td>@mail.SendDate</td>
+                <td>@mail.Content</td>
+                <td>
+                <td>
+                    @if (mail.Content.Contains("Xin vào phòng trọ với mã phòng: "))
+                    {
+                        var roomId = mail.Content.Split(new[] { "mã phòng: " }, StringSplitOptions.None).LastOrDefault()?.Trim();
+                        if (!string.IsNullOrEmpty(roomId))
+                        {
+                            <form method="post" action="@Url.Action("AcceptRoom", "Home")">
+                                <input type="hidden" name="roomId" value="@roomId" />
+                                <button type="submit" class="btn btn-success">Đồng ý</button>
+                            </form>
+                            <form method="post" action="@Url.Action("RejectRoom", "Home")">
+                                <input type="hidden" name="roomId" value="@roomId" />
+                                <button type="submit" class="btn btn-danger">Từ chối</button>
+                            </form>
+                        }
+                    }
+                </td>
+                </td>
             </tr>
         }
+
     </tbody>
 </table>
 <form method="get" action="@Url.Action("mail")">

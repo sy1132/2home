@@ -29,8 +29,6 @@
             <th>Người thuê trọ</th>
             <th>Số điện của tháng trước</th>
             <th>Số nước của tháng trước</th>
-
-
             <th>Tiền trọ</th>
             <th>Tổng tiền điện</th>
             <th>Tổng tiền nước</th>
@@ -38,14 +36,18 @@
             <th>Tình Trạng</th>
             <th>Số điện</th>
             <th>Số nước</th>
-            <th>Chi phí phát sinh</th>
-            <th>Cập nhật</th>
+            <th>Chi phí bổ sung</th>
+
+            <th>Hành động</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var items in Model)
         {
             <tr>
+                <form method="post" action="@Url.Action("updatebill", "Home")">
                 <td>
                     <input type="checkbox" class="room-checkbox" name="selectedRooms" value="@items.Room_ID" />
                 </td>
@@ -67,34 +69,53 @@
                 <td class="total-amount-due"></td>
                 <td>@items.Room_Status</td>
 
-                <form method="post" action="@Url.Action("updatebill", "Home")">
                 <td>
-                    <input type="text" class="form-control electricity-input" name="Electricity_Meter" value="" />
+                    <input type="text" class="form-control electricity-input" name="Electricity_Meter" value="" placeholder="Điện" />
                 </td>
                 <td>
-                    <input type="text" class="form-control water-input" name="Water_Meter" value="" />
+                    <input type="text" class="form-control water-input" name="Water_Meter" value="" placeholder="Nước" />
                 </td>
                 <td>
-                    <input type="text" class="form-control additional-charges-input" name="Additional_Charges" value="@items.Additional_Charges" />
+                    <input type="text" class="form-control additional-charges-input" name="Additional_Charges" value="@items.Additional_Charges" placeholder="Chi phí bổ sung" />
                 </td>
+
+                <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
+                <input type="hidden" name="Room_ID" value="@items.Room_ID" />
+                <input type="hidden" name="Previous_Electricity_Usage" value="@items.Previous_Electricity_Usage" />
+                <input type="hidden" name="Previous_Water_Meter" value="@items.Previous_Water_Meter" />
+                <input type="hidden" name="Price" value="@items.Price" />
+                <input type="hidden" name="Electricity_Usage" value="@ViewBag.MotelName" />
+                <input type="hidden" name="Water_Usage" value="@ViewBag.Location" />
+
                 <td>
                     <button type="submit" class="btn btn-info">Cập nhật</button>
-                    <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
-                    <input type="hidden" name="Room_ID" value="@items.Room_ID" />
-                    <input type="hidden" name="Previous_Electricity_Usage" value="@items.Previous_Electricity_Usage" />
-                    <input type="hidden" name="Electricity_Meter" value="@items.Electricity_Meter" />
-                    <input type="hidden" name="Previous_Water_Meter" value="@items.Previous_Water_Meter" />
-                    <input type="hidden" name="Water_Meter" value="@items.Water_Meter" />
-                    <input type="hidden" name="Additional_Charges" value="@items.Additional_Charges" />
-                    <input type="hidden" name="Price" value="@items.Price" />
-                    <input type="hidden" name="Electricity_Usage" value="@ViewBag.MotelName" />
-                    <input type="hidden" name="Water_Usage" value="@ViewBag.Location" />
                 </td>
                 </form>
+                <td>
+                    <form method="post" action="@Url.Action("Delete")" class="form-inline" style="display:inline;">
+                        <input type="hidden" name="Room_ID" value="@items.Room_ID" />
+                        <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
+                        <button type="submit" class="btn btn-danger mb-2 mx-sm-3">Xóa phòng</button>
+                    </form>
+                </td>
+
+                <td>
+                    <form method="post" action="@Url.Action("Refresh")" class="form-inline" style="display:inline;">
+                        <input type="hidden" name="Room_ID" value="@items.Room_ID" />
+                        <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
+                        <button type="submit" class="btn btn-warning mb-2 mx-sm-3">Làm mới</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
+
 </table>
+
+<form method="post" action="@Url.Action("Create")" class="form-inline">
+    <input type="hidden" name="Motel_ID" value="@Request["Motel_ID"]" />
+    <button type="submit" class="btn btn-success mb-2 mx-sm-3">Thêm</button>
+</form>
 
 <div class="pagination-container">
     @Html.PagedListPager(Model, page => Url.Action("rental_management", new { page }), PagedListRenderOptions.Classic)
@@ -111,8 +132,10 @@
             const electricityInput = row.querySelector('.electricity-input');
             const waterInput = row.querySelector('.water-input');
             const additionalChargesInput = row.querySelector('.additional-charges-input');
-            const previousElectricityUsage = parseFloat(row.querySelector('td:nth-child(3)').innerText) || 0;
-            const previousWaterUsage = parseFloat(row.querySelector('td:nth-child(5)').innerText) || 0;
+
+            const previousElectricityUsage = parseFloat(row.querySelector('input[name="Previous_Electricity_Usage"]').value) || 0;
+            const previousWaterUsage = parseFloat(row.querySelector('input[name="Previous_Water_Meter"]').value) || 0;
+
             const electricityRate = parseFloat(document.querySelector('input[name="Electricity_Usage"]').value) || 0;
             const waterRate = parseFloat(document.querySelector('input[name="Water_Usage"]').value) || 0;
 
@@ -123,9 +146,11 @@
             const electricityBill = (currentElectricityUsage - previousElectricityUsage) * electricityRate;
             const waterBill = (currentWaterUsage - previousWaterUsage) * waterRate;
 
-            row.querySelector('.total-electricity-bill').innerText = electricityBill.toFixed(2);
-            row.querySelector('.total-water-bill').innerText = waterBill.toFixed(2);
-            row.querySelector('.total-amount-due').innerText = (electricityBill + waterBill + additionalCharges).toFixed(2);
+            row.querySelector('.total-electricity-bill').innerText = isNaN(electricityBill) ? '0.00' : electricityBill.toFixed(2);
+            row.querySelector('.total-water-bill').innerText = isNaN(waterBill) ? '0.00' : waterBill.toFixed(2);
+
+            const totalAmountDue = electricityBill + waterBill + additionalCharges;
+            row.querySelector('.total-amount-due').innerText = isNaN(totalAmountDue) ? '0.00' : totalAmountDue.toFixed(2);
         });
     }
 
@@ -135,4 +160,5 @@
             checkbox.checked = this.checked;
         });
     });
+
 </script>

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<_2home.ViewModels.index_Viewmodel>
+
+@{
+    ViewBag.Title = "KiemduyetInkeeper";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Danh sách phòng đăng ở ghép</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Họ và tên")
+        </th>
+        <th>
+            @Html.DisplayName("Tên khách sạn")
+        </th>
+        <th>
+            @Html.DisplayName("Giá")
+        </th>
+        <th>
+            @Html.DisplayName("Chi tiết phòng")
+        </th>
+        <th>
+            @Html.DisplayName("Tình trạng")
+        </th>
+        <th>
+            @Html.DisplayName("Chi tiết yêu cầu")
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.fullname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MotelName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.roomdetails)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.is_available)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.requestdetails)
+            </td>
+            
+        </tr>
+    }
+
+</table>

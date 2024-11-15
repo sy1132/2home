@@ -1,5 +1,5 @@
 ﻿
-@model PagedList.IPagedList<_2home.ViewModels.room>
+@model PagedList.IPagedList<_2home.Models.RoomBill>
 @using PagedList.Mvc;
 
 @{
@@ -9,44 +9,76 @@
 
 
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Ngày cập nhật</th>
-            <th>Tổng tiền điện</th>
-            <th>Tổng tiền nước</th>
-            <th>Chi phí phát sinh</th>
-            <th>Tiền trọ</th>
-            <th>Tổng tiền </th>
-            <th>Tình Trạng</th>
-            <th>chi tiết</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var items in Model)
-        {
-            <tr>
+<style>
 
-                <td>@items.Date_of_Issue</td>
-                <td>@items.Electricity_Bill</td>
-                <td>@items.Water_Bill</td>
-                <td>@items.Additional_Charges</td>
-                <td>@items.Price</td>
-                <td>@items.Total_Amount_Due</td>
-                <td>@items.Room_Status</td>
-                <td>
-                    <a href="@Url.Action("Capnhat", "Home", new { id = items.Room_ID })" class="btn btn-info">Xem chi tiết</a>
-                </td>
-            </tr>
+
+    .btn-detail {
+        background-color: #ff9800; 
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+        .btn-detail:hover {
+            background-color: #e68900;
         }
+</style>
 
-    </tbody>
-</table>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h5>Tổng Kết Quá Trình Thanh Toán</h5>
+        </div>
+        <div class="card-body">
+            <p>Tổng tiền điện: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalElectricity ?? 0)</strong></p>
+            <p>Tổng tiền nước: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalWater ?? 0)</strong></p>
+            <p>Tổng chi phí phát sinh: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalAdditionalCharges ?? 0)</strong></p>
+            <p>Tổng tiền trọ: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalRent ?? 0)</strong></p>
+            <p>Tổng số tiền phải thanh toán: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalAmountDue ?? 0)</strong></p>
+            <p>Tổng tiền phòng đã trả: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalPaid ?? 0)</strong></p>
+            <p>Số tiền nợ: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalDebt ?? 0)</strong></p>
+            @if (ViewBag.save == "Inkeeper")
+            {
+                <a href="@Url.Action("Pay", "Home")" class="btn btn-info">Đóng Tiền</a>}
+        </div>
+    </div>
 
-<div class="pagination-container">
-    @Html.PagedListPager(Model, page => Url.Action("rental_management", new { page }), PagedListRenderOptions.Classic)
-</div>
-<h2>rent_check</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Ngày cập nhật</th>
+                <th>Tổng tiền điện</th>
+                <th>Tổng tiền nước</th>
+                <th>Chi phí phát sinh</th>
+                <th>Tiền trọ</th>
+                <th>Tổng tiền </th>
+                <th>Xem chi tiết</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var items in Model)
+            {
+                <tr>
+
+                    <td>@items.Date_of_Issue</td>
+                    <td>@items.Electricity_Bill</td>
+                    <td>@items.Water_Bill</td>
+                    <td>@items.Additional_Charges</td>
+                    <td>@items.Price</td>
+                    <td>@items.Total_Amount_Due</td>
+                    <td>
+                        <a href="@Url.Action("detailsbill", "Home", new { id = items.Bill_ID })" class="btn btn-detail">Xem Chi Tiết</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <div class="text-center">
+        @Html.PagedListPager(Model, page => Url.Action("rent_checkin", new { page, size = ViewBag.currentSize, ID_User = ViewBag.ID_User }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+    </div>
+
 

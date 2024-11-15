@@ -91,7 +91,12 @@
         }
     </style>
 </head>
-
+@if (TempData["RentPriceError"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["RentPriceError"]
+    </div>
+}
 <div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem;">
     <form id="registrationForm" asp-action="RegisterDK" enctype="multipart/form-data" method="post" class="row g-3">
         <h2 class="card-title text-center mb-4">Đăng ký cho thuê phòng trọ</h2>
@@ -101,9 +106,9 @@
             <span class="error-message" id="roomNameError"></span>
         </div>
         <div class="col-md-6">
-            <label for="inputRooms" class="form-label">Số phòng</label>
-            <input type="number" class="form-control" id="inputRooms" name="Rooms" min="0">
-            <span class="error-message" id="roomsError"></span>
+            <label for="inputPrice" class="form-label">Giá (VNĐ)</label>
+            <input type="number" class="form-control" id="inputPrice" name="Price">
+            <span class="error-message" id="priceError"></span>
         </div>
         <div class="col-12">
             <label for="inputLocation" class="form-label">Địa chỉ</label>
@@ -138,11 +143,7 @@
             </select>
             <span class="error-message" id="districtError"></span>
         </div>
-        <div class="col-md-6">
-            <label for="inputPrice" class="form-label">Giá (VNĐ)</label>
-            <input type="number" class="form-control" id="inputPrice" name="Price">
-            <span class="error-message" id="priceError"></span>
-        </div>
+
         <div class="col-md-6">
             <label for="inputImage" class="form-label">Hình ảnh</label>
             <input type="file" class="form-control" id="inputImage" name="Images" accept="image/*" multiple>
@@ -160,9 +161,60 @@
             <textarea class="form-control" id="inputDetails" name="Details" rows="4" placeholder="Nhập chi tiết phòng trọ..."></textarea>
             <span class="error-message" id="detailsError"></span>
         </div>
+        <div class="col-md-6">
+            <label for="roomType" class="form-label">Chọn gói</label>
+            <select id="roomType" class="form-select" name="roomType">
+                <option value="">Chọn loại</option>
+                <option value="0">Thường</option>
+                <option value="1">VIP</option>
+            </select>
+            <span class="error-message" id="roomTypeError"></span>
+        </div>
+        <div class="col-md-6">
+            <label for="rentalDuration" class="form-label">Thời gian thuê</label>
+            <select id="rentalDuration" class="form-select" name="rentalDuration">
+                <option value="">Chọn thời gian</option>
+                <option value="1">1 tháng</option>
+                <option value="3">3 tháng</option>
+                <option value="6">6 tháng</option>
+                <option value="12">12 tháng</option>
+            </select>
+            <span class="error-message" id="durationError"></span>
+        </div>
+        <div class="col-12">
+            <h5>Tính năng:</h5>
+            <div id="features" class="features-container" style="display: none;">
+                <div id="commonFeatures">
+                    <ul>
+                        <li>Bài được đăng</li>
+                        <li>Sử dụng được các chức năng quản lý phòng...</li>
+                    </ul>
+                </div>
+                <div id="vipFeatures" style="display: none;">
+                    <ul>
+                        <li>Bài đăng luôn được xếp đầu</li>
+                        <li>Sẽ xuất hiện nhiều hơn</li>
+                        <li>được ưu tiên trong việc duyệt và kiểm tra....</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <label for="calculatedPrice" class="form-label">Giá thuê (VNĐ)</label>
+            <input type="text" class="form-control" id="calculatedPrice" readonly>
+        </div>
+        <div class="col-12 form-check">
+            <input class="form-check-input" type="checkbox" id="termsCheck" required>
+            <label class="form-check-label" for="termsCheck">
+                Tôi đã đọc rõ các <a href="/home/viewContractinkeeper" target="_blank">điều khoản</a> trước khi thuê.
+            </label>
+            <span class="error-message" id="termsError"></span>
+        </div>
+
 
         <div class="col-12">
-            <button type="submit" class="btn btn-primary w-100">Đăng</button>
+            <button type="submit" class="btn btn-primary w-100" id="submitButton">Đăng</button>
+
         </div>
         <div class="col-12 text-center">
             <p id="message"></p>
@@ -178,8 +230,56 @@
     <img class="modal-content" id="img01">
     <video class="modal-content" id="vid01" controls></video>
 </div>
-
 <script>
+    const prices = {
+        "0": {
+            "1": 500000,
+            "3": 1500000,
+            "6": 3000000,
+            "12": 6000000
+        },
+        "1": {
+            "1": 700000,
+            "3": 2100000,
+            "6": 4200000,
+            "12": 8400000
+        }
+    };
+
+    const roomTypeSelect = document.getElementById('roomType');
+    const rentalDurationSelect = document.getElementById('rentalDuration');
+    const calculatedPriceInput = document.getElementById('calculatedPrice');
+
+    function updatePrice() {
+        const selectedRoomType = roomTypeSelect.value;
+        const selectedDuration = rentalDurationSelect.value;
+
+        if (selectedRoomType && selectedDuration) {
+            const price = prices[selectedRoomType][selectedDuration];
+            calculatedPriceInput.value = price.toLocaleString('vi-VN') + ' VNĐ';
+        } else {
+            calculatedPriceInput.value = '';
+        }
+    }
+    document.getElementById('roomType').addEventListener('change', function () {
+        const selectedType = this.value;
+        const vipFeatures = document.getElementById('vipFeatures');
+        const commonFeatures = document.getElementById('commonFeatures');
+        const featuresContainer = document.getElementById('features');
+
+        featuresContainer.style.display = selectedType ? 'block' : 'none';
+
+        if (selectedType === 'VIP') {
+            vipFeatures.style.display = 'block';
+            commonFeatures.style.display = 'none';
+        } else {
+            vipFeatures.style.display = 'none';
+            commonFeatures.style.display = 'block';
+        }
+    });
+
+    roomTypeSelect.addEventListener('change', updatePrice);
+    rentalDurationSelect.addEventListener('change', updatePrice);
     const data2 = {
         "Dĩ An": {
             wards: {
@@ -214,7 +314,6 @@
         const selectedWardSelect = document.getElementById('wardSelect');
         const selectedDistrictSelect = document.getElementById('districtSelect');
 
-        // Reset ward and district selections
         selectedWardSelect.innerHTML = '<option value="">Chọn phường</option>';
         selectedDistrictSelect.innerHTML = '<option value="">Chọn khu</option>';
         selectedWardSelect.disabled = true;
@@ -270,7 +369,7 @@
             });
             previewContainer.appendChild(img);
         });
-        files = files.concat(imageFiles); 
+        files = files.concat(imageFiles);
     });
 
     document.getElementById('inputVideo').addEventListener('change', function () {
@@ -285,7 +384,7 @@
             });
             previewContainer.appendChild(video);
         });
-        files = files.concat(videoFiles); 
+        files = files.concat(videoFiles);
     });
 
     function showModal(index, type) {
@@ -318,34 +417,25 @@
     });
 
     document.getElementById('registrationForm').addEventListener('submit', function (event) {
-        // Reset error messages
         document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
         document.getElementById('message').textContent = '';
 
         let hasError = false;
 
-        // Validate Room Name
         const roomName = document.getElementById('inputRoomName').value.trim();
         if (!roomName) {
             document.getElementById('roomNameError').textContent = 'Tên phòng trọ không được để trống.';
             hasError = true;
         }
 
-        // Validate Number of Rooms
-        const rooms = document.getElementById('inputRooms').value;
-        if (!rooms || rooms <= 0) {
-            document.getElementById('roomsError').textContent = 'Số phòng phải lớn hơn 0.';
-            hasError = true;
-        }
 
-        // Validate Location
+
         const location = document.getElementById('inputLocation').value.trim();
         if (!location) {
             document.getElementById('locationError').textContent = 'Địa chỉ không được để trống.';
             hasError = true;
         }
 
-        // Validate City
         const city = document.getElementById('citySelect').value;
         if (!city) {
             document.getElementById('cityError').textContent = 'Bạn chưa chọn thành phố.';
@@ -356,45 +446,54 @@
             document.getElementById('priceError').textContent = 'Giá phải lớn hơn 0.';
             hasError = true;
         }
-        // Validate Ward
         const ward = document.getElementById('wardSelect').value;
         if (!ward) {
             document.getElementById('wardError').textContent = 'Bạn chưa chọn phường.';
             hasError = true;
         }
-
-        // Validate District
+        if (!termsCheck.checked) {
+            document.getElementById('termsError').textContent = 'Bạn cần xác nhận rằng đã đọc các điều khoản.';
+            hasError = true;
+        }
         const district = document.getElementById('districtSelect').value;
         if (!district) {
             document.getElementById('districtError').textContent = 'Bạn chưa chọn khu.';
             hasError = true;
         }
+        const rentalDuration = document.getElementById('rentalDuration').value;
+        if (!rentalDuration) {
+            document.getElementById('durationError').textContent = 'Bạn phải chọn thời gian thuê.';
+            hasError = true;
+        }
+
+        const roomType = document.getElementById('roomType').value;
+        if (!roomType) {
+            document.getElementById('roomTypeError').textContent = 'Bạn phải chọn gói.';
+            hasError = true;
+        }
+
         const details = document.getElementById('inputDetails').value.trim();
         if (!details) {
             document.getElementById('detailsError').textContent = 'Bạn phải nhập chi tiết phòng trọ.';
             hasError = true;
         }
-        // Validate Price
 
 
-        // Validate Images
         if (document.getElementById('inputImage').files.length === 0) {
             document.getElementById('imageError').textContent = 'Bạn phải chọn ít nhất một hình ảnh.';
             hasError = true;
         }
 
-        // Validate Videos
         if (document.getElementById('inputVideo').files.length === 0) {
             document.getElementById('videoError').textContent = 'Bạn phải chọn ít nhất một video.';
             hasError = true;
         }
 
         if (hasError) {
-            event.preventDefault(); // Prevent form submission if there are validation errors
+            event.preventDefault();
         } else {
-            // Show success message if no errors
             document.getElementById('message').textContent = 'Đăng ký thành công!';
-            document.getElementById('message').style.color = 'green'; // Optional: Change text color to green
+            document.getElementById('message').style.color = 'green';
         }
     });
 </script>

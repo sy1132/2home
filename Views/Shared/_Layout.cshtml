@@ -8,7 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="~/asset/css/layout.css" rel="stylesheet" />
+
     <style>
+
         .nav-link-custom {
             font-weight: bold;
         }
@@ -16,31 +18,123 @@
         .dropdown-menu {
             z-index: 1050;
         }
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 10px;
+        }
+
+            .pagination-container a,
+            .pagination-container span {
+                padding: 10px 15px;
+                margin: 0 5px;
+                text-decoration: none;
+                color: #000000;
+                background-color: #ffffff; 
+                border-radius: 5px;
+                border: 1px solid #007bff;
+                transition: background-color 0.3s, transform 0.3s;
+                font-weight: bold;
+            }
+
+                .pagination-container a:hover {
+                    background-color: #f0f0f0; 
+                    transform: scale(1.05);
+                }
+
+            .pagination-container .current {
+                background-color: #007bff; 
+                color: #ffffff;
+                border: none;
+            }
+        .container-fluid {
+            position: relative;
+        }
+
+            .container-fluid::before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: #ffffff;
+                left: 0; 
+                z-index: -1;
+                transform: skewY(-5deg);
+            }
+        .bg-half-dark {
+            background: linear-gradient(135deg, #0a1a33 30%, #ffffff 30%);
+        }
+        .text-black {
+            color: #000000; 
+            font-size: 1.25rem; 
+        }
+
+        .nav-link {
+            color: #000000; 
+        }
+
+            .text-black:hover {
+                color: #ff6600; 
+            }
+        .nav-link {
+            color: #000000; 
+        }
+
+            .nav-link:hover {
+                color: #ff6600; 
+            }
+      
+        .slide__text {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 1;
+            transition: all 0.7s;
+            z-index: 3;
+        }
     </style>
 </head>
 
 <body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-half-dark w-100">
         <div class="container-fluid">
             <a href="@Url.Action("Index", "Home")" class="navbar-brand">
-                <img src="~/Content/logo 2 home ngang.png" alt="Alternate Text" class="rounded-2" style="width:100px;">
+                <img src="~/Content/2.png" alt="Alternate Text" class="rounded-2" style="width:70px;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav ms-auto d-flex align-items-center">
+                <ul class="navbar-nav ms-4 d-flex justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 mx-2" href="@Url.Action("Index", "Home")">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 mx-2" href="@Url.Action("AboutUs", "Home")">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 mx-2" href="@Url.Action("Index", "Home")">Phòng Trọ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4 mx-2" href="@Url.Action("TogetherView", "Home")">Phòng Ở Chung</a>
+                    </li>
                     @if (Session["User"] != null)
                     {
                         var user = Session["User"] as _2home.ViewModels.User;
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white mx-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-black mx-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Xin chào, @user.fullname
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item text-bg-success" href="@Url.Action("loaded", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
+                                        <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">@user.blance</span> VND
+                                    </a>
+                                </li>
                                 @if (user.userrole == "Admin")
-                                    
                                 {
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("Manager_DK", "Home")">
@@ -57,31 +151,41 @@
                                             <i class="fas fa-home"></i> Quản lý thuê
                                         </a>
                                     </li>
-
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("AllHistory", "Home")">
+                                            <i class="fas fa-cog"></i> Lịch sử giao dịch
+                                        </a>
+                                    </li>
                                 }
                                 else if (user.userrole == "Innkeeper")
                                 {
 
-                                    <li>
-                                        <a class="dropdown-item text-bg-success" href="@Url.Action("loaded", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
-                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">@user.blance</span> VND
-                                        </a>
-                                    </li>
+
 
                                     <li>
-                                        <a class="dropdown-item" href="@Url.Action("QL_room", "Home")">
-                                            <i class="fas fa-clipboard-list"></i> QL_phòng
+                                        <a class="dropdown-item" href="@Url.Action("motel_manager", "Home")">
+                                            <i class="fas fa-clipboard-list"></i> Quản lý trọ
                                         </a>
                                     </li>
-
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("KiemduyetInkeeper", "Home")">
+                                            <i class="fas fa-clipboard-list"></i> Quản lý đơn xin ở ghép
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
+                                            <i class="fas fa-clipboard-list"></i> Đăng ký thuê
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("History", "Home")">
+                                            <i class="fas fa-cog"></i> Lịch sử giao dịch
+                                        </a>
+                                    </li>
                                 }
                                 else
                                 {
-                                    <li>
-                                        <a class="dropdown-item text-bg-success" href="@Url.Action("TopUp", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
-                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">@user.blance</span> VND
-                                        </a>
-                                    </li>
+
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
                                             <i class="fas fa-clipboard-list"></i> Đăng ký thuê
@@ -121,10 +225,11 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="@Url.Action("Settings", "Home")">
                                         <i class="fas fa-cog"></i> Settings
                                     </a>
                                 </li>
+
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item" href="/Home/Logout">
@@ -147,112 +252,157 @@
             </div>
         </div>
     </nav>
+    <div class="position-relative text-center">
 
-    <div class="d-flex justify-content-center">
-        <div class="card-header bg-warning gap-2 m-3 p-3 rounded-3 d-flex flex-column w-50">
-            <form class="d-flex flex-column mb-3" role="search" method="get" action="@Url.Action("Index")">
-                <button type="button" class="btn btn-success border-2 mb-2" style="font-weight: bold;" onclick="toggleSearch()">
-                    Tìm kiếm
-                </button>
+        <div class="d-flex justify-content-center " transform: translateX(-50%); width: 100%;">
+            <div class="card-header" style="background-color: white; margin: 0; padding: 3; border-radius: 0.3rem; display: flex; flex-direction: column; width: 90%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);">
+                <form class="d-flex flex-column mb-3" role="search" method="get" action="@Url.Action("Index")">
+                    <button type="button" class="btn border-2 mb-2" style="background-color: white; color: black; border: 2px solid black; font-weight: bold; margin-bottom: 2px;" onclick="toggleSearch()">
+                        Tìm kiếm
+                    </button>
 
-                <div id="search-container" class="search-container" style="display: none;">
-                    <div class="d-flex mb-2">
-                        <input class="form-control me-1 flex-grow-1" type="search" placeholder="Search" aria-label="Search" name="searchString" value="@ViewBag.Keyword">
-                        <button type="submit" class="btn btn-outline-primary border-2" style="font-weight: bold;">
-                            <i class="fas fa-search"></i>
-                        </button>
+                    <div id="search-container" class="search-container" style="display: none;">
+                        <div class="d-flex mb-2">
+                            <input class="form-control me-1 flex-grow-1" type="search" placeholder="Nhập tên phòng trọ hoặc đặc điểm của trọ" aria-label="Search" name="searchString" value="@ViewBag.Keyword" style="font-size: 1.2rem; border: 2px solid black; border-radius: 0.3rem;">
+                            <button type="submit" class="btn btn-outline-primary border-0" style="font-weight: bold; font-size: 1.2rem; background-color: red; color: white; border: 2px solid black; border-radius: 0.3rem; margin-left: 2px;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+
+                        <div class="d-flex justify-content-start">
+                            <fieldset class="me-2">
+                                <select class="rounded-2 p-2" style="font-weight: bold; font-size: 1.2rem; background-color: white; border: 2px solid black;" id="inputCity" name="City">
+                                    <option selected value="">Chọn thành phố...</option>
+                                    <option value="Dĩ An">Dĩ An</option>
+                                    <option value="Thuận An">Thuận An</option>
+                                    <option value="Thủ Dầu Một">Thủ Dầu Một</option>
+                                    <option value="Tân Uyên">Tân Uyên</option>
+                                    <option value="Bến Cát">Bến Cát</option>
+                                </select>
+                            </fieldset>
+
+                            <fieldset class="me-2">
+                                <select class="rounded-2 p-2" style="font-weight: bold; font-size: 1.2rem; background-color: white; border: 2px solid black;" id="inputWard" name="Ward" disabled>
+                                    <option selected value="">Chọn phường...</option>
+                                </select>
+                            </fieldset>
+
+                            <fieldset>
+                                <select class="rounded-2 p-2" style="font-weight: bold; font-size: 1.2rem; background-color: white; border: 2px solid black;" id="inputDistrict" name="District" disabled>
+                                    <option selected value="">Chọn khu...</option>
+                                </select>
+                            </fieldset>
+                            <div class="d-flex align-items-center ms-4">
+                                <label style="font-weight: bold; font-size: 1.2rem; margin-right: 15px; white-space: nowrap;">Khoảng giá (VNĐ):</label>
+
+                               
+                                <span id="priceRangeDisplay" style="font-size: 1.2rem; font-weight: bold; margin-right: 15px;">1,000,000 - 30,000,000</span>
+
+                                <div class="d-flex align-items-center" style="width: 300px;">
+                                    <input name="minPrice" type="range" id="minPrice" min="1000000" max="30000000" step="100000" value="1000000" oninput="updatePriceRangeDisplay()" class="custom-range">
+                                    <input name="maxPrice" type="range" id="maxPrice" min="1000000" max="30000000" step="100000" value="30000000" oninput="updatePriceRangeDisplay()" class="custom-range">
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="d-flex justify-content-start">
-                        <fieldset class="me-2">
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputCity" name="City">
-                                <option selected value="">Chọn thành phố...</option>
-                                <option value="Dĩ An">Dĩ An</option>
-                                <option value="Thuận An">Thuận An</option>
-                                <option value="Thủ Dầu Một">Thủ Dầu Một</option>
-                                <option value="Tân Uyên">Tân Uyên</option>
-                                <option value="Bến Cát">Bến Cát</option>
-                            </select>
-                        </fieldset>
-
-                        <fieldset class="me-2">
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputWard" name="Ward" disabled>
-                                <option selected value="">Chọn phường...</option>
-                            </select>
-                        </fieldset>
-
-                        <fieldset>
-                            <select class="rounded-2 p-2" style="font-weight: bold;" id="inputDistrict" name="District" disabled>
-                                <option selected value="">Chọn khu...</option>
-                            </select>
-                        </fieldset>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
+
     </div>
 
+
+    <div style="background-color: white; height: 50px; width: 100%; margin-bottom:30px">
+    </div>
     <div class="d-flex flex-column justify-content-center align-items-center">
         @RenderBody()
         <hr />
     </div>
-    <footer class="bg-dark text-white py-3 " style="margin-top: 9%;">
-        <div class="container">
-            <div class="row justify-content-between w-100">
-                <!-- CSKH Section -->
-                <div class="col-md-3 mb-3 text-center">
-                    <h6 class="text-uppercase">CSKH</h6>
-                    <ul class="list-unstyled small">
-                        <li><i class="fas fa-phone"></i> Hotline: 123-456-789</li>
-                        <li><i class="fas fa-envelope"></i> Email: support@secondhome.com</li>
-                    </ul>
-                </div>
-
-                <!-- Contact Section -->
-                <div class="col-md-3 mb-3 text-center">
-                    <h6 class="text-uppercase">Liên lạc với chúng tôi</h6>
-                    <ul class="list-unstyled small">
-                        <li><i class="fas fa-map-marker-alt"></i> Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM</li>
-                        <li><i class="fas fa-phone"></i> Điện thoại: 987-654-321</li>
-                    </ul>
-                </div>
-
-                <!-- Team Section -->
-                <div class="col-md-3 mb-3 text-center">
-                    <h6 class="text-uppercase">Người làm</h6>
-                    <ul class="list-unstyled small">
-                        <li><i class="fas fa-user"></i> Nguyễn Văn A</li>
-                        <li><i class="fas fa-user"></i> Trần Thị B</li>
-                        <li><i class="fas fa-user"></i> Lê Văn C</li>
-                    </ul>
-                </div>
+    <footer class="custom-footer bg-dark text-white py-3">
+        <div class="footer-container">
+            <div class="footer-item">
+                <h6 class="text-uppercase">CSKH</h6>
+                <ul class="list-unstyled small">
+                    <li><i class="fas fa-phone"></i> Hotline: 123-456-789</li>
+                    <li><i class="fas fa-envelope"></i> Email: support@secondhome.com</li>
+                </ul>
             </div>
-
-            <!-- Social Icons Section -->
-            <div class="row">
-                <div class="col-12 text-center">
-                    <ul class="list-inline w-100" >
-                        <li class="list-inline-item">
-                            <a href="#" class="text-white"><i class="fab fa-facebook fa-lg"></i></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="footer-item">
+                <h6 class="text-uppercase">Liên lạc với chúng tôi</h6>
+                <ul class="list-unstyled small">
+                    <li><i class="fas fa-map-marker-alt"></i> Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM</li>
+                    <li><i class="fas fa-phone"></i> Điện thoại: 987-654-321</li>
+                </ul>
             </div>
+            <div class="footer-item">
+                <h6 class="text-uppercase">Người làm</h6>
+                <ul class="list-unstyled small">
+                    <li><i class="fas fa-user"></i> Nguyễn Văn A</li>
+                    <li><i class="fas fa-user"></i> Trần Thị B</li>
+                    <li><i class="fas fa-user"></i> Lê Văn C</li>
+                </ul>
+            </div>
+        </div>
+        <div class="social-icons">
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="#" class="text-white"><i class="fab fa-facebook fa-lg"></i></a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#" class="text-white"><i class="fab fa-twitter fa-lg"></i></a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                </li>
+            </ul>
         </div>
         <hr class="bg-light">
         <p class="text-center small mb-0">&copy; 2024 - Phòng chuyên môn Devmaster. All rights reserved.</p>
     </footer>
 
+    <style>
+        .custom-footer {
+            text-align: center;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-item {
+            flex: 1 1 200px;
+            max-width: 300px;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+            .social-icons .list-inline-item {
+                margin: 0 10px;
+            }
+    </style>
+
+
 </body>
 </html>
 <style>
-    
+ 
+    .custom-footer p {
+        margin: 0;
+        padding-top: 10px;
+    }
+
+
+    .custom-footer p {
+        margin: 0;
+        padding-top: 10px;
+    }
+
     .search-container {
         transition: width 0.5s ease;
         width: 0;
@@ -269,97 +419,198 @@
     }
 
         .nav-link-custom:hover {
-            color: #ffcc00; /* Example hover color */
+            color: #ffcc00;
         }
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        .btn-outline-danger:hover {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+    .btn-outline-primary {
+        color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-outline-primary:hover {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    .custom-range {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        background: #ddd;
+        outline: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .custom-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+            .custom-range::-webkit-slider-thumb:hover {
+                background-color: #0056b3;
+            }
+
+        .custom-range::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+            .custom-range::-moz-range-thumb:hover {
+                background-color: #0056b3;
+            }
+
+        .custom-range::-ms-thumb {
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+            .custom-range::-ms-thumb:hover {
+                background-color: #0056b3;
+            }
 </style>
 
 <script>
-    const data1 = {
-        "Dĩ An": {
-            wards: {
-                "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
-                "Bình An": ["Bình Thung 1", "Bình Thung 2", "Nội Hóa 1", "Nội Hóa 2", "Châu Thới"],
+
+        const data1 = {
+            "Dĩ An": {
+                wards: {
+                    "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
+                    "Bình An": ["Bình Thung 1", "Bình Thung 2", "Nội Hóa 1", "Nội Hóa 2", "Châu Thới"],
+                }
+            },
+            "Thuận An": {
+                wards: {
+                    "An Phú": ["1A", "1B", "2", "3", "4"],
+                }
+            },
+            "Thủ Dầu Một": {
+                wards: {
+                    "Chánh Mỹ": ["Chánh Lộc 1", "Chánh Lộc 2"],
+                }
+            },
+            "Tân Uyên": {
+                wards: {
+                    "Hội Nghĩa": ["1", "2", "3", "4"],
+                }
+            },
+            "Bến Cát": {
+                wards: {
+                    "An Điền": ["An Mỹ", "An Sơn"],
+                }
             }
-        },
-        "Thuận An": {
-            wards: {
-                "An Phú": ["1A", "1B", "2", "3", "4"],
+        };
+
+        document.getElementById('inputCity').addEventListener('change', function () {
+            const city = this.value;
+            const wardSelect = document.getElementById('inputWard');
+            const districtSelect = document.getElementById('inputDistrict');
+
+            wardSelect.innerHTML = '<option value="">Chọn phường</option>';
+            districtSelect.innerHTML = '<option value="">Chọn khu</option>';
+            wardSelect.disabled = true;
+            districtSelect.disabled = true;
+
+            if (city && data1[city]) {
+                const wards = data1[city].wards;
+                wardSelect.disabled = false;
+
+                for (const ward in wards) {
+                    const option = document.createElement('option');
+                    option.value = ward;
+                    option.textContent = ward;
+                    wardSelect.add(option);
+                }
             }
-        },
-        "Thủ Dầu Một": {
-            wards: {
-                "Chánh Mỹ": ["Chánh Lộc 1", "Chánh Lộc 2"],
+        });
+
+        document.getElementById('inputWard').addEventListener('change', function () {
+            const city = document.getElementById('inputCity').value;
+            const ward = this.value;
+            const districtSelect = document.getElementById('inputDistrict');
+
+            districtSelect.innerHTML = '<option value="">Chọn khu</option>';
+            districtSelect.disabled = true;
+
+            if (city && ward && data1[city].wards[ward]) {
+                const neighborhoods = data1[city].wards[ward];
+                districtSelect.disabled = false;
+
+                neighborhoods.forEach(function (neighborhood) {
+                    const option = document.createElement('option');
+                    option.value = neighborhood;
+                    option.textContent = neighborhood;
+                    districtSelect.add(option);
+                });
             }
-        },
-        "Tân Uyên": {
-            wards: {
-                "Hội Nghĩa": ["1", "2", "3", "4"],
-            }
-        },
-        "Bến Cát": {
-            wards: {
-                "An Điền": ["An Mỹ", "An Sơn"],
+        });
+
+        function toggleSearch() {
+            var searchContainer = document.getElementById("search-container");
+            if (searchContainer.style.display === "none") {
+                searchContainer.style.display = "block";
+                setTimeout(function () {
+                    searchContainer.classList.add("active");
+                }, 10);
+            } else {
+                searchContainer.classList.remove("active");
+                setTimeout(function () {
+                    searchContainer.style.display = "none";
+                }, 500);
             }
         }
-    };
+        const minPriceInput = document.getElementById("minPrice");
+        const maxPriceInput = document.getElementById("maxPrice");
+        const priceRangeDisplay = document.getElementById("priceRangeDisplay");
 
-    document.getElementById('inputCity').addEventListener('change', function () {
-        const city = this.value;
-        const wardSelect = document.getElementById('inputWard');
-        const districtSelect = document.getElementById('inputDistrict');
+        function updatePriceRangeDisplay() {
+            let minPrice = parseInt(minPriceInput.value);
+            let maxPrice = parseInt(maxPriceInput.value);
 
-        // Reset ward and district selections
-        wardSelect.innerHTML = '<option value="">Chọn phường</option>';
-        districtSelect.innerHTML = '<option value="">Chọn khu</option>';
-        wardSelect.disabled = true;
-        districtSelect.disabled = true;
-
-        if (city && data1[city]) {
-            const wards = data1[city].wards;
-            wardSelect.disabled = false;
-
-            for (const ward in wards) {
-                const option = document.createElement('option');
-                option.value = ward;
-                option.textContent = ward;
-                wardSelect.add(option);
+            if (minPrice >= maxPrice - 100000) {
+                minPriceInput.value = maxPrice - 100000;
+                minPrice = maxPrice - 100000;
             }
+            if (maxPrice <= minPrice + 100000) {
+                maxPriceInput.value = minPrice + 100000;
+                maxPrice = minPrice + 100000;
+            }
+            priceRangeDisplay.innerText = `${minPrice.toLocaleString()} - ${maxPrice.toLocaleString()}`;
         }
-    });
 
-    document.getElementById('inputWard').addEventListener('change', function () {
-        const city = document.getElementById('inputCity').value;
-        const ward = this.value;
-        const districtSelect = document.getElementById('inputDistrict');
+        minPriceInput.addEventListener("input", updatePriceRangeDisplay);
+        maxPriceInput.addEventListener("input", updatePriceRangeDisplay);
 
-        districtSelect.innerHTML = '<option value="">Chọn khu</option>';
-        districtSelect.disabled = true;
+        updatePriceRangeDisplay();
 
-        if (city && ward && data1[city].wards[ward]) {
-            const neighborhoods = data1[city].wards[ward];
-            districtSelect.disabled = false;
-
-            neighborhoods.forEach(function (neighborhood) {
-                const option = document.createElement('option');
-                option.value = neighborhood;
-                option.textContent = neighborhood;
-                districtSelect.add(option);
-            });
-        }
-    });
-
-    function toggleSearch() {
-        var searchContainer = document.getElementById("search-container");
-        if (searchContainer.style.display === "none") {
-            searchContainer.style.display = "block";
-            setTimeout(function () {
-                searchContainer.classList.add("active");
-            }, 10);
-        } else {
-            searchContainer.classList.remove("active");
-            setTimeout(function () {
-                searchContainer.style.display = "none";
-            }, 500);
-        }
-    }
 </script>

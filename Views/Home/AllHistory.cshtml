@@ -1,0 +1,52 @@
+﻿@model PagedList.IPagedList<_2home.ViewModels.pay>
+@using PagedList.Mvc
+@using PagedList
+@{
+    ViewBag.Title = "All Payment History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>All Payment History</h2>
+
+<div class="mb-4 text-center">
+    <h4 class="text-primary">Doanh thu tháng này: <span class="fw-bold">@String.Format("{0:N0} VND", ViewBag.MonthlyRevenue)</span></h4>
+    @if (ViewBag.PreviousMonthRevenue == null)
+    {
+        <h4 class="text-secondary">Doanh thu tháng trước: <span class="fw-bold">0 VND</span></h4>
+    }
+    else
+    {
+        <h4 class="text-secondary">Doanh thu tháng trước: <span class="fw-bold">@String.Format("{0:N0} VND", ViewBag.PreviousMonthRevenue)</span></h4>
+    }
+</div>
+
+
+<div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Tên</th>
+                <th>Tổng tiền</th>
+                <th>Ngày</th>
+                <th>Thông tin hóa đơn</th>
+                <th>Tình trạng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.UserName</td>
+                    <td>@item.Amount</td>
+                    <td>@item.PaymentDate</td>
+                    <td>@item.TransactionID</td>
+                    <td>@item.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagination-container">
+        @Html.PagedListPager(Model, page => Url.Action("AllHistory", new { page }))
+    </div>
+</div>

@@ -151,8 +151,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\index_Viewmodel.cs" />
     <Compile Include="ViewModels\Motel.cs" />
+    <Compile Include="ViewModels\pay.cs" />
     <Compile Include="ViewModels\pic.cs" />
     <Compile Include="ViewModels\room.cs" />
+    <Compile Include="ViewModels\TogetherDto.cs" />
     <Compile Include="ViewModels\user.cs" />
     <Compile Include="ViewModels\viewmail.cs" />
   </ItemGroup>
@@ -162,21 +164,14 @@
     <Content Include="asset\css\DK.css" />
     <Content Include="asset\css\layout.css" />
     <Content Include="asset\css\login.css" />
-    <Content Include="asset\images\01.jpg" />
-    <Content Include="asset\images\130318.jpg" />
-    <Content Include="asset\images\130499.jpg" />
-    <Content Include="asset\images\Autumn Leaves.jpg" />
-    <Content Include="asset\images\echip.jpg" />
-    <Content Include="asset\images\Gt_Thcb.jpg" />
-    <Content Include="asset\images\Humpback Whale.jpg" />
-    <Content Include="asset\images\Kt.jpg" />
-    <Content Include="asset\images\KT0005.jpg" />
-    <Content Include="asset\images\licensed-image.jfif" />
-    <Content Include="asset\images\pngtree-outline-user-icon-png-image_1727916.jpg" />
-    <Content Include="asset\images\TH004.jpg" />
-    <Content Include="asset\images\TH006.jpg" />
-    <Content Include="asset\images\THCB.jpg" />
+    <Content Include="asset\images\1.jpg" />
+    <Content Include="asset\images\2.jpg" />
+    <Content Include="asset\images\5.jpg" />
+    <Content Include="asset\images\c.jfif" />
+    <Content Include="asset\images\logo traver bufflo.jpg" />
+    <Content Include="asset\images\qrcode.jpg" />
     <Content Include="asset\images\user.jpg" />
+    <Content Include="asset\images\video.png" />
     <Content Include="asset\images\website-background-templates.jpg" />
     <Content Include="asset\videos\video.mp4" />
     <Content Include="Content\AnyConv.com__licensed-image.jpg" />
@@ -289,7 +284,15 @@
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Home\updatebill.cshtml" />
     <Content Include="Views\Home\loaded.cshtml" />
-    <Content Include="Views\Home\MotelSettings.cshtml" />
+    <Content Include="Views\Home\viewContractinkeeper.cshtml" />
+    <Content Include="Views\Home\EditContract.cshtml" />
+    <Content Include="Views\Home\TogetherView.cshtml" />
+    <Content Include="Views\Home\rent_checkin.cshtml" />
+    <Content Include="Views\Home\detailsbill.cshtml" />
+    <Content Include="Views\Home\history.cshtml" />
+    <Content Include="Views\Home\AllHistory.cshtml" />
+    <Content Include="Views\Home\AboutUs.cshtml" />
+    <Content Include="Views\Home\KiemduyetInkeeper.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -320,7 +323,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63923</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44305/</IISUrl>
+          <IISUrl>https://localhost:44301</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

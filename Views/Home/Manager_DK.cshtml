@@ -43,6 +43,8 @@
             <th>Số Điện Thoại</th>
             <th>Vai Trò Người Dùng</th>
             <th>Giới Tính</th>
+            <th></th>
+
         </tr>
     </thead>
     <tbody>
@@ -60,14 +62,25 @@
                     @using (Html.BeginForm("UpdateUserRole", "Home", FormMethod.Post))
                     {
                         @Html.Hidden("ID_user", user.ID_user)
-                    <select name="userrole" onchange="this.form.submit()">
-                        <option value="Admin" @(user.userrole == "Admin" ? "selected" : "")>Admin</option>
-                        <option value="Innkeeper" @(user.userrole == "Innkeeper" ? "selected" : "")>Innkeeper</option>
-                        <option value="user" @(user.userrole == "user" ? "selected" : "")>user</option>
-                    </select>
+                        <select name="userrole" onchange="this.form.submit()">
+                            <option value="Admin" @(user.userrole == "Admin" ? "selected" : "")>Admin</option>
+                            <option value="Innkeeper" @(user.userrole == "Innkeeper" ? "selected" : "")>Innkeeper</option>
+                            <option value="user" @(user.userrole == "user" ? "selected" : "")>user</option>
+                        </select>
                     }
                 </td>
                 <td>@user.gender</td>
+                <td>
+                    @if (user.userrole == "Innkeeper")
+                    {
+                        using (Html.BeginForm("AddFunds", "Home", FormMethod.Post))
+                        {
+                            @Html.Hidden("ID_user", user.ID_user)
+                            <input type="number" name="amount" class="form-control mb-2" placeholder="Nhập số tiền">
+                            <button type="submit" class="btn btn-success">Nạp</button>
+                        }
+                    }
+                </td>
             </tr>
         }
     </tbody>
