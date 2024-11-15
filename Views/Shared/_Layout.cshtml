@@ -129,6 +129,11 @@
                                 Xin chào, @user.fullname
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item text-bg-success" href="@Url.Action("loaded", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
+                                        <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">@user.blance</span> VND
+                                    </a>
+                                </li>
                                 @if (user.userrole == "Admin")
                                 {
                                     <li>
@@ -155,11 +160,7 @@
                                 else if (user.userrole == "Innkeeper")
                                 {
 
-                                    <li>
-                                        <a class="dropdown-item text-bg-success" href="@Url.Action("loaded", "Home", new { ID_user = user.ID_user, ID_room = 1, amount = 100000 })">
-                                            <i class="fas fa-wallet"></i> Số dư: <span id="user-balance">@user.blance</span> VND
-                                        </a>
-                                    </li>
+
 
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("motel_manager", "Home")">

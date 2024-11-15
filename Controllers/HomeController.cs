@@ -61,33 +61,37 @@ namespace _2home.Controllers
 
             var vipMotels = (from m in db.Motels
                              join p in db.imgs on m.Motel_ID equals p.Motel_ID
-                             where m.is_available=="Còn trống" && m.VIP==1
+                             where m.is_available == "Còn trống" && m.VIP == 1
+                             group p by m.Motel_ID into motelGroup
                              orderby Guid.NewGuid()
                              select new index_Viewmodel
                              {
-                                 Motel_ID=m.Motel_ID,
-                                 MotelName = m.Name_motel,
-                                 Location = m.location,
-                                 ImgLink = p.Link,
-                                 price=m.price,
+                                 Motel_ID = motelGroup.Key,
+                                 MotelName = motelGroup.First().Motel.Name_motel,  
+                                 Location = motelGroup.First().Motel.location,    
+                                 ImgLink = motelGroup.Select(img => img.Link).FirstOrDefault(),
+                                 price = motelGroup.First().Motel.price            
                              }).Take(4).ToList();
 
             var sharedMotels = (from t in db.togethers
                                 join motel in db.Motels on t.Motel_ID equals motel.Motel_ID
                                 join img in db.imgs on motel.Motel_ID equals img.Motel_ID
                                 where motel.is_available == "Còn trống" && motel.VIP == 1
-                                select new index_Viewmodel
-                                {
-                                    ID_user = t.ID_user,
-                                    Motel_ID = t.Motel_ID,
-                                    room_ID = t.room_ID,
-                                    price = t.price,
-                                    location = t.location,
-                                    roomdetails = t.roomdetails,
-                                    requestdetails = t.requestdetails,
-                                    MotelName = motel.Name_motel,
-                                    ImgLink = img.Link
-                                }).Take(4).ToList();
+                                select new { t, motel, img } 
+                    )
+                    .GroupBy(x => x.motel.Motel_ID) 
+                    .Select(group => new index_Viewmodel
+                    {
+                        ID_user = group.First().t.ID_user, 
+                        Motel_ID = group.Key, 
+                        room_ID = group.First().t.room_ID, 
+                        price = group.First().t.price, 
+                        location = group.First().t.location,
+                        roomdetails = group.First().t.roomdetails, 
+                        requestdetails = group.First().t.requestdetails,
+                        MotelName = group.First().motel.Name_motel, 
+                        ImgLink = group.Select(g => g.img.Link).FirstOrDefault() 
+                    }).Take(4).ToList();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -149,9 +153,8 @@ namespace _2home.Controllers
         {
             var togetherQuery = from t in db.togethers
                                 join motel in db.Motels on t.Motel_ID equals motel.Motel_ID
-                                join img in db.imgs on motel.Motel_ID equals img.Motel_ID
-                                where t.is_available == "chấp nhận"
-                                      && t.creation_date >= DateTime.Now.AddDays(-30)&& motel.is_available == "Còn trống" 
+                                where t.is_available == "Còn trống"
+                                      && t.creation_date >= DateTime.Now.AddDays(-30)
                                 select new index_Viewmodel
                                 {
                                     ID_user = t.ID_user,
@@ -162,9 +165,11 @@ namespace _2home.Controllers
                                     roomdetails = t.roomdetails,
                                     requestdetails = t.requestdetails,
                                     MotelName = motel.Name_motel,
-                                    ImgLink = img.Link 
+                                    is_available=t.is_available,
+                                    ImgLink = (from i in db.imgs
+                                               where i.Motel_ID == motel.Motel_ID
+                                               select i.Link).FirstOrDefault()
                                 };
-
 
 
 
@@ -614,7 +619,7 @@ namespace _2home.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Kiemduyet");
 
         }
 
