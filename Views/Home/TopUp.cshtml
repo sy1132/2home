@@ -9,7 +9,10 @@
                 <div class="card-body text-center">
                     <h2 class="mb-4">Nạp tiền</h2>
                     <p class="lead">Quét mã QR để nạp tiền:</p>
-                    <img src="@ViewBag.QrUrl" alt="QR Code" class="img-fluid mb-4" style="max-width: 300px;" />
+                    <img src="~/asset/images/qrcode.jpg" alt="QR Code" class="img-fluid mb-4" style="max-width: 300px;" />
+                    <p class="text-muted">
+                        Nội dung chuyển khoản bắt buộc: @ViewBag.TransactionID
+                    </p>
                     <p class="text-muted">Sử dụng ứng dụng ngân hàng của bạn để quét mã QR và hoàn tất giao dịch.</p>
                 </div>
             </div>
@@ -65,3 +68,9 @@
             color: white;
         }
 </style>
+<script>
+    function generateRandomCode() {
+        return Math.floor(10000 + Math.random() * 90000); 
+    }
+
+    document.getElementById('randomCode').textContent = generateRandomCode();</script>

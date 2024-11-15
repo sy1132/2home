@@ -8,51 +8,20 @@
 }
 
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .card {
-        border: 1px solid #ccc;
+    .btn-detail {
+        background-color: #ff9800; 
+        color: white;
+        padding: 5px 10px;
         border-radius: 5px;
-        margin-bottom: 20px;
-        padding: 15px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
     }
 
-    .card-header {
-        background-color: #f8f9fa;
-        font-weight: bold;
-        padding: 10px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    th, td {
-        border: 1px solid #ccc;
-        padding: 10px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-    }
-
+        .btn-detail:hover {
+            background-color: #e68900; 
+        }
+   
     .btn {
         padding: 5px 10px;
         border: none;
@@ -92,7 +61,8 @@
 
                 </div>
                 <button type="submit" class="btn btn-info">Cập nhật</button>
-            </form>        </div>
+            </form>
+        </div>
     </div>
 
     <table class="table table-bordered">
@@ -104,6 +74,8 @@
                 <th>Chi phí phát sinh</th>
                 <th>Tiền trọ</th>
                 <th>Tổng tiền </th>
+                <th>Xem chi tiết</th>
+
             </tr>
         </thead>
         <tbody>
@@ -117,12 +89,16 @@
                     <td>@items.Additional_Charges</td>
                     <td>@items.Price</td>
                     <td>@items.Total_Amount_Due</td>
-
+                    <td>
+                        <a href="@Url.Action("detailsbill", "Home", new { id = items.Bill_ID })" class="btn btn-detail">Xem Chi Tiết</a>
+                    </td>
                 </tr>
             }
 
         </tbody>
     </table>
 
-
+    <div class="text-center">
+        @Html.PagedListPager(Model, page => Url.Action("rent_checkin", new { page, size = ViewBag.currentSize, ID_User = ViewBag.ID_User }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+    </div>
 

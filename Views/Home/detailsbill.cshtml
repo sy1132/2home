@@ -1,0 +1,57 @@
+﻿@model _2home.Models.RoomBill
+
+@{
+    ViewBag.Title = "Chi tiết hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center text-primary">Chi tiết hóa đơn</h2>
+
+<div class="card mt-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Thông Tin Hóa Đơn Phòng</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4 font-weight-bold">Mã Phòng:</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Room_ID)</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Số Điện Cũ:</dt>
+            <dd class="col-sm-8">@Html.Raw($"{Model.Previous_Electricity_Usage} kWh")</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Chỉ Số Điện:</dt>
+            <dd class="col-sm-8">@Html.Raw($"{Model.Electricity_Meter} kWh")</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Số Nước Cũ:</dt>
+            <dd class="col-sm-8">@Html.Raw($"{Model.Previous_Water_Meter} m³")</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Chỉ Số Nước:</dt>
+            <dd class="col-sm-8">@Html.Raw($"{Model.Water_Meter} m³")</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Phụ Phí:</dt>
+            <dd class="col-sm-8">@Html.Raw($"{Model.Additional_Charges:N0} VNĐ")</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Giá Thuê:</dt>
+            <dd class="col-sm-8">@Html.Raw($"{Model.Price:N0} VNĐ")</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Tiền Điện:</dt>
+            <dd class="col-sm-8">@Html.Raw($"{Model.Electricity_Bill:N0} VNĐ")</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Tiền Nước:</dt>
+            <dd class="col-sm-8">@Html.Raw($"{Model.Water_Bill:N0} VNĐ")</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Tổng Số Tiền Phải Trả:</dt>
+            <dd class="col-sm-8">@Html.Raw($"{Model.Total_Amount_Due:N0} VNĐ")</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Trạng Thái Phòng:</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Room_Status)</dd>
+
+            <dt class="col-sm-4 font-weight-bold">Ngày Xuất Hóa Đơn:</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Date_of_Issue)</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    @Html.ActionLink("Quay Lại Danh Sách", "Index", null, new { @class = "btn btn-secondary mx-2" })
+</div>

@@ -146,7 +146,11 @@
                                             <i class="fas fa-home"></i> Quản lý thuê
                                         </a>
                                     </li>
-
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("AllHistory", "Home")">
+                                            <i class="fas fa-cog"></i> Lịch sử giao dịch
+                                        </a>
+                                    </li>
                                 }
                                 else if (user.userrole == "Innkeeper")
                                 {
@@ -170,6 +174,11 @@
                                     <li>
                                         <a class="dropdown-item" href="@Url.Action("DKthue", "Home")">
                                             <i class="fas fa-clipboard-list"></i> Đăng ký thuê
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("History", "Home")">
+                                            <i class="fas fa-cog"></i> Lịch sử giao dịch
                                         </a>
                                     </li>
                                 }
@@ -219,11 +228,7 @@
                                         <i class="fas fa-cog"></i> Settings
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item" href="@Url.Action("TogetherView", "Home")">
-                                        <i class="fas fa-cog"></i> Trang ở ghép
-                                    </a>
-                                </li>
+
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item" href="/Home/Logout">
@@ -247,13 +252,9 @@
         </div>
     </nav>
     <div class="position-relative text-center">
-        <img src="~/asset/images/2.jpg" alt="Mô tả ảnh" class="img-fluid" style="width: 100%; height: auto;">
-        <div class="slide__text" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 3;">
-            <div style="font-size: 4rem; color: white; font-family: 'Roboto', sans-serif;">Chào mừng tới SecondHome</div>
-            <div style="font-size: 2.5rem; color: white; font-family: 'Roboto', sans-serif;">Nơi tìm kiếm nhà trọ và nơi ở một cách nhanh chóng</div>
-        </div>
-        <div class="d-flex justify-content-center position-absolute" style="bottom: -50px; left: 50%; transform: translateX(-50%); width: 100%;">
-            <div class="card-header" style="background-color: white; gap: 2; margin: 0; padding: 3; border-radius: 0.3rem; display: flex; flex-direction: column; width: 90%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);">
+
+        <div class="d-flex justify-content-center " transform: translateX(-50%); width: 100%;">
+            <div class="card-header" style="background-color: white; margin: 0; padding: 3; border-radius: 0.3rem; display: flex; flex-direction: column; width: 90%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);">
                 <form class="d-flex flex-column mb-3" role="search" method="get" action="@Url.Action("Index")">
                     <button type="button" class="btn border-2 mb-2" style="background-color: white; color: black; border: 2px solid black; font-weight: bold; margin-bottom: 2px;" onclick="toggleSearch()">
                         Tìm kiếm
@@ -290,6 +291,18 @@
                                     <option selected value="">Chọn khu...</option>
                                 </select>
                             </fieldset>
+                            <div class="d-flex align-items-center ms-4">
+                                <label style="font-weight: bold; font-size: 1.2rem; margin-right: 15px; white-space: nowrap;">Khoảng giá (VNĐ):</label>
+
+                               
+                                <span id="priceRangeDisplay" style="font-size: 1.2rem; font-weight: bold; margin-right: 15px;">1,000,000 - 30,000,000</span>
+
+                                <div class="d-flex align-items-center" style="width: 300px;">
+                                    <input name="minPrice" type="range" id="minPrice" min="1000000" max="30000000" step="100000" value="1000000" oninput="updatePriceRangeDisplay()" class="custom-range">
+                                    <input name="maxPrice" type="range" id="maxPrice" min="1000000" max="30000000" step="100000" value="30000000" oninput="updatePriceRangeDisplay()" class="custom-range">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -297,6 +310,8 @@
         </div>
 
     </div>
+
+
     <div style="background-color: white; height: 50px; width: 100%; margin-bottom:30px">
     </div>
     <div class="d-flex flex-column justify-content-center align-items-center">
@@ -426,96 +441,175 @@
             background-color: #007bff;
             border-color: #007bff;
         }
+    .custom-range {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        background: #ddd;
+        outline: none;
+        padding: 0;
+        margin: 0;
+    }
 
+        .custom-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+            .custom-range::-webkit-slider-thumb:hover {
+                background-color: #0056b3;
+            }
+
+        .custom-range::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+            .custom-range::-moz-range-thumb:hover {
+                background-color: #0056b3;
+            }
+
+        .custom-range::-ms-thumb {
+            width: 20px;
+            height: 20px;
+            background-color: #007bff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+            .custom-range::-ms-thumb:hover {
+                background-color: #0056b3;
+            }
 </style>
 
 <script>
-   
-    const data1 = {
-        "Dĩ An": {
-            wards: {
-                "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
-                "Bình An": ["Bình Thung 1", "Bình Thung 2", "Nội Hóa 1", "Nội Hóa 2", "Châu Thới"],
+
+        const data1 = {
+            "Dĩ An": {
+                wards: {
+                    "An Bình": ["Bình Đường 1", "Bình Đường 2", "Bình Đường 3", "Bình Đường 4"],
+                    "Bình An": ["Bình Thung 1", "Bình Thung 2", "Nội Hóa 1", "Nội Hóa 2", "Châu Thới"],
+                }
+            },
+            "Thuận An": {
+                wards: {
+                    "An Phú": ["1A", "1B", "2", "3", "4"],
+                }
+            },
+            "Thủ Dầu Một": {
+                wards: {
+                    "Chánh Mỹ": ["Chánh Lộc 1", "Chánh Lộc 2"],
+                }
+            },
+            "Tân Uyên": {
+                wards: {
+                    "Hội Nghĩa": ["1", "2", "3", "4"],
+                }
+            },
+            "Bến Cát": {
+                wards: {
+                    "An Điền": ["An Mỹ", "An Sơn"],
+                }
             }
-        },
-        "Thuận An": {
-            wards: {
-                "An Phú": ["1A", "1B", "2", "3", "4"],
+        };
+
+        document.getElementById('inputCity').addEventListener('change', function () {
+            const city = this.value;
+            const wardSelect = document.getElementById('inputWard');
+            const districtSelect = document.getElementById('inputDistrict');
+
+            wardSelect.innerHTML = '<option value="">Chọn phường</option>';
+            districtSelect.innerHTML = '<option value="">Chọn khu</option>';
+            wardSelect.disabled = true;
+            districtSelect.disabled = true;
+
+            if (city && data1[city]) {
+                const wards = data1[city].wards;
+                wardSelect.disabled = false;
+
+                for (const ward in wards) {
+                    const option = document.createElement('option');
+                    option.value = ward;
+                    option.textContent = ward;
+                    wardSelect.add(option);
+                }
             }
-        },
-        "Thủ Dầu Một": {
-            wards: {
-                "Chánh Mỹ": ["Chánh Lộc 1", "Chánh Lộc 2"],
+        });
+
+        document.getElementById('inputWard').addEventListener('change', function () {
+            const city = document.getElementById('inputCity').value;
+            const ward = this.value;
+            const districtSelect = document.getElementById('inputDistrict');
+
+            districtSelect.innerHTML = '<option value="">Chọn khu</option>';
+            districtSelect.disabled = true;
+
+            if (city && ward && data1[city].wards[ward]) {
+                const neighborhoods = data1[city].wards[ward];
+                districtSelect.disabled = false;
+
+                neighborhoods.forEach(function (neighborhood) {
+                    const option = document.createElement('option');
+                    option.value = neighborhood;
+                    option.textContent = neighborhood;
+                    districtSelect.add(option);
+                });
             }
-        },
-        "Tân Uyên": {
-            wards: {
-                "Hội Nghĩa": ["1", "2", "3", "4"],
-            }
-        },
-        "Bến Cát": {
-            wards: {
-                "An Điền": ["An Mỹ", "An Sơn"],
+        });
+
+        function toggleSearch() {
+            var searchContainer = document.getElementById("search-container");
+            if (searchContainer.style.display === "none") {
+                searchContainer.style.display = "block";
+                setTimeout(function () {
+                    searchContainer.classList.add("active");
+                }, 10);
+            } else {
+                searchContainer.classList.remove("active");
+                setTimeout(function () {
+                    searchContainer.style.display = "none";
+                }, 500);
             }
         }
-    };
+        const minPriceInput = document.getElementById("minPrice");
+        const maxPriceInput = document.getElementById("maxPrice");
+        const priceRangeDisplay = document.getElementById("priceRangeDisplay");
 
-    document.getElementById('inputCity').addEventListener('change', function () {
-        const city = this.value;
-        const wardSelect = document.getElementById('inputWard');
-        const districtSelect = document.getElementById('inputDistrict');
+        function updatePriceRangeDisplay() {
+            let minPrice = parseInt(minPriceInput.value);
+            let maxPrice = parseInt(maxPriceInput.value);
 
-        wardSelect.innerHTML = '<option value="">Chọn phường</option>';
-        districtSelect.innerHTML = '<option value="">Chọn khu</option>';
-        wardSelect.disabled = true;
-        districtSelect.disabled = true;
-
-        if (city && data1[city]) {
-            const wards = data1[city].wards;
-            wardSelect.disabled = false;
-
-            for (const ward in wards) {
-                const option = document.createElement('option');
-                option.value = ward;
-                option.textContent = ward;
-                wardSelect.add(option);
+            if (minPrice >= maxPrice - 100000) {
+                minPriceInput.value = maxPrice - 100000;
+                minPrice = maxPrice - 100000;
             }
+            if (maxPrice <= minPrice + 100000) {
+                maxPriceInput.value = minPrice + 100000;
+                maxPrice = minPrice + 100000;
+            }
+            priceRangeDisplay.innerText = `${minPrice.toLocaleString()} - ${maxPrice.toLocaleString()}`;
         }
-    });
 
-    document.getElementById('inputWard').addEventListener('change', function () {
-        const city = document.getElementById('inputCity').value;
-        const ward = this.value;
-        const districtSelect = document.getElementById('inputDistrict');
+        minPriceInput.addEventListener("input", updatePriceRangeDisplay);
+        maxPriceInput.addEventListener("input", updatePriceRangeDisplay);
 
-        districtSelect.innerHTML = '<option value="">Chọn khu</option>';
-        districtSelect.disabled = true;
+        updatePriceRangeDisplay();
 
-        if (city && ward && data1[city].wards[ward]) {
-            const neighborhoods = data1[city].wards[ward];
-            districtSelect.disabled = false;
-
-            neighborhoods.forEach(function (neighborhood) {
-                const option = document.createElement('option');
-                option.value = neighborhood;
-                option.textContent = neighborhood;
-                districtSelect.add(option);
-            });
-        }
-    });
-
-    function toggleSearch() {
-        var searchContainer = document.getElementById("search-container");
-        if (searchContainer.style.display === "none") {
-            searchContainer.style.display = "block";
-            setTimeout(function () {
-                searchContainer.classList.add("active");
-            }, 10);
-        } else {
-            searchContainer.classList.remove("active");
-            setTimeout(function () {
-                searchContainer.style.display = "none";
-            }, 500);
-        }
-    }
 </script>
