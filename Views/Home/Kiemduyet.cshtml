@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
         function toggleReasonField(motelId) {
             var reasonField = document.getElementById("reasonField_" + motelId);
@@ -22,6 +21,7 @@
             <th>Giá</th>
             <th>Tình Trạng</th>
             <th>Chi Tiết</th>
+            <th>Hành Động</th>
             <th>Hành Động</th>
             <th>Hành Động</th>
 
@@ -65,6 +65,13 @@
                             <input type="submit" value="Gửi lý do" class="btn btn-primary" />
                         }
                     </div>
+                </td>
+                <td>
+                    @using (Html.BeginForm("Details", "Home", FormMethod.Get))
+                    {
+                        @Html.Hidden("Motel_ID", items.Motel_ID)
+                        <input type="submit" value="Xem chi tiết" class="btn btn-primary" />
+                    }
                 </td>
             </tr>
         }

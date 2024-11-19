@@ -110,6 +110,16 @@ CREATE TABLE RoomBills (
     Date_of_Issue DATETIME DEFAULT GETDATE(), 
     FOREIGN KEY (Room_ID) REFERENCES Rooms(room_ID) 
 );
+CREATE TABLE PaymentHistory (
+    PaymentID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID INT NOT NULL,
+    Amount DECIMAL(18,2) NOT NULL,   
+    PaymentDate DATETIME DEFAULT GETDATE(), 
+    TransactionID VARCHAR(100),
+    Status VARCHAR(50) ,
+	FOREIGN KEY (UserID) REFERENCES [user](ID_user) 
+
+);
 
 SELECT * FROM Motel
 SELECT * FROM img
@@ -119,6 +129,7 @@ SELECT * FROM Mail
 SELECT * FROM RoomBills
 SELECT * FROM Rooms
 SELECT * FROM together
+SELECT * FROM PaymentHistory
 
 SELECT TOP 1 * 
 FROM RoomBills 

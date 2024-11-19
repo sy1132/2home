@@ -267,7 +267,6 @@
         const commonFeatures = document.getElementById('commonFeatures');
         const featuresContainer = document.getElementById('features');
 
-        // Hiển thị phần tính năng khi người dùng chọn gói
         featuresContainer.style.display = selectedType ? 'block' : 'none';
 
         if (selectedType === 'VIP') {
@@ -315,7 +314,6 @@
         const selectedWardSelect = document.getElementById('wardSelect');
         const selectedDistrictSelect = document.getElementById('districtSelect');
 
-        // Reset ward and district selections
         selectedWardSelect.innerHTML = '<option value="">Chọn phường</option>';
         selectedDistrictSelect.innerHTML = '<option value="">Chọn khu</option>';
         selectedWardSelect.disabled = true;

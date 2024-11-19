@@ -50,6 +50,17 @@
       <Association Name="user_Motel" Member="user" ThisKey="ID_user" OtherKey="ID_user" Type="user" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.PaymentHistory" Member="PaymentHistories">
+    <Type Name="PaymentHistory">
+      <Column Name="PaymentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TransactionID" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="user_PaymentHistory" Member="user" ThisKey="UserID" OtherKey="ID_user" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.RoomBills" Member="RoomBills">
     <Type Name="RoomBill">
       <Column Name="Bill_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -122,6 +133,7 @@
       <Column Name="blance" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="user_Mail" Member="Mails" ThisKey="ID_user" OtherKey="ID_user" Type="Mail" />
       <Association Name="user_Motel" Member="Motels" ThisKey="ID_user" OtherKey="ID_user" Type="Motel" />
+      <Association Name="user_PaymentHistory" Member="PaymentHistories" ThisKey="ID_user" OtherKey="UserID" Type="PaymentHistory" />
       <Association Name="user_Room" Member="Rooms" ThisKey="ID_user" OtherKey="ID_user" Type="Room" />
     </Type>
   </Table>

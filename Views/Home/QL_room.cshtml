@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
-
-
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -18,9 +16,12 @@
             <th>Tổng tiền điện</th>
             <th>Tổng tiền nước</th>
             <th>Chi phí phát sinh</th>
-            <th>Tiền trọ</th>
+            <th>Tiền phòng</th>
+            <th>Tổng tiền phòng</th>
             <th>Tổng tiền</th>
+            <th>Số tiền đã trả</th>
             <th>Tình Trạng</th>
+            <th>Hành động</th> 
         </tr>
     </thead>
     <tbody>
@@ -42,13 +43,20 @@
                 <td>@items.Water_Bill</td>
                 <td>@items.Additional_Charges</td>
                 <td>@items.Price</td>
+                <td>@items.Latest_Total_Amount_Due</td>
                 <td>@items.Total_Amount_Due</td>
+                <td>@items.moneypay</td>
                 <td>@items.Room_Status</td>
+                <td>
+                    @using (Html.BeginForm("rent_checkin", "Home", FormMethod.Get))
+                    {
+                        @Html.Hidden("ID_User", items.ID_User)
+                        <input type="submit" value="Xem chi tiết" class="btn btn-primary" />
+                    }
+                </td>
             </tr>
         }
     </tbody>
-    
-
 </table>
 
 <div class="pagination-container">

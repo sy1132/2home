@@ -3,16 +3,13 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "rent_check";
+    ViewBag.Title = "rent_checkin";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 <head>
 </head>
 <style>
-
-
     .btn-detail {
         background-color: #ff9800; 
         color: white;
@@ -22,7 +19,24 @@
     }
 
         .btn-detail:hover {
-            background-color: #e68900;
+            background-color: #e68900; 
+        }
+   
+    .btn {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-info {
+        background-color: #007bff;
+    }
+
+        .btn-info:hover {
+            background-color: #0056b3;
         }
 </style>
 
@@ -39,9 +53,15 @@
             <p>Tổng số tiền phải thanh toán: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalAmountDue ?? 0)</strong></p>
             <p>Tổng tiền phòng đã trả: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalPaid ?? 0)</strong></p>
             <p>Số tiền nợ: <strong>@String.Format("{0:N0} VNĐ", ViewBag.TotalDebt ?? 0)</strong></p>
-            @if (ViewBag.save == "Inkeeper")
-            {
-                <a href="@Url.Action("Pay", "Home")" class="btn btn-info">Đóng Tiền</a>}
+            <form method="post" action="@Url.Action("UpdatePayment", "Home")">
+                <div class="form-group">
+                    <label for="paymentAmount">Nhập số tiền mà người thuê đã đóng:</label>
+                    <input type="number" name="paymentAmount" class="form-control" id="paymentAmount" placeholder="Số tiền" min="0" required />
+                    <input type="hidden" name="ID_User" value="@ViewBag.ID_User" />
+
+                </div>
+                <button type="submit" class="btn btn-info">Cập nhật</button>
+            </form>
         </div>
     </div>
 
@@ -77,8 +97,8 @@
 
         </tbody>
     </table>
+
     <div class="text-center">
         @Html.PagedListPager(Model, page => Url.Action("rent_checkin", new { page, size = ViewBag.currentSize, ID_User = ViewBag.ID_User }), PagedListRenderOptions.ClassicPlusFirstAndLast)
     </div>
-
 
