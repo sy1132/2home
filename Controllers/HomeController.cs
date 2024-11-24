@@ -220,7 +220,7 @@ namespace _2home.Controllers
                                 }).FirstOrDefault();
             var randomMotels = (from m in db.Motels
                                 join p in db.imgs on m.Motel_ID equals p.Motel_ID
-                                where m.Motel_ID != Motel_ID && m.VIP == 0 && m.is_available=="Còn trống"
+                                where m.Motel_ID != Motel_ID && m.VIP == 1 && m.is_available=="Còn trống"
                                 orderby Guid.NewGuid() 
                                 select new pic
                                 {
