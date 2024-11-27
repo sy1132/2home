@@ -56,7 +56,7 @@
                 </td>
                 <td>@items.MotelName</td>
                 <td>@items.Location</td>
-                <td>@items.Price</td>
+                <td>@String.Format("{0:0,0}", items.Price) VNĐ</td>
                 <td>
                     @using (Html.BeginForm("UpdateAvailability", "Home", FormMethod.Post))
                     {

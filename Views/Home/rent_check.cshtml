@@ -64,11 +64,12 @@
                 <tr>
 
                     <td>@items.Date_of_Issue</td>
-                    <td>@items.Electricity_Bill</td>
-                    <td>@items.Water_Bill</td>
-                    <td>@items.Additional_Charges</td>
-                    <td>@items.Price</td>
-                    <td>@items.Total_Amount_Due</td>
+                    <td>@String.Format("{0:0,0}", items.Electricity_Bill) VNĐ</td>
+                    <td>@String.Format("{0:0,0}", items.Water_Bill) VNĐ</td>
+                    <td>@String.Format("{0:0,0}", items.Additional_Charges) VNĐ</td>
+                    <td>@String.Format("{0:0,0}", items.Price) VNĐ</td>
+                    <td>@String.Format("{0:0,0}", items.Total_Amount_Due) VNĐ</td>
+
                     <td>
                         <a href="@Url.Action("detailsbill", "Home", new { id = items.Bill_ID })" class="btn btn-detail">Xem Chi Tiết</a>
                     </td>

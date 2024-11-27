@@ -68,7 +68,7 @@
                 <h4>Thông tin nhà trọ</h4>
                 <p><strong>Tên nhà trọ:</strong> @Model.MotelName</p>
                 <p><strong>Vị trí:</strong> @Model.Location</p>
-                <p><strong>Giá:</strong> @Model.Price</p>
+                <p><strong>Giá:</strong> @String.Format("{0:0,0}", Model.Price) VNĐ</p>
                 <p><strong>Tình trạng:</strong> @Model.is_available </p>
                 <p><strong>Chi tiết:</strong> @Model.Details </p>
             </div>

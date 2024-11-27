@@ -139,6 +139,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -167,12 +168,10 @@
     <Content Include="asset\images\1.jpg" />
     <Content Include="asset\images\2.jpg" />
     <Content Include="asset\images\5.jpg" />
-    <Content Include="asset\images\c.jfif" />
     <Content Include="asset\images\logo traver bufflo.jpg" />
     <Content Include="asset\images\qrcode.jpg" />
     <Content Include="asset\images\user.jpg" />
     <Content Include="asset\images\video.png" />
-    <Content Include="asset\images\website-background-templates.jpg" />
     <Content Include="asset\videos\video.mp4" />
     <Content Include="Content\AnyConv.com__licensed-image.jpg" />
     <Content Include="Content\bootstrap-grid.css" />
@@ -192,7 +191,6 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\logo 2 home ngang.png" />
-    <Content Include="Content\logo 2 home tròn trắng.png" />
     <Content Include="Content\logo 2 home tròn đen.png" />
     <Content Include="Content\logo 2 home vuông trắng.png" />
     <Content Include="Content\logo 2 home vuông đen.png" />
@@ -201,7 +199,6 @@
     <Content Include="Content\website-background-templates.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Content\bootstrap.rtl.min.css.map" />
     <Content Include="Content\bootstrap.rtl.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
@@ -232,6 +229,11 @@
     <None Include="Models\DataClasses1.dbml.layout">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </None>
+    <None Include="Properties\PublishProfiles\hai123-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\hai123-001-site1 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\nvsy1132-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\sy1132-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\sy1132-001-site1 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
@@ -293,6 +295,7 @@
     <Content Include="Views\Home\AllHistory.cshtml" />
     <Content Include="Views\Home\AboutUs.cshtml" />
     <Content Include="Views\Home\KiemduyetInkeeper.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -42,7 +42,7 @@
                 @Html.DisplayFor(modelItem => item.MotelName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                <strong>Giá:</strong> @String.Format("{0:0,0} VNĐ", item.Price)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.roomdetails)

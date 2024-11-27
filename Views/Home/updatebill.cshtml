@@ -149,10 +149,13 @@
             row.querySelector('.total-electricity-bill').innerText = isNaN(electricityBill) ? '0.00' : electricityBill.toFixed(2);
             row.querySelector('.total-water-bill').innerText = isNaN(waterBill) ? '0.00' : waterBill.toFixed(2);
 
-            const totalAmountDue = electricityBill + waterBill + additionalCharges;
+            const roomPrice = parseFloat(row.querySelector('input[name="Price"]').value) || 0;
+            const totalAmountDue = electricityBill + waterBill + additionalCharges + roomPrice;
+
             row.querySelector('.total-amount-due').innerText = isNaN(totalAmountDue) ? '0.00' : totalAmountDue.toFixed(2);
         });
     }
+
 
     document.getElementById('selectAll').addEventListener('change', function () {
         const checkboxes = document.querySelectorAll('.room-checkbox');
