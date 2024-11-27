@@ -20,9 +20,9 @@
                 <img class="img-trang" src="@itemsList[i].ImgLink" alt="Image" />
                 <div>
                     <strong>Tên:</strong> @itemsList[i].MotelName<br />
-                    <strong>Địa chỉ:</strong> @itemsList[i].Location<br />
-                    <strong>Giá:</strong> @itemsList[i].Price<br />
-                    <strong>chi tiết phòng:</strong> @itemsList[i ].roomdetails<br />
+                    <strong>Địa chỉ:</strong> @itemsList[i].location<br />
+                    <strong>Giá:</strong> @String.Format("{0:0,0}", itemsList[i].price) VNĐ<br />
+                    <strong>chi tiết phòng:</strong> @itemsList[i].roomdetails<br />
 
                     <strong>Yêu cầu:</strong> @itemsList[i].requestdetails<br />
                     <strong>Tình trạng:</strong> @itemsList[i].is_available

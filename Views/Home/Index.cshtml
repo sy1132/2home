@@ -125,7 +125,8 @@
                                     <h5>@sharedMotel.MotelName</h5>
 
                                     <p>@sharedMotel.Location</p>
-                                    <strong>Giá:</strong> @sharedMotel.price
+                                    <strong>Giá:</strong> <span id="price">@sharedMotel.price</span> VNĐ
+
                                 </div>
                             </div>
                         }
@@ -152,7 +153,8 @@
                                 </div>
                                 <div class="info">
                                     <strong>Địa chỉ:</strong> @itemsList[i].Location<br />
-                                    <strong>Giá:</strong> @itemsList[i].Price<br />
+                                    <strong>Giá:</strong> <span id="price">@itemsList[i].Price</span> VNĐ
+
                                     <strong>Tình trạng:</strong> @itemsList[i].is_available
                                     @using (Html.BeginForm("Details", "Home", FormMethod.Get))
                                     {
@@ -185,7 +187,7 @@
                                     <h5>@vipMotel.MotelName</h5>
 
                                     <p>@vipMotel.Location</p>
-                                    <strong>Giá:</strong> @vipMotel.price
+                                    <strong>Giá:</strong> <span id="price">@vipMotel.price</span> VNĐ
                                 </div>
                             </div>
                         }
@@ -215,3 +217,17 @@
         </div>
     </div>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const priceElements = document.querySelectorAll("#price");
+
+        priceElements.forEach(priceElement => {
+            const price = parseFloat(priceElement.textContent);
+
+            if (!isNaN(price)) {
+                priceElement.textContent = price.toLocaleString("vi-VN");
+            }
+        });
+    });
+
+</script>

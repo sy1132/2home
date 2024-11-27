@@ -26,39 +26,39 @@
             <tr>
                 <td>@item.Name_motel</td>
                 <td>@item.location</td>
-                <td>@item.price</td>
+                <td>@String.Format("{0:0,0}", item.price) VNĐ</td>
 
-                
-                    <td>
-                        @using (Html.BeginForm("UpdateAvailability1", "Home", FormMethod.Post))
-                        {
-                            @Html.Hidden("Motel_ID", item.Motel_ID)
-                            <select name="is_available" onchange="this.form.submit()">
-                                <option value="Còn trống" @(item.is_available == "Còn trống" ? "selected" : "")>Còn trống</option>
-                                <option value="Hết phòng" @(item.is_available == "Hết phòng" ? "selected" : "")>Hết phòng</option>
-                            </select>
-                        }
-                    </td>
 
-                    <td>
-                        @using (Html.BeginForm("QL_room", "Home", FormMethod.Get))
-                        {
-                            @Html.Hidden("Motel_ID", item.Motel_ID)
-                            <p class="class-submit">
-                                <input type="submit" value="Xem phòng" />
-                            </p>
-                        }
-                    </td>
-                    <td>
-                        @using (Html.BeginForm("updatebill", "Home", FormMethod.Get))
-                        {
-                            @Html.Hidden("Motel_ID", item.Motel_ID)
-                            <p class="class-submit">
-                                <input type="submit" value="Cập nhật" />
-                            </p>
-                        }
-                    </td>
-               
+                <td>
+                    @using (Html.BeginForm("UpdateAvailability1", "Home", FormMethod.Post))
+                    {
+                        @Html.Hidden("Motel_ID", item.Motel_ID)
+                        <select name="is_available" onchange="this.form.submit()">
+                            <option value="Còn trống" @(item.is_available == "Còn trống" ? "selected" : "")>Còn trống</option>
+                            <option value="Hết phòng" @(item.is_available == "Hết phòng" ? "selected" : "")>Hết phòng</option>
+                        </select>
+                    }
+                </td>
+
+                <td>
+                    @using (Html.BeginForm("QL_room", "Home", FormMethod.Get))
+                    {
+                        @Html.Hidden("Motel_ID", item.Motel_ID)
+                        <p class="class-submit">
+                            <input type="submit" value="Xem phòng" />
+                        </p>
+                    }
+                </td>
+                <td>
+                    @using (Html.BeginForm("updatebill", "Home", FormMethod.Get))
+                    {
+                        @Html.Hidden("Motel_ID", item.Motel_ID)
+                        <p class="class-submit">
+                            <input type="submit" value="Cập nhật" />
+                        </p>
+                    }
+                </td>
+
             </tr>
         } 
     </tbody>

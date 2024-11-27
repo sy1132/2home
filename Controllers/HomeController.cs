@@ -23,6 +23,7 @@ using System.Web.Security;
 using System.IO;
 using System.Diagnostics.Contracts;
 using System.Web.Util;
+using System.Data.Entity.Infrastructure;
 
 namespace _2home.Controllers
 {
@@ -220,7 +221,7 @@ namespace _2home.Controllers
                                 }).FirstOrDefault();
             var randomMotels = (from m in db.Motels
                                 join p in db.imgs on m.Motel_ID equals p.Motel_ID
-                                where m.Motel_ID != Motel_ID && m.VIP == 0 && m.is_available=="Còn trống"
+                                where m.Motel_ID != Motel_ID && m.VIP == 1 && m.is_available=="Còn trống"
                                 orderby Guid.NewGuid() 
                                 select new pic
                                 {
@@ -478,9 +479,12 @@ namespace _2home.Controllers
         }
         public ActionResult KiemduyetInkeeper(int? size, int? page)
         {
+            var useri = Session["User"] as _2home.ViewModels.User;
+
             var query = from motel in db.Motels
                         join together in db.togethers on motel.Motel_ID equals together.Motel_ID
                         join user in db.users on motel.ID_user equals user.ID_user
+                        where useri.ID_user==user.ID_user
                         select new index_Viewmodel
                         {
                             MotelName = motel.Name_motel,
@@ -1271,7 +1275,10 @@ namespace _2home.Controllers
                     Room rooms = new Room
                     {
                         Motel_ID= Motel_ID.Value,
-                        Room_Status="Trống"
+                        Room_Status="Trống",
+                        money_paid = 0,
+
+
                     };
 
                     db.Rooms.InsertOnSubmit(rooms);
@@ -1429,7 +1436,7 @@ namespace _2home.Controllers
                         Electricity_Bill = (Electricity_Meter.Value - Previous_Electricity_Usage) * Electricity_Usage,
                         Water_Bill = (Water_Meter.Value - Previous_Water_Meter) * Water_Usage,
                         Total_Amount_Due = ((Electricity_Meter.Value - Previous_Electricity_Usage) * Electricity_Usage) +
-                                           ((Water_Meter.Value - Previous_Water_Meter) * Water_Usage) + Additional_Charges,
+                                           ((Water_Meter.Value - Previous_Water_Meter) * Water_Usage) + Additional_Charges+Price,
                         Room_Status = roomToUpdate.Room_Status,
                         Date_of_Issue = DateTime.Now
                     };
@@ -1508,7 +1515,8 @@ namespace _2home.Controllers
             var totalElectricity = query.Sum(rb => rb.Electricity_Bill);
             var totalWater = query.Sum(rb => rb.Water_Bill);
             var totalAdditionalCharges = query.Sum(rb => rb.Additional_Charges);
-            var totalRent = query.Sum(rb => rb.Price);
+            var totalRent = query.FirstOrDefault()?.Price ?? 0;
+
             var totalAmountDue = query.Sum(rb => rb.Total_Amount_Due);
 
             var totalPaid = db.Rooms
@@ -1575,7 +1583,7 @@ namespace _2home.Controllers
             ViewBag.TotalWater = totalWater;
             ViewBag.TotalAdditionalCharges = totalAdditionalCharges;
             ViewBag.TotalAmountDue = totalAmountDue;
-            ViewBag.TotalRent = query.Sum(rb => rb.Price);
+            ViewBag.TotalRent = query.FirstOrDefault()?.Price ?? 0;
             ViewBag.TotalPaid = totalPaid;
 
             ViewBag.TotalDebt = totalAmountDue - totalPaid;
