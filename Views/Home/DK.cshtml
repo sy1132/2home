@@ -1,47 +1,48 @@
-﻿@{
-    ViewBag.Title = "DK";
+﻿@model _2home.ViewModels.UserRegisterViewModel
+
+@{
+    ViewBag.Title = "Đăng ký";
 }
 
-<head>
-    <link href="~/asset/css/login.css" rel="stylesheet" />
-</head>
-
 <div class="card mx-auto shadow-lg p-3 m-5 bg-white rounded" style="width: 50rem ;">
-    <form asp-action="Register" method="post" class="row g-3">
+    <form method="post" class="row g-3">
         <h2 class="card-title text-center mb-4">Chào mừng bạn đến tới website Second Home</h2>
         <h2 class="card-title text-center mb-4">Đăng kí tài khoản</h2>
+
         <div class="col-md-6">
             <label for="inputUsername" class="form-label">Tên đăng nhập</label>
-            <input type="text" class="form-control" id="inputUsername" name="username">
+            @Html.TextBoxFor(m => m.Username, new { @class = "form-control", id = "inputUsername" })
+            @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
         </div>
 
         <div class="col-md-6">
             <label for="inputFullName" class="form-label">Họ và tên</label>
-            <input type="text" class="form-control" id="inputFullName" name="fullname">
+            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", id = "inputFullName" })
+            @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
         </div>
 
         <div class="col-md-6">
-            <label for="inputEmail4" class="form-label">Email</label>
-            <input type="email" class="form-control" id="inputEmail4" name="email">
+            <label for="inputEmail" class="form-label">Email</label>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", id = "inputEmail" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
         </div>
 
         <div class="col-md-6">
-            <label for="inputPassword4" class="form-label">Mật khẩu</label>
-            <input type="password" class="form-control" id="inputPassword4" name="password">
+            <label for="inputPassword" class="form-label">Mật khẩu</label>
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "inputPassword" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
         </div>
 
         <div class="col-md-6">
             <label for="inputPhone" class="form-label">Số điện thoại</label>
-            <input type="text" class="form-control" id="inputPhone" name="phone">
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", id = "inputPhone" })
+            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
         </div>
 
         <div class="col-md-6">
             <label for="inputGender" class="form-label">Giới tính</label>
-            <select id="inputGender" class="form-select" name="gender">
-                <option selected>Chọn giới tính...</option>
-                <option>Nam</option>
-                <option>Nữ</option>
-            </select>
+            @Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Nam", "Nữ" }), "Chọn giới tính...", new { @class = "form-select", id = "inputGender" })
+            @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
         </div>
 
         <div class="col-12">
@@ -50,8 +51,14 @@
 
         <div class="col-12 text-center">
             <p>
-                Bạn đã có tài khoản? <a href="https://localhost:44305/Home/Login" class="btn btn-link">Đăng nhập</a>
+                Bạn đã có tài khoản? <a href="@Url.Action("Login", "Home")" class="btn btn-link">Đăng nhập</a>
             </p>
         </div>
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.Error
+            </div>
+        }
     </form>
 </div>

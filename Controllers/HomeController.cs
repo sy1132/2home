@@ -24,6 +24,8 @@ using System.IO;
 using System.Diagnostics.Contracts;
 using System.Web.Util;
 using System.Data.Entity.Infrastructure;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace _2home.Controllers
 {
@@ -254,6 +256,19 @@ namespace _2home.Controllers
             return View();
 
         }
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                foreach (var b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
         public ActionResult Login()
         {
             return View();
@@ -262,38 +277,72 @@ namespace _2home.Controllers
         [HttpPost]
         public ActionResult Login(string account, string password)
         {
-
             using (var db = new DataClasses1DataContext())
             {
+                string encryptedEmail = AesHelper.Encrypt(account);
+                var user = db.users.FirstOrDefault(u => u.Email == encryptedEmail || u.username == account);
 
-                var user = db.users.FirstOrDefault(u =>
-                    (u.Email == account || u.username.ToString() == account) && u.password == password);
-
-                if (user != null)
+                if (user == null)
                 {
-                    Session["User"] = new _2home.ViewModels.User
-                    {
-                        ID_user = user.ID_user,
-                        username = user.username,
-                        Email = user.Email,
-                        password = user.password,
-                        fullname = user.fullname,
-                        userrole = user.userrole,
-                        blance = user.blance,
-                        PhoneNumber = user.PhoneNumber,
-                        gender = user.gender,
-                        MotelID = user.MotelID,
-                    };
-                    ViewBag.Message = "Đăng nhập thành công!";
-                    return RedirectToAction("Index", "Home");
-                } else
-                {
-                    ViewBag.Message = "Tên tài khoản hoặc mật khẩu không đúng!";
+                    ViewBag.Message = "Tên tài khoản không tồn tại!";
                     return View();
                 }
 
+                if (Session["LockoutEndTime"] != null && (DateTime)Session["LockoutEndTime"] > DateTime.Now)
+                {
+                    ViewBag.Message = "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau.";
+                    return View();
+                }
+
+                string hashedPassword = HashPassword(password);
+                if (user.password != hashedPassword)
+                {
+                    int failedLoginAttempts = Session["FailedLoginAttempts"] != null ? (int)Session["FailedLoginAttempts"] : 0;
+                    failedLoginAttempts++;
+
+                    Session["FailedLoginAttempts"] = failedLoginAttempts;
+
+                    if (failedLoginAttempts >= 5)
+                    {
+                        Session["LockoutEndTime"] = DateTime.Now.AddMinutes(1);
+                        ViewBag.Message = "Tài khoản của bạn đã bị khóa do nhập sai mật khẩu quá nhiều lần. Vui lòng thử lại sau 1 phút.";
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Tên tài khoản hoặc mật khẩu không đúng!";
+                    }
+
+                    return View();
+                }
+
+                Session["FailedLoginAttempts"] = 0;
+                Session["LockoutEndTime"] = null;
+                string decryptedEmail = AesHelper.Decrypt(user.Email);
+                string decryptedPhoneNumber = AesHelper.Decrypt(user.PhoneNumber);
+
+                Session["User"] = new _2home.ViewModels.User
+                {
+                    ID_user = user.ID_user,
+                    username = user.username,
+                    Email = decryptedEmail,
+                    fullname = user.fullname,
+                    userrole = user.userrole,
+                    blance = user.blance,
+                    PhoneNumber = decryptedPhoneNumber,
+                    gender = user.gender,
+                    MotelID = user.MotelID,
+                };
+
+                ViewBag.Message = "Đăng nhập thành công!";
+                return RedirectToAction("Index", "Home");
             }
         }
+
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
+
         public ActionResult Logout()
         {
             Session["User"] = null;
@@ -306,36 +355,50 @@ namespace _2home.Controllers
         }
 
         [HttpPost]
-        public ActionResult DK(string username, string fullname, string email, string password, string phone, string gender)
+        public ActionResult DK(UserRegisterViewModel model)
         {
-            using (var db = new DataClasses1DataContext())
+            if (ModelState.IsValid)
             {
-                var existingUser = db.users.FirstOrDefault(u => u.username == username || u.Email == email);
-
-                if (existingUser != null)
+                using (var db = new DataClasses1DataContext())
                 {
-                    ViewBag.Error = "Tên đăng nhập hoặc email đã tồn tại.";
-                    return View();
+                    
+                    string encryptedEmail = AesHelper.Encrypt(model.Email);
+                    string encryptedPhoneNumber = AesHelper.Encrypt(model.Phone);
+
+                    var existingUser = db.users.FirstOrDefault(u => u.username == model.Username || u.Email == encryptedEmail);
+                    if (existingUser != null)
+                    {
+                        ViewBag.Error = "Tên đăng nhập hoặc email đã tồn tại.";
+                        return View(model);
+                    }
+
+                    string hashedPassword = HashPassword(model.Password);
+
+                    var newUser = new user
+                    {
+                        username = model.Username,
+                        fullname = model.FullName,
+                        Email = encryptedEmail,
+                        password = hashedPassword,
+                        PhoneNumber = encryptedPhoneNumber,
+                        gender = model.Gender,
+                        userrole = "user",
+                        blance = 0
+                    };
+
+                    db.users.InsertOnSubmit(newUser);
+                    db.SubmitChanges();
+                    return RedirectToAction("Login", "Home");
                 }
-
-                var newUser = new user
-                {
-                    username = username,
-                    fullname = fullname,
-                    Email = email,
-                    password = password,
-                    PhoneNumber = phone,
-                    gender = gender,
-                    userrole = "user",
-                    blance = 0
-                };
-
-                db.users.InsertOnSubmit(newUser);
-                db.SubmitChanges();
-
-                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                ViewBag.Error = "Vui lòng nhập đầy đủ và hợp lệ thông tin.";
+                return View(model);
             }
         }
+
+
         [HttpGet]
         public ActionResult DKthue()
         {
@@ -479,6 +542,11 @@ namespace _2home.Controllers
         }
         public ActionResult KiemduyetInkeeper(int? size, int? page)
         {
+            var user1 = Session["User"] as User;
+            if (user1 == null || user1.userrole != "Admin")
+            {
+                return RedirectToAction("AccessDenied", "Home");
+            }
             var useri = Session["User"] as _2home.ViewModels.User;
 
             var query = from motel in db.Motels
@@ -670,6 +738,11 @@ namespace _2home.Controllers
         public ActionResult Manager_DK(int? size, int? page, string fullname, string motelID, string userrole)
 
         {
+            var user1 = Session["User"] as User;
+            if (user1 == null || user1.userrole != "Admin")
+            {
+                return RedirectToAction("AccessDenied", "Home");
+            }
             var query = db.users.Select(u => new User
             {
                 ID_user = u.ID_user,
@@ -723,6 +796,8 @@ namespace _2home.Controllers
         [HttpPost]
         public ActionResult AddFunds(int ID_user, int amount)
         {
+           
+
             var user = db.users.SingleOrDefault(u => u.ID_user == ID_user && u.userrole == "Innkeeper");
             if (user == null)
             {
@@ -896,6 +971,11 @@ namespace _2home.Controllers
         public ActionResult rental_management(int? size, int? page, string MotelName, string Location, decimal? Price1, decimal? Price2, string is_available)
 
         {
+            var user1 = Session["User"] as User;
+            if (user1 == null || user1.userrole != "Admin")
+            {
+                return RedirectToAction("AccessDenied", "Home");
+            }
             ViewBag.message = "Quản lý đăng ký cho thuê";
             var query = from img in db.imgs
                         join motel in db.Motels on img.Motel_ID equals motel.Motel_ID
@@ -1650,6 +1730,7 @@ namespace _2home.Controllers
                 {
                     return RedirectToAction("Login", "Home");
                 }
+         
                 ViewBag.Fullname = user.fullname;
                 ViewBag.Email = user.Email;
                 ViewBag.PhoneNumber = user.PhoneNumber;
@@ -2063,6 +2144,11 @@ public ActionResult history(int? page)
         }
         public ActionResult AllHistory(int? page)
         {
+            var user1 = Session["User"] as User;
+            if (user1 == null || user1.userrole != "Admin")
+            {
+                return RedirectToAction("AccessDenied", "Home");
+            }
             var histories = from ph in db.PaymentHistories
                             join u in db.users on ph.UserID equals u.ID_user
                             select new _2home.ViewModels.pay

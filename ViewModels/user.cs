@@ -22,6 +22,7 @@ namespace _2home.ViewModels
         public string password1 { get; set; } 
         public string password2 { get; set; }
 
+
     }
     }
 

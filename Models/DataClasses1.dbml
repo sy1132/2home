@@ -126,7 +126,7 @@
       <Column Name="password" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="fullname" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="MotelID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="userrole" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="gender" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />

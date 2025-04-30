@@ -64,18 +64,18 @@ namespace _2home.Models
 		{
 			OnCreated();
 		}
-		
-		public DataClasses1DataContext(System.Data.IDbConnection connection) : 
+        public DataClasses1DataContext() :
+        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString4"].ConnectionString, mappingSource)
+        {
+
+        }
+        public DataClasses1DataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
-        public DataClasses1DataContext() :
-        base(global::System.Configuration.ConfigurationManager.ConnectionStrings["secondhomeConnectionString"].ConnectionString, mappingSource)
-        {
-
-        }
-        public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		
+		public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -2939,7 +2939,7 @@ namespace _2home.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhoneNumber", DbType="NVarChar(15)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhoneNumber", DbType="NVarChar(100)")]
 		public string PhoneNumber
 		{
 			get
